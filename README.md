@@ -4,32 +4,34 @@ This is @7's CSE 312 Final Project. This repository is currently empty since we 
 ## Project Part 1 :
 ### Framework: Flask / Python
 
-SEPTEMBER 27 - OCTOBER 3: LEARNING OBJECTIVE 1
-Arnav - CSS
-Ash - JAVASCRIPT
-Eric - HTML
-Orn - HTML
-Naomi - JAVASCRIPT
+### September 27 - October 3: Learning Objective 1
+- [ ] **Arnav** - CSS
+- [ ] **Ash** - JavaScript
+- [ ] **Eric** - HTML
+- [ ] **Orn** - HTML
+- [ ] **Naomi** - JavaScript
 
-OCTOBER 4 - OCTOBER 13: LEARNING OBJECTIVE 2
-Arnav -
-Ash -
-Eric -
-Orn -
-Naomi - 
+### October 4 - October 13: Learning Objective 2
+- [ ] **Arnav** - 
+- [ ] **Ash** - 
+- [ ] **Eric** - 
+- [ ] **Orn** - 
+- [ ] **Naomi** - 
 
-OCTOBER 14 - OCTOBER 25 - LEARNING OBJECTIVE 3
-Arnav -
-Ash -
-Eric -
-Orn -
-Naomi - 
+### October 14 - October 25: Learning Objective 3
+- [ ] **Arnav** - 
+- [ ] **Ash** - 
+- [ ] **Eric** - 
+- [ ] **Orn** - 
+- [ ] **Naomi** - 
 
-OCTOBER 26th - OCTOBER 27th: TEST SECURITY ISSUES
+### October 26 - October 27: Test Security Issues
+- [ ] Address Test Security Issues
 
+---
 
-MONDAY, OCTOBER 28, 9:00 AM - FINAL DEADLINE 
-
+### Final Deadline: **Monday, October 28, 9:00 AM** 
+> 🟥 **(This is the final deadline)** 🟥
 
 ## Project Part 2 :
 
