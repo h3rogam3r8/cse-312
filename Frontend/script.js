@@ -1,3 +1,7 @@
+function initialize() {
+    
+}
+
 document.addEventListener('', function() {
     console.log('');
 
