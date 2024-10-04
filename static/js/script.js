@@ -15,6 +15,7 @@ button.addEventListener('mouseout', () => {
 
 const cards = document.querySelectorAll('.card');
 cards.forEach(card => {
+    card.style.cursor = 'pointer';
     card.addEventListener('mouseover', () => {
         card.classList.add('highlight');
     });
