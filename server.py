@@ -1,10 +1,10 @@
 from flask import Flask
 from flask import render_template 
-from flask_bootstrap import Bootstrap5 
+from flask_bootstrap5 import Bootstrap
 
 # Create a flask instance
 app = Flask(__name__)
-bootstrap = Bootstrap5(app)
+bootstrap = Bootstrap(app)
 # Route and view function
 
 @app.route('/')
@@ -19,4 +19,4 @@ def add_header(response):
 
 # Run the app once this file executes
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(host='0.0.0.0', debug=True)
