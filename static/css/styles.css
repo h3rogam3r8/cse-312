@@ -173,7 +173,12 @@ a:hover {
   font-size: var(--small-size);
   color: var(--text-color);
 }
-
+.highlight {
+    border: 3px solid var(--accent-color); /* Adds a golden border for the highlight */
+    box-shadow: 0 4px 10px rgba(0, 91, 187, 0.4); /* Adds a shadow for emphasis */
+    transform: scale(1.05); /* Slightly enlarges the card */
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth transition */
+}
 /* Form Styles */
 .form-control {
   display: block;
