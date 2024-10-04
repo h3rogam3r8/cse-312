@@ -1,24 +1,40 @@
-window.addEventListener('DOMContentLoaded', () => {
-    let scrollPos = 0;
-    const mainNav = document.getElementById('mainNav');
-    const headerHeight = mainNav.clientHeight;
-    window.addEventListener('scroll', function() {
-        const currentTop = document.body.getBoundingClientRect().top * -1;
-        if ( currentTop < scrollPos) {
-            // Scrolling Up
-            if (currentTop > 0 && mainNav.classList.contains('is-fixed')) {
-                mainNav.classList.add('is-visible');
-            } else {
-                console.log(123);
-                mainNav.classList.remove('is-visible', 'is-fixed');
-            }
-        } else {
-            // Scrolling Down
-            mainNav.classList.remove(['is-visible']);
-            if (currentTop > headerHeight && !mainNav.classList.contains('is-fixed')) {
-                mainNav.classList.add('is-fixed');
-            }
-        }
-        scrollPos = currentTop;
+function initialize() {
+    console.log("Page initialized");
+
+}
+
+const button = document.querySelector('button');
+button.addEventListener('mouseover', () => {
+  button.style.backgroundColor = 'gray';
+});
+button.addEventListener('mouseout', () => {
+
+  button.style.backgroundColor = '';
+});
+
+
+const cards = document.querySelectorAll('.card');
+cards.forEach(card => {
+    card.addEventListener('mouseover', () => {
+        card.classList.add('highlight');
     });
-})
+
+    card.addEventListener('mouseout', () => {
+        card.classList.remove('highlight');
+    });
+});
+
+function setup_navbar_clicks() {
+    const nav = document.querySelectorAll('.nav-link');
+    nav.forEach(link => {
+        link.addEventListener('click', function (event) {
+            console.log(`${link.textContent} clicked`);
+        });
+    });
+
+
+    document.addEventListener('DOMContentLoaded', () => {
+        setup_navbar_clicks();
+    });
+
+}
