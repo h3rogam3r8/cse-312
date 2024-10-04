@@ -38,3 +38,18 @@ function setup_navbar_clicks() {
     });
 
 }
+
+function handleSearch(){
+    const search = document.getElementById('searchInput').value.toLowerCase();
+
+    cards.forEach(card => {
+        const title = card.querySelector('.card-title').textContent.toLowerCase();
+        if (title.includes(search)) {
+            card.parentElement.style.display = ''; // Show the card
+        } else {
+            card.parentElement.style.display = 'none'; // Hide the card
+        }
+    });
+}
+
+document.getElementById('searchInput').addEventListener('input', handleSearch);
