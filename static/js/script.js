@@ -2,7 +2,7 @@ function initialize() {
     console.log("Page initialized");
 
 }
-
+//button for nav-bar
 const button = document.querySelector('button');
 button.addEventListener('mouseover', () => {
   button.style.backgroundColor = 'gray';
@@ -10,6 +10,15 @@ button.addEventListener('mouseover', () => {
 button.addEventListener('mouseout', () => {
 
   button.style.backgroundColor = '';
+});
+//button for directions
+const button2 = document.querySelector('.btn');
+button2.addEventListener('mouseover', () => {
+  button2.style.backgroundColor = 'gray';
+});
+button2.addEventListener('mouseout', () => {
+
+  button2.style.backgroundColor = '';
 });
 
 
