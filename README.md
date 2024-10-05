@@ -1,5 +1,5 @@
 # UBeats (Temporary)
-This is @7's CSE 312 Final Project. This repository is currently empty since we have not started yet.
+This is @7's CSE 312 Final Project. This repository contains the necessary files to launch our web application. 
 
 ## Project Part 1 :
 ### Framework: Flask / Python
@@ -12,11 +12,11 @@ This is @7's CSE 312 Final Project. This repository is currently empty since we 
 - [x] **Naomi** - ~~JavaScript~~
 
 ### October 4 - October 13: Learning Objective 2
-- [ ] **Arnav** - 
-- [ ] **Ash** - 
-- [ ] **Eric** - 
-- [ ] **Orn** - 
-- [ ] **Naomi** - 
+- [ ] **Arnav** - TBD
+- [ ] **Ash** - TBD
+- [ ] **Eric** - TBD
+- [ ] **Orn** - TBD
+- [ ] **Naomi** - TBD
 
 ### October 14 - October 25: Learning Objective 3
 - [ ] **Arnav** - 
@@ -26,10 +26,9 @@ This is @7's CSE 312 Final Project. This repository is currently empty since we 
 - [ ] **Naomi** - 
 
 ### October 26 - October 27: Test Security Issues
-- [ ] Address Test Security Issues
+- [ ] Address Potential Security Issues
 
 ---
-
 ### Final Deadline: **Monday, October 28, 9:00 AM** 
 > 🟥 **(This is the final deadline)** 🟥
 
