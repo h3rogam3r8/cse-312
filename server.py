@@ -1,6 +1,6 @@
-from flask import Flask
-from flask import render_template 
-from flask_bootstrap5 import Bootstrap
+from flask import Flask # type: ignore
+from flask import render_template  # type: ignore
+from flask_bootstrap5 import Bootstrap # type: ignore
 
 # Create a flask instance
 app = Flask(__name__)
