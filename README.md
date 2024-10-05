@@ -5,11 +5,11 @@ This is @7's CSE 312 Final Project. This repository is currently empty since we 
 ### Framework: Flask / Python
 
 ### September 27 - October 3: Learning Objective 1
-- [ ] **Eric** - HTML
-- [ ] **Orn** - HTML
-- [ ] **Arnav** - CSS
-- [ ] **Ash** - JavaScript
-- [ ] **Naomi** - JavaScript
+- [x] **Eric** - ~~HTML~~
+- [x] **Orn** - ~~HTML~~
+- [x] **Arnav** - ~~CSS~~
+- [x] **Ash** - ~~JavaScript~~
+- [x] **Naomi** - ~~JavaScript~~
 
 ### October 4 - October 13: Learning Objective 2
 - [ ] **Arnav** - 
