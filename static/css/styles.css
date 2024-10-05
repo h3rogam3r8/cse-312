@@ -3,9 +3,9 @@
   --primary-color: #005BBB; /* UB Blue */
   --secondary-color: #005BBB; /* Darker Blue for contrast */
   --accent-color: #FFD200; /* UB Gold for accents */
-  --text-color: #ffffff;
-  --light-text-color: #FFFFFF;
-  --background-color: #FFFFFF;
+  --text-color: #000000;
+  --light-text-color: #f5f5f5;
+  --background-color: #f5f5f5;
   --light-background-color: #F8F9FA;
   --border-color: #E0E0E0;
 
@@ -43,6 +43,18 @@
   --border-radius-sm: 4px;
   --border-radius-md: 8px;
   --border-radius-lg: 16px;
+}
+
+/* Dark Mode Variables */
+:root.dark-mode {
+  --primary-color: #8A2BE2; 
+  --secondary-color: #8A2BE2; 
+  --text-color: #FFFFFF;
+  --background-color: #181818; 
+  --light-background-color: #222222; 
+  --border-color: #444444;
+  --card-text-color: #f5f5f5; 
+  --hover-highlight-color: #8A2BE2; 
 }
 
 /* Global Styles */
@@ -101,7 +113,7 @@ a:hover {
 
 /* Navbar Styles */
 .navbar {
-  background-color: var(--background-color);
+  background-color: var(--background-color); 
   box-shadow: var(--shadow-sm);
   padding: var(--spacing-md) 0;
 }
@@ -173,12 +185,31 @@ a:hover {
   font-size: var(--small-size);
   color: var(--text-color);
 }
-.highlight {
-    border: 3px solid var(--accent-color); /* Adds a golden border for the highlight */
-    box-shadow: 0 4px 10px rgba(0, 91, 187, 0.4); /* Adds a shadow for emphasis */
-    transform: scale(1.05); /* Slightly enlarges the card */
-    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth transition */
+
+.dark-mode .card-text {
+  color: var(--card-text-color) !important; 
 }
+
+.dark-mode .text-muted {
+  color: var(--light-text-color) !important;
+}
+
+.dark-mode .fw-semibold {
+  color: var(--light-text-color) !important;
+}
+
+.highlight {
+  border: 3px solid var(--accent-color); 
+  box-shadow: 0 4px 10px rgba(0, 91, 187, 0.4); 
+  transform: scale(1.05); 
+  transition: transform 0.3s ease, box-shadow 0.3s ease; 
+}
+
+.dark-mode .highlight {
+  border-color: var(--hover-highlight-color);
+  box-shadow: 0 4px 10px rgba(138, 43, 226, 0.4);
+}
+
 /* Form Styles */
 .form-control {
   display: block;
@@ -186,7 +217,7 @@ a:hover {
   padding: var(--spacing-sm);
   font-size: var(--body-size);
   line-height: 1.5;
-  color: var(--text-color);
+  color: #ADD8E6;
   background-color: var(--background-color);
   border: 1px solid var(--border-color);
   border-radius: var(--border-radius-sm);
@@ -199,15 +230,19 @@ a:hover {
   box-shadow: 0 0 0 0.2rem rgba(0, 91, 187, 0.25);
 }
 
-/* Footer Styles */
 .footer {
-  background-color: var(--light-background-color);
+  background-color: var(--light-background-color); 
   color: var(--text-color);
   padding: var(--spacing-lg) 0;
   margin-top: var(--spacing-xl);
 }
 
 .footer h5 {
+  color: var(--primary-color);
+  margin-bottom: var(--spacing-md);
+}
+
+.footer p {
   color: var(--primary-color);
   margin-bottom: var(--spacing-md);
 }
@@ -230,7 +265,14 @@ a:hover {
   color: var(--primary-color);
 }
 
-/* Utility Classes */
+.dark-mode .navbar, .dark-mode .footer {
+  background-color: #181818 !important; /* Forces dark background on navbar and footer */
+}
+
+.dark-mode h5, .dark-mode p{
+  color: var(--light-text-color);
+}
+
 .text-primary { color: var(--primary-color); }
 .text-secondary { color: var(--secondary-color); }
 .bg-primary { background-color: var(--primary-color); }

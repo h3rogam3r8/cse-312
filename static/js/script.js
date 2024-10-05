@@ -1,23 +1,22 @@
 function initialize() {
     console.log("Page initialized");
-
 }
+
 //button for nav-bar
 const button = document.querySelector('button');
 button.addEventListener('mouseover', () => {
   button.style.backgroundColor = 'gray';
 });
 button.addEventListener('mouseout', () => {
-
   button.style.backgroundColor = '';
 });
+
 //button for directions
 const button2 = document.querySelector('.btn');
 button2.addEventListener('mouseover', () => {
   button2.style.backgroundColor = 'gray';
 });
 button2.addEventListener('mouseout', () => {
-
   button2.style.backgroundColor = '';
 });
 
@@ -41,15 +40,14 @@ function setup_navbar_clicks() {
             console.log(`${link.textContent} clicked`);
         });
     });
-
-
-    document.addEventListener('DOMContentLoaded', () => {
-        setup_navbar_clicks();
-    });
-
 }
 
-function handleSearch(){
+document.addEventListener('DOMContentLoaded', () => {
+    setup_navbar_clicks();
+});
+
+
+function handleSearch() {
     const search = document.getElementById('searchInput').value.toLowerCase();
 
     cards.forEach(card => {
@@ -63,3 +61,15 @@ function handleSearch(){
 }
 
 document.getElementById('searchInput').addEventListener('input', handleSearch);
+
+const darkModeToggle = document.getElementById('darkModeToggle');
+
+darkModeToggle.addEventListener('click', () => {
+    document.documentElement.classList.toggle('dark-mode');
+    
+    if (document.documentElement.classList.contains('dark-mode')) {
+        darkModeToggle.textContent = 'Light Mode';
+    } else {
+        darkModeToggle.textContent = 'Dark Mode';
+    }
+});
