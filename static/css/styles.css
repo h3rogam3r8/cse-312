@@ -4,10 +4,10 @@
   --secondary-color: #005BBB; /* Darker Blue for contrast */
   --accent-color: #FFD200; /* UB Gold for accents */
   --text-color: #000000;
-  --light-text-color: #f5f5f5;
-  --background-color: #f5f5f5;
+  --light-text-color: #E0E0E0;
+  --background-color: #E0E0E0;
   --light-background-color: #F8F9FA;
-  --border-color: #E0E0E0;
+  --border-color: #292424;
 
   /* Typography */
   --body-font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen-Sans, Ubuntu, Cantarell, 'Helvetica Neue', sans-serif;
@@ -55,6 +55,9 @@
   --border-color: #444444;
   --card-text-color: #f5f5f5; 
   --hover-highlight-color: #8A2BE2; 
+  --shadow-dark-sm: 0 1px 3px rgba(255, 255, 255, 0.12), 0 1px 2px rgba(255, 255, 255, 0.24);
+  --shadow-dark-md: 0 4px 6px rgba(255, 255, 255, 0.1);
+  --shadow-dark-lg: 0 10px 20px rgba(255, 255, 255, 0.1);
 }
 
 /* Global Styles */
@@ -166,6 +169,16 @@ a:hover {
   box-shadow: var(--shadow-lg);
 }
 
+.dark-mode .card {
+  background-color: var(--light-background-color);
+  box-shadow: var(--shadow-dark-md);
+}
+
+.dark-mode .card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-dark-lg); 
+}
+
 .card-img-top {
   width: 100%;
   height: 200px;
@@ -196,6 +209,27 @@ a:hover {
 
 .dark-mode .fw-semibold {
   color: var(--light-text-color) !important;
+}
+
+#searchInput {
+  color: var(--text-color);
+  background-color: var(--background-color);
+  border: 1px solid var(--border-color); 
+}
+
+.dark-mode #searchInput {
+  color: var(--light-text-color);
+  background-color: var(--light-background-color); 
+  border: 1px solid var(--border-color); 
+}
+
+.dark-mode #searchInput:focus {
+  border-color: var(--primary-color);
+}
+
+.dark-mode #searchInput::placeholder {
+  color: #a3a2a2 !important; 
+  opacity: 1; 
 }
 
 .highlight {
