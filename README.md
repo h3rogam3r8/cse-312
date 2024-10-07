@@ -4,21 +4,21 @@ This is @7's CSE 312 Final Project. This repository contains the necessary files
 ## Project Part 1 :
 ### Framework: Flask / Python
 
-### September 27 - October 3: Learning Objective 1
+### September 27 - October 5: Learning Objective 1
 - [x] **Eric** - ~~HTML~~
 - [x] **Orn** - ~~HTML~~
 - [x] **Arnav** - ~~CSS~~
 - [x] **Ash** - ~~JavaScript~~
 - [x] **Naomi** - ~~JavaScript~~
 
-### October 4 - October 13: Learning Objective 2
+### October 6 - October 15: Learning Objective 2
 - [ ] **Arnav** - TBD
 - [ ] **Ash** - TBD
 - [ ] **Eric** - TBD
 - [ ] **Orn** - TBD
 - [ ] **Naomi** - TBD
 
-### October 14 - October 25: Learning Objective 3
+### October 16 - October 25: Learning Objective 3
 - [ ] **Arnav** - 
 - [ ] **Ash** - 
 - [ ] **Eric** - 
