@@ -12,11 +12,11 @@ This is @7's CSE 312 Final Project. This repository contains the necessary files
 - [x] **Naomi** - ~~JavaScript~~
 
 ### October 6 - October 15: Learning Objective 2
-- [ ] **Arnav** - TBD
-- [ ] **Ash** - TBD
-- [ ] **Eric** - TBD
-- [ ] **Orn** - TBD
-- [ ] **Naomi** - TBD
+- [ ] **Arnav** - Security Issues/Logout/Encryption
+- [ ] **Ash** - Registration Backend
+- [ ] **Eric** - Login Backend
+- [ ] **Orn** - Login HTML
+- [ ] **Naomi** - Registration HTML
 
 ### October 16 - October 25: Learning Objective 3
 - [ ] **Arnav** - 
