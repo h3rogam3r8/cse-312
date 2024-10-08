@@ -44,6 +44,17 @@ function setup_navbar_clicks() {
 
 document.addEventListener('DOMContentLoaded', () => {
     setup_navbar_clicks();
+    const darkModeToggle = document.getElementById('darkModeToggle');
+
+    darkModeToggle.addEventListener('click', () => {
+        document.documentElement.classList.toggle('dark-mode');
+        
+        if (document.documentElement.classList.contains('dark-mode')) {
+            darkModeToggle.textContent = 'Light Mode';
+        } else {
+            darkModeToggle.textContent = 'Dark Mode';
+        }
+    });
 });
 
 
@@ -60,16 +71,7 @@ function handleSearch() {
     });
 }
 
-document.getElementById('searchInput').addEventListener('input', handleSearch);
-
-const darkModeToggle = document.getElementById('darkModeToggle');
-
-darkModeToggle.addEventListener('click', () => {
-    document.documentElement.classList.toggle('dark-mode');
-    
-    if (document.documentElement.classList.contains('dark-mode')) {
-        darkModeToggle.textContent = 'Light Mode';
-    } else {
-        darkModeToggle.textContent = 'Dark Mode';
-    }
-});
+const searchInput = document.getElementById('searchInput');
+if (searchInput) {
+    searchInput.addEventListener('input', handleSearch);
+}

@@ -1,61 +1,8 @@
-<!doctype html>
-<html lang="en">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>UB Commons Food Guide</title>
+{% extends 'base.html' %}
 
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">        
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>        
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">                    
+{% block title %}UB Commons Food Guide{% endblock %}
 
-    <!-- Bootstrap CSS via CDN -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-
-    <!-- Bootstrap Icons CDN -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
-
-    <!-- Custom CSS -->
-    <link href="{{ url_for('static', filename='css/styles.css') }}" rel="stylesheet">
-</head>
-<body>
-    
-    <!-- Navbar -->
-    <header>
-        <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm" id="MainNav">
-            <div class="container">
-                <a class="navbar-brand fw-bold text-primary" href="#">UB Commons Food</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" 
-                        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarNav">
-                    <ul class="navbar-nav ms-auto">
-                    </ul>
-                    <li class="nav-item">
-                        <button id="darkModeToggle" class="btn me-2">Dark Mode</button>
-                    </li>
-                </div>
-            </div>
-        </nav>
-    </header>
-
-
-    <!-- Main Content -->
-    <main>
-        <!-- Hero Section -->
-        <section class="hero position-relative text-center d-flex align-items-center justify-content-center">
-            <video autoplay loop muted class="position-absolute w-100 h-100 object-fit-cover" poster="">
-                <source src="static/video/commons.mp4" type="video/mp4">
-                Your browser does not support the video tag.
-            </video>
-            <div class="overlay position-absolute w-100 h-100 bg-blue opacity-50"></div>
-            <div class="container position-relative z-1 text-black">
-                <h1 class="display-4 mb-4">THE UB COMMONS</h1>
-                <p class="lead">Explore a variety of cuisines at the University at Buffalo Commons. Find your favorite spot today.</p>
-            </div>
-        </section>
+{% block content %}
 
         <div class="container text-center py-5">
             <h5 class="text-primary"> Welcome to the UB Commons Food Review! Here, you can explore a variety of dining options available at the University at Buffalo Commons. Drop a review and let everyone know how you're feeling!</h5>
@@ -98,8 +45,6 @@
                         </div>
                     </div>
 
-
-
                     <!-- Chick Mex -->
                     <div class="col-lg-4 col-md-6">
                         <div class="card h-100 shadow-sm">
@@ -123,7 +68,6 @@
                             </div>
                         </div>
                     </div>
-
 
                     <!-- Dancing Chopsticks -->
                     <div class="col-lg-4 col-md-6">
@@ -149,7 +93,6 @@
                         </div>
                     </div>
 
-
                     <!-- La Rosa -->
                     <div class="col-lg-4 col-md-6">
                         <div class="card h-100 shadow-sm">
@@ -173,7 +116,6 @@
                             </div>
                         </div>
                     </div>
-
 
                     <!-- Poke Factory -->
                     <div class="col-lg-4 col-md-6">
@@ -310,13 +252,4 @@
                 <a href="https://www.google.com/maps/place/Commons,+520+Lee+Entrance,+Buffalo,+NY+14228/@43.0016966,-78.7875061,17z/data=!3m1!4b1!4m6!3m5!1s0x89d373d1a94f37ed:0x4aeb79ca54fe877d!8m2!3d43.0016966!4d-78.7849312!16s%2Fg%2F1thr84dw?entry=ttu&g_ep=EgoyMDI0MDkzMC4wIKXMDSoASAFQAw%3D%3D" class="btn btn-primary mt-2">Get Directions</a>
             </div>
         </div>
-
-    </main>
-
-    <!-- Bootstrap JS via CDN -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- Custom JS -->
-    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
-</body>
-</html>
-
+{% endblock %}
