@@ -11,6 +11,14 @@ bootstrap = Bootstrap(app)
 def index():
     return render_template("html/index.html", title = "Home")
 
+@app.route('/register')
+def register():
+    return render_template("html/register.html", title = "Register")
+
+@app.route('/login')
+def login():
+    return render_template("html/login.html", title = "Login")
+
 # Security issue fixed
 @app.after_request
 def add_header(response):

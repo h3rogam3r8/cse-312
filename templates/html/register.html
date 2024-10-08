@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block title %}Register - UB Commons Food Guide{% endblock %}
+
+{% block content %}
+
+    <h2 class="text-center mb-4 mt-5">Join Us Today!</h2>
+
+    <form action="/register" method="POST" class="d-flex flex-column align-items-center">
+        <div class="mb-3 w-50">
+            <label for="username" class="form-label">Username</label>
+            <input type="text" class="form-control" id="username" name="username" required pattern="[a-zA-Z0-9]+">
+            <small class="form-text text-muted">Username can contain only letters and numbers.</small>
+        </div>
+        </div>
+        <div class="mb-3 w-50">
+            <label for="password" class="form-label">Password</label>
+            <input type="password" class="form-control" id="password" name="password" required>
+        </div>
+        <button type="submit" class="btn btn-primary w-50">Register</button>
+    </form>
+    <div class="text-center mt-3">
+        <p>Already have an account? <a href="/login" class="link-primary">Login here</a></p>
+    </div>
+{% endblock %}
