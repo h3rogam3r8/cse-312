@@ -28,16 +28,18 @@ def index():
 def register():
     error = False
     already_an_user=False
+    too_long=False
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
         confirm_passowrd = request.form['confirm_password']
-        
         #check_existing_user
         existing_user = users.find_one({"username": username})
         if existing_user:
             return render_template("html/register.html",already_an_user=True)
-       
+        
+        if len(username) > 30 or len(password) > 30:
+            return (render_template("html/register.html",too_long=True))
         #check if passwords match, if they do we proceed to store passwords in database
         if password == confirm_passowrd:
          hash_password =  bcrypt.generate_password_hash(password).decode('utf-8')

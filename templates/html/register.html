@@ -12,9 +12,13 @@
         <p style="color:red;">Passwords do not match</p>
         {% endif %}
         
+        <!--error if passwords/username is too long-->
+        {% if too_long %}
+        <p style="color:red;">"Username or Password is too long. Must be 30 characters only"</p>
+        {% endif %}
         <!--error if user exists already-->
         {%if already_an_user %}
-        <p style ="color:red;">You're already a user, please sign in</p>
+        <p style ="color:red;">You're already a user, please login</p>
         {% endif %}
         <div class="mb-3 w-50">
             <label for="username" class="form-label">Username</label>
