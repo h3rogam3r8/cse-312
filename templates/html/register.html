@@ -6,7 +6,16 @@
 
     <h2 class="text-center mb-4 mt-5">Join Us Today!</h2>
 
-    <form action="/register" method="POST" class="d-flex flex-column align-items-center">
+    <form action="{{ url_for('register') }}" method="POST" class="d-flex flex-column align-items-center">
+        <!--error if passwords do not match-->
+        {% if error %}
+        <p style="color:red;">Passwords do not match</p>
+        {% endif %}
+        
+        <!--error if user exists already-->
+        {%if already_an_user %}
+        <p style ="color:red;">You're already a user, please sign in</p>
+        {% endif %}
         <div class="mb-3 w-50">
             <label for="username" class="form-label">Username</label>
             <input type="text" class="form-control" id="username" name="username" required pattern="[a-zA-Z0-9]+">
@@ -16,6 +25,10 @@
         <div class="mb-3 w-50">
             <label for="password" class="form-label">Password</label>
             <input type="password" class="form-control" id="password" name="password" required>
+        </div>
+        <div class="mb-3 w-50"> <!--confirmation password-->
+            <label for="confirm_password" class="form-label">Confirm Password</label>
+            <input type="password" class="form-control" id="confirm_password" name="confirm_password" required>
         </div>
         <button type="submit" class="btn btn-primary w-50">Register</button>
     </form>
