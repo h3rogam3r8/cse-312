@@ -3,7 +3,29 @@
 {% block title %}Login - UB Commons Food Guide{% endblock %}
 
 {% block content %}
+    <h2 class="text-center mb-4 mt-5">Welcome Back!</h2>
 
-    <h2 class="text-center mb-4 mt-5">Login</h2>
+    <form action="{{ url_for('login') }}" method="POST" class="d-flex flex-column align-items-center">
 
+        <!--error if login fails-->
+        {% if error %}
+        <p style="color:red;">Invalid username or password</p>
+        {% endif %}
+        
+        <div class="mb-3 w-50">
+            <label for="username" class="form-label">Username</label>
+            <input type="text" class="form-control" id="username" name="username" required pattern="[a-zA-Z0-9]+" maxlength="30">
+            <small class="form-text text-muted">Username can contain only letters and numbers.</small>
+        </div>
+        <div class="mb-3 w-50">
+            <label for="password" class="form-label">Password</label>
+            <input type="password" class="form-control" id="password" name="password" required maxlength="30">
+        </div>
+        <div class="mb-3 w-50">
+            <button type="submit" class="btn btn-primary w-100">Login</button>
+        </div>
+    </form>
+    <div class="text-center mt-3">
+        <p>Don't have an account? <a href="{{ url_for('register') }}" class="link-primary">Register here</a></p>
+    </div>
 {% endblock %}
