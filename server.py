@@ -51,7 +51,7 @@ def register():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
-        confirm_passowrd = request.form['confirm_password']
+        confirm_password = request.form['confirm_password']
 
         #check_existing_user
         existing_user = users.find_one({"username": username})
@@ -62,7 +62,7 @@ def register():
             return (render_template("html/register.html",too_long=True))
         
         #check if passwords match, if they do we proceed to store passwords in database
-        if password == confirm_passowrd:
+        if password == confirm_password:
             hash_password = bcrypt.generate_password_hash(password).decode('utf-8')
             user = {'username': username, 'password': hash_password}
             users.insert_one(user)
