@@ -34,12 +34,23 @@
                     <!-- <ul class="navbar-nav ms-auto">
                     </ul> -->
                     <ul class="navbar-nav ms-auto list-unstyled">
-                        <li class="nav-item">
-                            <a class="nav-link" href="/register">Register</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ url_for('login') }}">Login</a>
-                        </li>
+                        {% if loggedIn %}
+                            <!-- Show the username and logout button when the user is logged in -->
+                            <li class="nav-item">
+                                <span class="nav-link">Welcome, {{ username }}!</span>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/logout">Logout</a>
+                            </li>
+                        {% else %}
+                            <!-- Show login and register buttons when the user isn't logged in -->
+                            <li class="nav-item">
+                                <a class="nav-link" href="/register">Register</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ url_for('login') }}">Login</a>
+                            </li>
+                        {% endif %}
                         <li class="nav-item">
                             <button id="darkModeToggle" class="btn me-2">Dark Mode</button>
                         </li>

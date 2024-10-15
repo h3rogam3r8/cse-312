@@ -2,7 +2,7 @@ from flask import Flask,request,redirect,url_for # type: ignore
 from flask import render_template  # type: ignore
 from flask import make_response # type: ignore
 from flask_bootstrap5 import Bootstrap # type: ignore
-from pymongo import MongoClient #database
+from pymongo import MongoClient #database 
 from flask_bcrypt import Bcrypt # type: ignore
 import secrets, hashlib
 # Create a flask instance
@@ -25,7 +25,23 @@ bcrypt = Bcrypt(app)
 
 @app.route('/')
 def index():
-    return render_template("html/index.html", title = "Home")
+    loggedIn = False
+    username = None
+
+    auth_token = request.cookies.get('auth_token')
+
+    if auth_token:
+        # hash the auth token in order to compare it to the stored hashed token 
+        hasher = hashlib.sha256()
+        hasher.update(auth_token.encode())
+        token_hash = hasher.hexdigest()
+
+        # check if the hashed token exists in the database 
+        token_entry = auth.find_one({token_hash: {'$exists': True}})
+        if token_entry:
+            username = token_entry[token_hash] # get the corresponding username
+            loggedIn = True 
+    return render_template("html/index.html", title = "Home", loggedIn=loggedIn, username=username) # render the homepage with the loggedIn status and username
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -36,6 +52,7 @@ def register():
         username = request.form['username']
         password = request.form['password']
         confirm_passowrd = request.form['confirm_password']
+
         #check_existing_user
         existing_user = users.find_one({"username": username})
         if existing_user:
@@ -43,6 +60,7 @@ def register():
         
         if len(username) > 30 or len(password) > 30:
             return (render_template("html/register.html",too_long=True))
+        
         #check if passwords match, if they do we proceed to store passwords in database
         if password == confirm_passowrd:
             hash_password = bcrypt.generate_password_hash(password).decode('utf-8')
@@ -63,20 +81,25 @@ def login():
         found_user = users.find_one({"username": username})
         if found_user:
             hashed_password = found_user["password"]
+
             #Check if the submitted password matches the one stored in the database
             if bcrypt.check_password_hash(hashed_password, password):
-                response = make_response(render_template("html/index.html", title = "Home", loggedIn=True))
-                auth_token = secrets.token_hex(20) #Generate the Authentication Token
+                response = make_response(render_template("html/index.html", title = "Home", loggedIn=True, username=username)) # render the homepage with the loggedIn status and username
+
+                #Generate the Authentication Token
+                auth_token = secrets.token_hex(20) 
                 hasher = hashlib.sha256()
                 bytes = auth_token.encode()
                 hasher.update(bytes)
                 hex_hash = hasher.hexdigest() #Hashed Auth Token as a hexadecimal string
+
+
                 token = {hex_hash: username} 
                 auth.insert_one(token) #Store the Hashed Auth Token in a separate database along with its associated user
                 response.set_cookie("auth_token", auth_token, max_age=3600, httponly=True) #Set Auth Token Cookie
                 return response
-        return render_template("html/login.html", error=True)
-    return render_template("html/login.html", title = "Login")
+        return render_template("html/login.html", error=True) 
+    return render_template("html/login.html", title = "Login") 
 
 # Security issue fixed
 @app.after_request
