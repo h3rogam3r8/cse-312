@@ -121,6 +121,14 @@ a:hover {
   padding: var(--spacing-md) 0;
 }
 
+.navbar .btn-login, .navbar .btn-register {
+  margin-right: 10px; 
+}
+
+#darkModeToggle {
+  margin-left: 15px; /
+}
+
 .navbar-brand {
   font-size: var(--h4-size);
   font-weight: 700;
@@ -251,7 +259,7 @@ a:hover {
   padding: var(--spacing-sm);
   font-size: var(--body-size);
   line-height: 1.5;
-  color: #ADD8E6;
+  color: var(--text-color);
   background-color: var(--background-color);
   border: 1px solid var(--border-color);
   border-radius: var(--border-radius-sm);
@@ -262,6 +270,28 @@ a:hover {
   border-color: var(--primary-color);
   outline: 0;
   box-shadow: 0 0 0 0.2rem rgba(0, 91, 187, 0.25);
+}
+
+.dark-mode .form-control {
+  color: var(--light-text-color);
+  background-color: var(--light-background-color);
+  border: 1px solid var(--border-color);
+}
+
+.dark-mode .form-control:focus {
+  border-color: var(--primary-color);
+  outline: 0;
+  box-shadow: 0 0 0 0.2rem rgba(138, 43, 226, 0.25);
+}
+
+.form-control::placeholder {
+  color: #6c757d; 
+  opacity: 1;
+}
+
+.dark-mode .form-control::placeholder {
+  color: #a3a2a2; 
+  opacity: 1;
 }
 
 .footer {

@@ -2,7 +2,7 @@ from flask import Flask,request,redirect,url_for # type: ignore
 from flask import render_template  # type: ignore
 from flask import make_response # type: ignore
 from flask_bootstrap5 import Bootstrap # type: ignore
-from pymongo import MongoClient #database 
+from pymongo import MongoClient #database # type: ignore
 from flask_bcrypt import Bcrypt # type: ignore
 import secrets, hashlib
 # Create a flask instance
@@ -100,6 +100,24 @@ def login():
                 return response
         return render_template("html/login.html", error=True) 
     return render_template("html/login.html", title = "Login") 
+
+@app.route('/logout')
+def logout():
+    auth_token = request.cookies.get('auth_token')
+    if auth_token:
+        # hash the auth token to find it in the database
+        hasher = hashlib.sha256()
+        hasher.update(auth_token.encode())
+        token_hash = hasher.hexdigest()
+
+        # remove the token from the database to invalidate it
+        auth.delete_one({token_hash: {'$exists': True}})
+
+    # create a response object to redirect the user to the home page
+    response = make_response(redirect(url_for('index')))
+    # remove the auth_token cookie by setting its expiration date in the past
+    response.set_cookie('auth_token', '', expires=0)
+    return response
 
 # Security issue fixed
 @app.after_request

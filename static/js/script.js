@@ -46,12 +46,23 @@ document.addEventListener('DOMContentLoaded', () => {
     setup_navbar_clicks();
     const darkModeToggle = document.getElementById('darkModeToggle');
 
+    const storedToggle = localStorage.getItem('darkMode');
+    if (storedToggle === 'enabled') {
+        document.documentElement.classList.add('dark-mode');
+        darkModeToggle.textContent = 'Light Mode';
+    } else {
+        document.documentElement.classList.remove('dark-mode');
+        darkModeToggle.textContent = 'Dark Mode';
+    }
+
     darkModeToggle.addEventListener('click', () => {
         document.documentElement.classList.toggle('dark-mode');
-        
+
         if (document.documentElement.classList.contains('dark-mode')) {
+            localStorage.setItem('darkMode', 'enabled');
             darkModeToggle.textContent = 'Light Mode';
         } else {
+            localStorage.setItem('darkMode', 'disabled');
             darkModeToggle.textContent = 'Dark Mode';
         }
     });
