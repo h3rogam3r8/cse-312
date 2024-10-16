@@ -5,10 +5,10 @@ This is @7's CSE 312 Final Project. This repository contains the necessary files
 ## Project Part 1 :
 
 ### September 27 - October 5: Learning Objective 1
-- [x] **Eric** - ~~HTML~~
-- [x] **Orn** - ~~HTML~~
 - [x] **Arnav** - ~~CSS~~
 - [x] **Ash** - ~~JavaScript~~
+- [x] **Eric** - ~~HTML~~
+- [x] **Orn** - ~~HTML~~
 - [x] **Naomi** - ~~JavaScript~~
 
 ### October 6 - October 15: Learning Objective 2
