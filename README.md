@@ -2,6 +2,21 @@
 ### Framework: Flask / Python
 This is @7's CSE 312 Final Project. This repository contains the necessary files to launch our web application. 
 
+## For Testing
+
+Clone the repository:
+
+```bash
+git clone git@github.com:h3rogam3r8/cse-312.git
+cd cse-312
+```
+
+In the Terminal:
+
+```bash
+docker compose up --build --force-recreate
+```
+
 ## Project Part 1 :
 
 ### September 27 - October 5: Application Objective 1
