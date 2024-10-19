@@ -34,11 +34,11 @@ docker compose up --build --force-recreate
 - [x] **Orn** - ~~Login HTML~~
 
 ### October 16 - October 25: Application Objective 3
-- [ ] **Arnav** - Restaurant Reviews HTML/CSS
+- [ ] **Orn** - Restaurant Reviews HTML/CSS
 - [ ] **Ash** - Comment & Reply Backend
 - [ ] **Naomi** - Comment & Reply Backend
 - [ ] **Eric** - Like & Dislike Backend/Misc C&R
-- [ ] **Orn** - Like & Dislike Backend/Misc HTML
+- [ ] **Arnav** - Like & Dislike Backend/Misc HTML
 
 ### October 26 - October 27: Final Testing
 - [ ] Address Potential Security Issues
