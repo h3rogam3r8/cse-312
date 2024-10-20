@@ -5,22 +5,58 @@ from flask_bootstrap5 import Bootstrap # type: ignore
 from pymongo import MongoClient #database # type: ignore
 from flask_bcrypt import Bcrypt # type: ignore
 import secrets, hashlib
-# Create a flask instance
 
-#database set up
+
+# Database set up
 mongo_client = MongoClient('mongo')
 db = mongo_client["users_info"]
 users = db["users"]
 auth = db["auth"]
 
-
+# Create a flask instance
 app = Flask(__name__)
-bootstrap = Bootstrap(app)
-# Route and view function
+bootstrap = Bootstrap(app) # Route and view function
 
-
-#hash
+# Hash
 bcrypt = Bcrypt(app)
+
+# Routes for each restaurant : 
+@app.route('/austin-kitchen')
+def austin_kitchen():
+    return render_template('html/menu/austin_kitchen.html')
+
+@app.route('/chick-mex')
+def chick_mex():
+    return render_template('html/menu/chick_mex.html')
+
+@app.route('/dancing-chopsticks')
+def dancing_chopsticks():
+    return render_template('html/menu/dancing_chopsticks.html')
+
+@app.route('/la-rosa')
+def la_rosa():
+    return render_template('html/menu/la_rosa.html')
+
+@app.route('/poke-factory')
+def poke_factory():
+    return render_template('html/menu/poke_factory.html')
+
+@app.route('/young-chow')
+def young_chow():
+    return render_template('html/menu/young_chow.html')
+
+@app.route('/bollywood-bistro')
+def bollywood_bistro():
+    return render_template('html/menu/bollywood_bistro.html')
+
+@app.route('/subway')
+def subway():
+    return render_template('html/menu/subway.html')
+
+@app.route('/kung-fu-tea')
+def kung_fu_tea():
+    return render_template('html/menu/kung_fu_tea.html')
+
 
 
 @app.route('/')
