@@ -3,5 +3,188 @@
 {% block title %}Austin's Kitchen{% endblock %}
 
 {% block content %}
-<!-- Content for the restaurant page -->
+<!-- Austin's Kitchen Menu -->
+
+<div class="container text-center py-5">
+    <h2 class="mb-5 text-primary">Austin's Kitchen Menu</h2>
+
+    <div class="row">
+        <!-- Menu Section -->
+        <div class="col-12">
+            <h4 class="text-secondary mb-4">Main Dishes</h4>
+        </div>
+
+            <!-- Bulgogi Over Rice -->
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="card h-100 shadow-sm">
+                    <img src="/static/images/austin_kitchen/bulgogi-over-rice.png" class="card-img-top" alt="Bulgogi Over Rice">
+                    <div class="card-body">
+                        <h5 class="card-title">Bulgogi Over Rice</h5>
+                        <p class="card-text text-muted mb-2">Grilled marinated beef with steamed rice</p>
+                        <span class="fw-bold">$13.00</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Donkatsu -->
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="card h-100 shadow-sm">
+                    <img src="/static/images/austin_kitchen/donkatsu.png" class="card-img-top" alt="Donkatsu">
+                    <div class="card-body">
+                        <h5 class="card-title">Donkatsu</h5>
+                        <p class="card-text text-muted mb-2">Fried pork cutlet served with sauce and salad</p>
+                        <span class="fw-bold">$14.00</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Kimchi Bokkeumbap -->
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="card h-100 shadow-sm">
+                    <img src="/static/images/austin_kitchen/kimchi-bokkeumbap.png" class="card-img-top" alt="Kimchi Bokkeumbap">
+                    <div class="card-body">
+                        <h5 class="card-title">Kimchi Bokkeumbap</h5>
+                        <p class="card-text text-muted mb-2">Spicy kimchi fried rice</p>
+                        <span class="fw-bold">$10.50</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Spicy Pork Over Rice -->
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="card h-100 shadow-sm">
+                    <img src="/static/images/austin_kitchen/spicy-pork-over-rice.png" class="card-img-top" alt="Spicy Pork Over Rice">
+                    <div class="card-body">
+                        <h5 class="card-title">Spicy Pork Over Rice</h5>
+                        <p class="card-text text-muted mb-2">Marinated spicy pork with steamed rice</p>
+                        <span class="fw-bold">$10.95</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Soondooboo -->
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="card h-100 shadow-sm">
+                    <img src="/static/images/austin_kitchen/soondooboo.png" class="card-img-top" alt="Soondooboo">
+                    <div class="card-body">
+                        <h5 class="card-title">Soondooboo</h5>
+                        <p class="card-text text-muted mb-2">Spicy soft tofu stew with vegetables</p>
+                        <span class="fw-bold">$11.50</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pork Dumplings -->
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="card h-100 shadow-sm">
+                    <img src="/static/images/austin_kitchen/pork-dumplings.png" class="card-img-top" alt="Pork Dumplings">
+                    <div class="card-body">
+                        <h5 class="card-title">Pork Dumplings</h5>
+                        <p class="card-text text-muted mb-2">Pan-fried pork dumplings served with dipping sauce</p>
+                        <span class="fw-bold">$5.50</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Kimchi Side -->
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="card h-100 shadow-sm">
+                    <img src="/static/images/austin_kitchen/kimchi-side.png" class="card-img-top" alt="Kimchi Side">
+                    <div class="card-body">
+                        <h5 class="card-title">Kimchi Side</h5>
+                        <p class="card-text text-muted mb-2">Fermented spicy cabbage</p>
+                        <span class="fw-bold">$1.15</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<!-- Comment, reply, and star rating section -->
+<div class="container mt-5">
+    <h4 class="text-primary mb-4">Leave a Review</h4>
+
+    <!-- Form for posting a comment with star rating -->
+    <form id="commentForm" class="mb-4">
+        <div class="mb-3">
+            <label for="userComment" class="form-label">Your Comment</label>
+            <textarea class="form-control" id="userComment" rows="3" placeholder="Share your experience..."></textarea>
+        </div>
+
+        <!-- Star rating input -->
+        <div class="mb-3">
+            <label class="form-label">Your Rating</label>
+            <div class="star-rating">
+                <i class="bi bi-star-fill" data-value="1"></i>
+                <i class="bi bi-star-fill" data-value="2"></i>
+                <i class="bi bi-star-fill" data-value="3"></i>
+                <i class="bi bi-star-fill" data-value="4"></i>
+                <i class="bi bi-star-fill" data-value="5"></i>
+            </div>
+        </div>
+        
+        <button type="submit" class="btn btn-primary">Submit Comment</button>
+    </form>
+
+    <!-- Display comments -->
+    <div id="commentsSection">
+        <h5 class="mb-4">Customer Reviews</h5>
+
+        <!-- Example comment -->
+        <div class="comment mb-4">
+            <div class="d-flex">
+                <div class="flex-shrink-0">
+                    <img src="/static/images/kris.png" alt="User Avatar" class="rounded-circle" style="width: 50px;">
+                </div>
+                <div class="flex-grow-1 ms-3">
+                    <h6 class="mb-0">Kris Schindler 
+                        <div class="star-rating">
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star"></i> <!-- 4 stars out of 5 -->
+                        </div>
+                    </h6>
+                    <p class="mb-1">Great food and fast service. Will come back again! Love you ornpayer@buffalo.edu</p>
+
+                    <!-- Reply form -->
+                    <form class="replyForm">
+                        <div class="mb-2">
+                            <textarea class="form-control" rows="2" placeholder="Reply to this comment..."></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-secondary btn-sm">Reply</button>
+                    </form>
+
+                    <!-- Example reply -->
+                    <div class="mt-3 ms-4">
+                        <div class="d-flex">
+                            <div class="flex-shrink-0">
+                                <img src="/static/images/baker.png" alt="User Avatar" class="rounded-circle" style="width: 50px;">
+                            </div>
+                            <div class="flex-grow-1 ms-2">
+                                <h6 class="mb-0">Bakr Albahri<small class="text-muted"> - Reply</small></h6>
+                                <p class="mb-1">Totally agree habibi! The Bulgogi was as amazing as firing Rayn Wrong.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Location Section -->
+<div class="container text-center py-2 mt-5">
+    <div class="col-12 mb-4">
+        <h4 class="text-primary">Austin's Kitchen Location</h4>
+    </div>
+    <div class="col-lg-6 col-md-7 mx-auto">
+        <p>520 LEE ENTRANCE #306, BUFFALO, NY 14228</p>
+        <a href="https://maps.app.goo.gl/1uLUMkrw254UuczH9" class="btn btn-primary mt-2">Get Directions</a>
+    </div>
+</div>
+
 {% endblock %}
+
+

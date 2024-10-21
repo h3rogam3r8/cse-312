@@ -361,3 +361,27 @@ a:hover {
     height: 150px;
   }
 }
+
+.star-rating i {
+  font-size: 1.6rem; 
+  cursor: pointer;
+  color: #ddd; 
+  transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1), color 0.3s ease;
+}
+
+
+.star-rating i:hover {
+  transform: scale(1.15); 
+  color: #ffcc00; 
+}
+
+
+.star-rating .text-warning {
+  color: #ffcc00;
+  transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1), color 0.3s ease;
+}
+
+
+.star-rating i {
+  transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1); 
+}

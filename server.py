@@ -57,8 +57,6 @@ def subway():
 def kung_fu_tea():
     return render_template('html/menu/kung_fu_tea.html')
 
-
-
 @app.route('/')
 def index():
     loggedIn = False

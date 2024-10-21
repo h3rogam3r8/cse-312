@@ -86,3 +86,59 @@ const searchInput = document.getElementById('searchInput');
 if (searchInput) {
     searchInput.addEventListener('input', handleSearch);
 }
+
+document.addEventListener('DOMContentLoaded', () => {
+    const stars = document.querySelectorAll('.star-rating i');
+    const selectedRatingInput = document.getElementById('selectedRating');
+    
+    // Handle click event to store the rating
+    stars.forEach(star => {
+        star.addEventListener('click', function () {
+            const rating = this.getAttribute('data-value');
+            selectedRatingInput.value = rating; // Set the hidden input value
+
+            // Highlight all stars up to the clicked one
+            stars.forEach(s => {
+                if (s.getAttribute('data-value') <= rating) {
+                    s.classList.add('text-warning'); // Highlight star (yellow color)
+                    s.classList.remove('bi-star'); // Empty star
+                    s.classList.add('bi-star-fill'); // Filled star
+                } else {
+                    s.classList.remove('text-warning'); // Remove highlight
+                    s.classList.add('bi-star'); // Empty star
+                    s.classList.remove('bi-star-fill'); // Remove filled star
+                }
+            });
+
+            console.log(`User selected rating: ${rating}`); // For debugging
+        });
+
+        // Handle hover effect for a preview
+        star.addEventListener('mouseover', function () {
+            const rating = this.getAttribute('data-value');
+            
+            // Highlight stars up to the hovered one
+            stars.forEach(s => {
+                if (s.getAttribute('data-value') <= rating) {
+                    s.classList.add('text-warning'); // Highlight star
+                } else {
+                    s.classList.remove('text-warning'); // Unhighlight the others
+                }
+            });
+        });
+
+        // Reset stars to the selected rating when the mouse leaves
+        star.addEventListener('mouseout', function () {
+            const selectedRating = selectedRatingInput.value; // Get the current selected rating
+
+            // Reset the stars to the currently selected rating
+            stars.forEach(s => {
+                if (s.getAttribute('data-value') <= selectedRating) {
+                    s.classList.add('text-warning'); // Keep stars highlighted
+                } else {
+                    s.classList.remove('text-warning'); // Unhighlight unselected stars
+                }
+            });
+        });
+    });
+});

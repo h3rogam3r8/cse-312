@@ -3,5 +3,174 @@
 {% block title %}Chick Mex{% endblock %}
 
 {% block content %}
-<!-- Content for the restaurant page -->
+<!-- Chick Mex Menu -->
+
+<div class="container text-center py-5">
+    <h2 class="mb-5 text-primary">Chick Mex Menu</h2>
+
+    <div class="row">
+        <!-- Menu Section -->
+        <div class="col-12">
+            <h4 class="text-secondary mb-4">Main Dishes</h4>
+        </div>
+
+        <!-- Burrito Bowl -->
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="card h-100 shadow-sm">
+                <img src="/static/images/chick_mex/burrito-bowl.png" class="card-img-top" alt="Burrito Bowl">
+                <div class="card-body">
+                    <h5 class="card-title">Burrito Bowl</h5>
+                    <p class="card-text text-muted mb-2">A mix of rice, beans, and grilled chicken topped with salsa and guacamole</p>
+                    <span class="fw-bold">$10.50</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Chicken Over Rice -->
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="card h-100 shadow-sm">
+                <img src="/static/images/chick_mex/chicken-over-rice.png" class="card-img-top" alt="Chicken Over Rice">
+                <div class="card-body">
+                    <h5 class="card-title">Chicken Over Rice</h5>
+                    <p class="card-text text-muted mb-2">Juicy grilled chicken served over seasoned rice</p>
+                    <span class="fw-bold">$13.99</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Double Chicken Burger -->
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="card h-100 shadow-sm">
+                <img src="/static/images/chick_mex/double-chicken-burger.png" class="card-img-top" alt="Double Chicken Burger">
+                <div class="card-body">
+                    <h5 class="card-title">Double Chicken Burger</h5>
+                    <p class="card-text text-muted mb-2">Double-layered grilled chicken burger with special sauce</p>
+                    <span class="fw-bold">$11.50</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Fried Chicken -->
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="card h-100 shadow-sm">
+                <img src="/static/images/chick_mex/fried-chicken.png" class="card-img-top" alt="Fried Chicken">
+                <div class="card-body">
+                    <h5 class="card-title">Fried Chicken</h5>
+                    <p class="card-text text-muted mb-2">Crispy fried chicken served with fries and coleslaw</p>
+                    <span class="fw-bold">$12.00</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Gyro -->
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="card h-100 shadow-sm">
+                <img src="/static/images/chick_mex/gyro.png" class="card-img-top" alt="Gyro">
+                <div class="card-body">
+                    <h5 class="card-title">Gyro</h5>
+                    <p class="card-text text-muted mb-2">Grilled lamb gyro served with pita, tzatziki, and salad</p>
+                    <span class="fw-bold">$10.75</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tacos -->
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="card h-100 shadow-sm">
+                <img src="/static/images/chick_mex/tacos.png" class="card-img-top" alt="Tacos">
+                <div class="card-body">
+                    <h5 class="card-title">Tacos</h5>
+                    <p class="card-text text-muted mb-2">Three soft tacos filled with chicken, lettuce, and salsa</p>
+                    <span class="fw-bold">$8.50</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Comment, reply, and star rating section -->
+<div class="container mt-5">
+    <h4 class="text-primary mb-4">Leave a Review</h4>
+
+    <!-- Form for posting a comment with star rating -->
+    <form id="commentForm" class="mb-4">
+        <div class="mb-3">
+            <label for="userComment" class="form-label">Your Comment</label>
+            <textarea class="form-control" id="userComment" rows="3" placeholder="Share your experience..."></textarea>
+        </div>
+
+        <!-- Star rating input -->
+        <div class="mb-3">
+            <label class="form-label">Your Rating</label>
+            <div class="star-rating">
+                <i class="bi bi-star-fill" data-value="1"></i>
+                <i class="bi bi-star-fill" data-value="2"></i>
+                <i class="bi bi-star-fill" data-value="3"></i>
+                <i class="bi bi-star-fill" data-value="4"></i>
+                <i class="bi bi-star-fill" data-value="5"></i>
+            </div>
+        </div>
+        
+        <button type="submit" class="btn btn-primary">Submit Comment</button>
+    </form>
+
+    <!-- Display comments -->
+    <div id="commentsSection">
+        <h5 class="mb-4">Customer Reviews</h5>
+
+        <!-- Example comment -->
+        <div class="comment mb-4">
+            <div class="d-flex">
+                <div class="flex-shrink-0">
+                    <img src="/static/images/kris.png" alt="User Avatar" class="rounded-circle" style="width: 50px;">
+                </div>
+                <div class="flex-grow-1 ms-3">
+                    <h6 class="mb-0">Kris Schindler 
+                        <div class="star-rating">
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star"></i> <!-- 4 stars out of 5 -->
+                        </div>
+                    </h6>
+                    <p class="mb-1">The tacos were excellent! Fast service too.</p>
+
+                    <!-- Reply form -->
+                    <form class="replyForm">
+                        <div class="mb-2">
+                            <textarea class="form-control" rows="2" placeholder="Reply to this comment..."></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-secondary btn-sm">Reply</button>
+                    </form>
+
+                    <!-- Example reply -->
+                    <div class="mt-3 ms-4">
+                        <div class="d-flex">
+                            <div class="flex-shrink-0">
+                                <img src="/static/images/baker.png" alt="User Avatar" class="rounded-circle" style="width: 50px;">
+                            </div>
+                            <div class="flex-grow-1 ms-2">
+                                <h6 class="mb-0">Bakr Albahri<small class="text-muted"> - Reply</small></h6>
+                                <p class="mb-1">Totally agree! The gyros were on point also.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Location Section -->
+<div class="container text-center py-2 mt-5">
+    <div class="col-12 mb-4">
+        <h4 class="text-primary">Chick Mex Location</h4>
+    </div>
+    <div class="col-lg-6 col-md-7 mx-auto">
+        <p>520 LEE ENTRANCE #203, BUFFALO, NY 14228</p>
+        <a href="https://maps.app.goo.gl/usuzZ9wXVcmB2Eby8" class="btn btn-primary mt-2">Get Directions</a>
+    </div>
+</div>
+
 {% endblock %}
