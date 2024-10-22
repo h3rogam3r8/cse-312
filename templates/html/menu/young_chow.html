@@ -3,19 +3,174 @@
 {% block title %}Young Chow{% endblock %}
 
 {% block content %}
-<!-- TO DO: Content for the Young Chow menu page -->
+<!-- Young Chow Menu -->
 
+<div class="container text-center py-5">
+    <h2 class="mb-5 text-primary">Young Chow Menu</h2>
 
+    <div class="row">
+        <!-- Menu Section -->
+        <div class="col-12">
+            <h4 class="text-secondary mb-4">Main Dishes</h4>
+        </div>
 
+        <!-- Beef Lo Mein -->
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="card h-100 shadow-sm">
+                <img src="/static/images/young_chow/beef-lo-mein.png" class="card-img-top" alt="Beef Lo Mein">
+                <div class="card-body">
+                    <h5 class="card-title">Beef Lo Mein</h5>
+                    <p class="card-text text-muted mb-2">Stir-fried noodles with tender beef and vegetables</p>
+                    <div class="fw-bold text-primary">$10.50</div>
+                </div>
+            </div>
+        </div>
 
+        <!-- Hunan Chicken -->
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="card h-100 shadow-sm">
+                <img src="/static/images/young_chow/hunan-chicken.png" class="card-img-top" alt="Hunan Chicken">
+                <div class="card-body">
+                    <h5 class="card-title">Hunan Chicken</h5>
+                    <p class="card-text text-muted mb-2">Spicy chicken stir-fried with fresh vegetables</p>
+                    <div class="fw-bold text-primary">$11.00</div>
+                </div>
+            </div>
+        </div>
 
-<div class="container text-center py-2">
+        <!-- Hunan Shrimp -->
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="card h-100 shadow-sm">
+                <img src="/static/images/young_chow/hunan-shrimp.png" class="card-img-top" alt="Hunan Shrimp">
+                <div class="card-body">
+                    <h5 class="card-title">Hunan Shrimp</h5>
+                    <p class="card-text text-muted mb-2">Shrimp stir-fried with vegetables in a spicy Hunan sauce</p>
+                    <div class="fw-bold text-primary">$12.00</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Kung Pao Chicken -->
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="card h-100 shadow-sm">
+                <img src="/static/images/young_chow/kung-pao.png" class="card-img-top" alt="Kung Pao Chicken">
+                <div class="card-body">
+                    <h5 class="card-title">Kung Pao Chicken</h5>
+                    <p class="card-text text-muted mb-2">Spicy stir-fried chicken with peanuts and vegetables</p>
+                    <div class="fw-bold text-primary">$11.25</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Szechuan Beef -->
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="card h-100 shadow-sm">
+                <img src="/static/images/young_chow/szechuan-beef.png" class="card-img-top" alt="Szechuan Beef">
+                <div class="card-body">
+                    <h5 class="card-title">Szechuan Beef</h5>
+                    <p class="card-text text-muted mb-2">Sliced beef stir-fried with spicy Szechuan sauce</p>
+                    <div class="fw-bold text-primary">$12.50</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Young Chow Fried Rice -->
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="card h-100 shadow-sm">
+                <img src="/static/images/young_chow/young-chow-fried-rice.png" class="card-img-top" alt="Young Chow Fried Rice">
+                <div class="card-body">
+                    <h5 class="card-title">Young Chow Fried Rice</h5>
+                    <p class="card-text text-muted mb-2">Special fried rice with a mix of meats and vegetables</p>
+                    <div class="fw-bold text-primary">$9.75</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Comment, reply, and star rating section -->
+<div class="container mt-5">
+    <h4 class="text-primary mb-4">Leave a Review</h4>
+
+    <!-- Form for posting a comment with star rating -->
+    <form id="commentForm" class="mb-4">
+        <div class="mb-3">
+            <label for="userComment" class="form-label">Your Comment</label>
+            <textarea class="form-control" id="userComment" rows="3" placeholder="Share your experience..."></textarea>
+        </div>
+
+        <!-- Star rating input -->
+        <div class="mb-3">
+            <label class="form-label">Your Rating</label>
+            <div class="star-rating">
+                <i class="bi bi-star-fill" data-value="1"></i>
+                <i class="bi bi-star-fill" data-value="2"></i>
+                <i class="bi bi-star-fill" data-value="3"></i>
+                <i class="bi bi-star-fill" data-value="4"></i>
+                <i class="bi bi-star-fill" data-value="5"></i>
+            </div>
+        </div>
+        
+        <button type="submit" class="btn btn-primary">Submit Comment</button>
+    </form>
+
+    <!-- Display comments -->
+    <div id="commentsSection">
+        <h5 class="mb-4">Customer Reviews</h5>
+
+        <!-- Kris Schindler's Comment -->
+        <div class="comment mb-4">
+            <div class="d-flex">
+                <div class="flex-shrink-0">
+                    <img src="/static/images/kris.png" alt="User Avatar" class="rounded-circle" style="width: 50px;">
+                </div>
+                <div class="flex-grow-1 ms-3">
+                    <h6 class="mb-0">Kris Schindler 
+                        <div class="star-rating">
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star"></i> <!-- 4 stars out of 5 -->
+                        </div>
+                    </h6>
+                    <p class="mb-1">The Hunan Chicken was excellent, really spicy! Highly recommend.</p>
+
+                    <!-- Reply form -->
+                    <form class="replyForm">
+                        <div class="mb-2">
+                            <textarea class="form-control" rows="2" placeholder="Reply to this comment..."></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-secondary btn-sm">Reply</button>
+                    </form>
+
+                    <!-- Bakr's Reply -->
+                    <div class="mt-3 ms-4">
+                        <div class="d-flex">
+                            <div class="flex-shrink-0">
+                                <img src="/static/images/baker.png" alt="User Avatar" class="rounded-circle" style="width: 50px;">
+                            </div>
+                            <div class="flex-grow-1 ms-2">
+                                <h6 class="mb-0">Bakr Albahri<small class="text-muted"> - Reply</small></h6>
+                                <p class="mb-1">Totally agree! The Szechuan Beef was a knockout as well.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Location Section -->
+<div class="container text-center py-2 mt-5">
     <div class="col-12 mb-4">
         <h4 class="text-primary">Young Chow Location</h4>
     </div>
     <div class="col-lg-6 col-md-7 mx-auto">
-        <p>520 LEE ENTRANCE # 302, BUFFALO, NY 14228</p>
-        <a href="https://maps.app.goo.gl/DoEVueLp3JEYcViT9">Get Directions</a>
+        <p>520 LEE ENTRANCE #210, BUFFALO, NY 14228</p>
+        <a href="https://maps.app.goo.gl/XYZ" class="btn btn-primary mt-2">Get Directions</a>
     </div>
 </div>
+
 {% endblock %}

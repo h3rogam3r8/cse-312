@@ -3,17 +3,174 @@
 {% block title %}Kung Fu Tea{% endblock %}
 
 {% block content %}
-<!-- TO DO: Content for the Kung Fu Tea menu page -->
+<!-- Kung Fu Tea Menu -->
 
+<div class="container text-center py-5">
+    <h2 class="mb-5 text-primary">Kung Fu Tea Menu</h2>
 
+    <div class="row">
+        <!-- Menu Section -->
+        <div class="col-12">
+            <h4 class="text-secondary mb-4">Beverages</h4>
+        </div>
 
-<div class="container text-center py-2">
+        <!-- Classic -->
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="card h-100 shadow-sm">
+                <img src="/static/images/kung_fu_tea/classic.png" class="card-img-top" alt="Classic">
+                <div class="card-body">
+                    <h5 class="card-title">Classic</h5>
+                    <p class="card-text text-muted mb-2">Traditional milk tea with your choice of toppings</p>
+                    <div class="fw-bold text-primary">$4.00</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Milk Cap -->
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="card h-100 shadow-sm">
+                <img src="/static/images/kung_fu_tea/milk-cap.png" class="card-img-top" alt="Milk Cap">
+                <div class="card-body">
+                    <h5 class="card-title">Milk Cap</h5>
+                    <p class="card-text text-muted mb-2">Rich milk foam topping on a refreshing tea base</p>
+                    <div class="fw-bold text-primary">$4.50</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Milk Strike -->
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="card h-100 shadow-sm">
+                <img src="/static/images/kung_fu_tea/milk-strike.png" class="card-img-top" alt="Milk Strike">
+                <div class="card-body">
+                    <h5 class="card-title">Milk Strike</h5>
+                    <p class="card-text text-muted mb-2">Premium milk with herbal jelly</p>
+                    <div class="fw-bold text-primary">$5.00</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Milk Tea -->
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="card h-100 shadow-sm">
+                <img src="/static/images/kung_fu_tea/milk-tea.png" class="card-img-top" alt="Milk Tea">
+                <div class="card-body">
+                    <h5 class="card-title">Milk Tea</h5>
+                    <p class="card-text text-muted mb-2">Classic black milk tea, customizable with flavors and boba</p>
+                    <div class="fw-bold text-primary">$4.25</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Punch -->
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="card h-100 shadow-sm">
+                <img src="/static/images/kung_fu_tea/punch.png" class="card-img-top" alt="Punch">
+                <div class="card-body">
+                    <h5 class="card-title">Punch</h5>
+                    <p class="card-text text-muted mb-2">Fruity punch blended with fresh tea</p>
+                    <div class="fw-bold text-primary">$4.75</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slush -->
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="card h-100 shadow-sm">
+                <img src="/static/images/kung_fu_tea/slush.png" class="card-img-top" alt="Slush">
+                <div class="card-body">
+                    <h5 class="card-title">Slush</h5>
+                    <p class="card-text text-muted mb-2">Icy, refreshing tea-based slush with your choice of flavor</p>
+                    <div class="fw-bold text-primary">$5.50</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Comment, reply, and star rating section -->
+<div class="container mt-5">
+    <h4 class="text-primary mb-4">Leave a Review</h4>
+
+    <!-- Form for posting a comment with star rating -->
+    <form id="commentForm" class="mb-4">
+        <div class="mb-3">
+            <label for="userComment" class="form-label">Your Comment</label>
+            <textarea class="form-control" id="userComment" rows="3" placeholder="Share your experience..."></textarea>
+        </div>
+
+        <!-- Star rating input -->
+        <div class="mb-3">
+            <label class="form-label">Your Rating</label>
+            <div class="star-rating">
+                <i class="bi bi-star-fill" data-value="1"></i>
+                <i class="bi bi-star-fill" data-value="2"></i>
+                <i class="bi bi-star-fill" data-value="3"></i>
+                <i class="bi bi-star-fill" data-value="4"></i>
+                <i class="bi bi-star-fill" data-value="5"></i>
+            </div>
+        </div>
+        
+        <button type="submit" class="btn btn-primary">Submit Comment</button>
+    </form>
+
+    <!-- Display comments -->
+    <div id="commentsSection">
+        <h5 class="mb-4">Customer Reviews</h5>
+
+        <!-- Kris Schindler's Comment -->
+        <div class="comment mb-4">
+            <div class="d-flex">
+                <div class="flex-shrink-0">
+                    <img src="/static/images/kris.png" alt="User Avatar" class="rounded-circle" style="width: 50px;">
+                </div>
+                <div class="flex-grow-1 ms-3">
+                    <h6 class="mb-0">Kris Schindler 
+                        <div class="star-rating">
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star"></i> <!-- 4 stars out of 5 -->
+                        </div>
+                    </h6>
+                    <p class="mb-1">Loved the Milk Tea! Punch was great too.</p>
+
+                    <!-- Reply form -->
+                    <form class="replyForm">
+                        <div class="mb-2">
+                            <textarea class="form-control" rows="2" placeholder="Reply to this comment..."></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-secondary btn-sm">Reply</button>
+                    </form>
+
+                    <!-- Bakr's Reply -->
+                    <div class="mt-3 ms-4">
+                        <div class="d-flex">
+                            <div class="flex-shrink-0">
+                                <img src="/static/images/baker.png" alt="User Avatar" class="rounded-circle" style="width: 50px;">
+                            </div>
+                            <div class="flex-grow-1 ms-2">
+                                <h6 class="mb-0">Bakr Albahri<small class="text-muted"> - Reply</small></h6>
+                                <p class="mb-1">Absolutely! Can't go wrong with a classic milk tea.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Location Section -->
+<div class="container text-center py-2 mt-5">
     <div class="col-12 mb-4">
         <h4 class="text-primary">Kung Fu Tea Location</h4>
     </div>
     <div class="col-lg-6 col-md-7 mx-auto">
-        <p>520 LEE RD #111, BUFFALO, NY 14228</p>
-        <a href="https://maps.app.goo.gl/tVCPrDeGRPxyTMqn8">Get Directions</a>
+        <p>520 LEE ENTRANCE #201, BUFFALO, NY 14228</p>
+        <a href="https://maps.app.goo.gl/XYZ" class="btn btn-primary mt-2">Get Directions</a>
     </div>
 </div>
+
 {% endblock %}

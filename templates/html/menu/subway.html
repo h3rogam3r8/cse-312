@@ -3,17 +3,174 @@
 {% block title %}Subway{% endblock %}
 
 {% block content %}
-<!-- TO DO: Content for the Subway menu page -->
+<!-- Subway Menu -->
 
+<div class="container text-center py-5">
+    <h2 class="mb-5 text-primary">Subway Menu</h2>
 
+    <div class="row">
+        <!-- Menu Section -->
+        <div class="col-12">
+            <h4 class="text-secondary mb-4">Main Dishes</h4>
+        </div>
 
-<div class="container text-center py-2">
-    <div class="col-12 mb-4">
-        <h4 class="text-primary">Subway</h4>
-    </div>
-    <div class="col-lg-6 col-md-7 mx-auto">
-        <p>520 LEE ENTRANCE #306, BUFFALO, NY 14228</p>
-        <a href="https://maps.app.goo.gl/MeWqqMtcpd9Qrx639">Get Directions</a>
+        <!-- Steak'n Bacon -->
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="card h-100 shadow-sm">
+                <img src="/static/images/subway/steak-n-bacon.png" class="card-img-top" alt="Steak'n Bacon">
+                <div class="card-body">
+                    <h5 class="card-title">Steak'n Bacon</h5>
+                    <p class="card-text text-muted mb-2">Juicy steak slices with crispy bacon in a toasted sub</p>
+                    <div class="fw-bold text-primary">$8.99</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Chicken Rancher -->
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="card h-100 shadow-sm">
+                <img src="/static/images/subway/chicken-rancher.png" class="card-img-top" alt="Chicken Rancher">
+                <div class="card-body">
+                    <h5 class="card-title">Chicken Rancher</h5>
+                    <p class="card-text text-muted mb-2">Grilled chicken topped with ranch dressing and fresh veggies</p>
+                    <div class="fw-bold text-primary">$7.50</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Cold Cut Combo -->
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="card h-100 shadow-sm">
+                <img src="/static/images/subway/cold-cut-combo.png" class="card-img-top" alt="Cold Cut Combo">
+                <div class="card-body">
+                    <h5 class="card-title">Cold Cut Combo</h5>
+                    <p class="card-text text-muted mb-2">A combination of sliced meats with fresh veggies on soft bread</p>
+                    <div class="fw-bold text-primary">$6.99</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Steak & Cheese -->
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="card h-100 shadow-sm">
+                <img src="/static/images/subway/steak-and-cheese.png" class="card-img-top" alt="Steak & Cheese">
+                <div class="card-body">
+                    <h5 class="card-title">Steak & Cheese</h5>
+                    <p class="card-text text-muted mb-2">Steak and melted cheese served on a freshly toasted sub</p>
+                    <div class="fw-bold text-primary">$9.25</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Black Forest Ham -->
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="card h-100 shadow-sm">
+                <img src="/static/images/subway/black-forest-ham.png" class="card-img-top" alt="Black Forest Ham">
+                <div class="card-body">
+                    <h5 class="card-title">Black Forest Ham</h5>
+                    <p class="card-text text-muted mb-2">Sliced Black Forest Ham with fresh vegetables</p>
+                    <div class="fw-bold text-primary">$6.50</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sweet Onion Chicken Teriyaki -->
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="card h-100 shadow-sm">
+                <img src="/static/images/subway/sweet-onion-chicken-teriyaki.png" class="card-img-top" alt="Sweet Onion Chicken Teriyaki">
+                <div class="card-body">
+                    <h5 class="card-title">Sweet Onion Chicken Teriyaki</h5>
+                    <p class="card-text text-muted mb-2">Tender chicken strips in a sweet onion teriyaki glaze</p>
+                    <div class="fw-bold text-primary">$8.25</div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
+
+<!-- Comment, reply, and star rating section -->
+<div class="container mt-5">
+    <h4 class="text-primary mb-4">Leave a Review</h4>
+
+    <!-- Form for posting a comment with star rating -->
+    <form id="commentForm" class="mb-4">
+        <div class="mb-3">
+            <label for="userComment" class="form-label">Your Comment</label>
+            <textarea class="form-control" id="userComment" rows="3" placeholder="Share your experience..."></textarea>
+        </div>
+
+        <!-- Star rating input -->
+        <div class="mb-3">
+            <label class="form-label">Your Rating</label>
+            <div class="star-rating">
+                <i class="bi bi-star-fill" data-value="1"></i>
+                <i class="bi bi-star-fill" data-value="2"></i>
+                <i class="bi bi-star-fill" data-value="3"></i>
+                <i class="bi bi-star-fill" data-value="4"></i>
+                <i class="bi bi-star-fill" data-value="5"></i>
+            </div>
+        </div>
+        
+        <button type="submit" class="btn btn-primary">Submit Comment</button>
+    </form>
+
+    <!-- Display comments -->
+    <div id="commentsSection">
+        <h5 class="mb-4">Customer Reviews</h5>
+
+        <!-- Kris Schindler's Comment -->
+        <div class="comment mb-4">
+            <div class="d-flex">
+                <div class="flex-shrink-0">
+                    <img src="/static/images/kris.png" alt="User Avatar" class="rounded-circle" style="width: 50px;">
+                </div>
+                <div class="flex-grow-1 ms-3">
+                    <h6 class="mb-0">Kris Schindler 
+                        <div class="star-rating">
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star"></i> <!-- 4 stars out of 5 -->
+                        </div>
+                    </h6>
+                    <p class="mb-1">Steak'n Bacon hit the spot. I might have ordered two...</p>
+
+                    <!-- Reply form -->
+                    <form class="replyForm">
+                        <div class="mb-2">
+                            <textarea class="form-control" rows="2" placeholder="Reply to this comment..."></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-secondary btn-sm">Reply</button>
+                    </form>
+
+                    <!-- Bakr's Reply -->
+                    <div class="mt-3 ms-4">
+                        <div class="d-flex">
+                            <div class="flex-shrink-0">
+                                <img src="/static/images/baker.png" alt="User Avatar" class="rounded-circle" style="width: 50px;">
+                            </div>
+                            <div class="flex-grow-1 ms-2">
+                                <h6 class="mb-0">Bakr Albahri<small class="text-muted"> - Reply</small></h6>
+                                <p class="mb-1">Haha, one is never enough. Gotta keep that appetite in check!</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Location Section -->
+<div class="container text-center py-2 mt-5">
+    <div class="col-12 mb-4">
+        <h4 class="text-primary">Subway Location</h4>
+    </div>
+    <div class="col-lg-6 col-md-7 mx-auto">
+        <p>520 LEE ENTRANCE #302, BUFFALO, NY 14228</p>
+        <a href="https://www.google.com/maps" class="btn btn-primary mt-2">Get Directions</a>
+    </div>
+</div>
+
 {% endblock %}
