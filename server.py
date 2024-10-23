@@ -1,10 +1,10 @@
-from flask import Flask,request,redirect,url_for # type: ignore
+from flask import Flask,request,redirect,url_for, jsonify # type: ignore
 from flask import render_template  # type: ignore
 from flask import make_response # type: ignore
 from flask_bootstrap5 import Bootstrap # type: ignore
 from pymongo import MongoClient #database # type: ignore
 from flask_bcrypt import Bcrypt # type: ignore
-import secrets, hashlib
+import secrets, hashlib, html
 
 
 # Database set up
@@ -12,6 +12,8 @@ mongo_client = MongoClient('mongo')
 db = mongo_client["users_info"]
 users = db["users"]
 auth = db["auth"]
+comments = db["comments"]
+
 
 # Create a flask instance
 app = Flask(__name__)
@@ -158,6 +160,47 @@ def logout():
 def add_header(response):
     response.headers['X-Content-Type-Options'] = 'nosniff'
     return response
+
+@app.route('/addComment/<restaurant>', methods=['POST'])
+def add_comment(restaurant):
+    user_comment = request.form.get('userComment')
+    rating = request.form.get('rating')
+    
+    auth_token = request.cookies.get('auth_token')
+    username = None
+
+    if auth_token:
+        # hash the auth token in order to compare it to the stored hashed token 
+        hasher = hashlib.sha256()
+        hasher.update(auth_token.encode())
+        token_hash = hasher.hexdigest()
+
+        # check if the hashed token exists in the database 
+        token_entry = auth.find_one({token_hash: {'$exists': True}})
+        if token_entry:
+            username = token_entry[token_hash] # get the corresponding username
+
+    if not auth_token:
+        username = 'Anonymous'
+    # insert comment into database
+    comments.insert_one({"restaurant": restaurant, "comment": user_comment, "rating": rating, "username": username})
+    
+    # return the json response for comment data
+    return jsonify({"restaurant": restaurant, 'comment': user_comment, 'rating': rating, 'username': username})
+
+@app.route('/comments/<restaurant>', methods=['GET'])
+def get_comments(restaurant):
+    comments = db.comments.find({"restaurant": restaurant})
+
+    allComments = []
+    # convert Objectid_ thing from mongo to regular id
+    for comment in comments:
+        newID = str(comment['_id'])
+        comment.pop('_id')
+        comment['id'] = newID
+        allComments.append(comment)
+
+    return allComments
 
 # Run the app once this file executes
 if __name__ == "__main__":

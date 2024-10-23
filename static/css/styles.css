@@ -369,7 +369,6 @@ a:hover {
   transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1), color 0.3s ease;
 }
 
-
 .star-rating i:hover {
   transform: scale(1.15); 
   color: #ffcc00; 
@@ -384,4 +383,27 @@ a:hover {
 
 .star-rating i {
   transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1); 
+  color: #ffcc00; 
+
 }
+
+/* .bi-star-fill{
+    color: #ffcc00; 
+} */
+
+.comment h6 {
+  display: flex; 
+  align-items: center; 
+}
+
+.reply-link {
+  margin-left: 10px; /* space between username and reply link */
+  cursor: pointer; 
+  color: #007bff; 
+  text-decoration: none; 
+}
+
+.reply-link:hover {
+  text-decoration: underline;
+}
+
