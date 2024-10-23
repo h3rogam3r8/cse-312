@@ -88,26 +88,37 @@
     </div>
 </div>
 
-<!-- Comment and reply section -->
+<!-- Comment, reply, and star rating section -->
 <div class="container mt-5">
     <h4 class="text-primary mb-4">Leave a Review</h4>
 
-    <!-- Form for posting a comment -->
-    <form id="commentForm" class="mb-4">
+    <!-- Form for posting a comment with star rating -->
+    <form id="commentForm" action="{{ url_for('add_comment', restaurant='kung_fu_tea') }}" method="POST" class="mb-4">
         <div class="mb-3">
             <label for="userComment" class="form-label">Your Comment</label>
-            <textarea class="form-control" id="userComment" rows="3" placeholder="Share your experience..."></textarea>
+            <textarea name="userComment" class="form-control" id="userComment" rows="3" placeholder="Share your experience..."></textarea>
         </div>
-        
+
+        <!-- Star rating input -->
+        <div class="mb-3">
+            <label class="form-label">Your Rating</label>
+            <div class="star-rating">
+                <i class="bi bi-star" data-value="1"></i>
+                <i class="bi bi-star" data-value="2"></i>
+                <i class="bi bi-star" data-value="3"></i>
+                <i class="bi bi-star" data-value="4"></i>
+                <i class="bi bi-star" data-value="5"></i>
+            </div>
+            <input type="hidden" name="rating" id="selectedRating" required>
+        </div>
         <button type="submit" class="btn btn-primary">Submit Comment</button>
     </form>
 
-    <!-- Comments Section -->
-    <div id="commentsSection">
-        <h5 class="mb-4">Customer Reviews</h5>
-        <!-- Comments will load here -->
-    </div>
+    <!-- Display comments -->
+    <h5 class="mb-4">Customer Reviews</h5>
+    <div id="commentsSection" restaurant="kung_fu_tea"></div>
 </div>
+
 
 <!-- Location Section -->
 <div class="container text-center py-2 mt-5">

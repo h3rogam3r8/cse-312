@@ -4,7 +4,7 @@ from flask import make_response # type: ignore
 from flask_bootstrap5 import Bootstrap # type: ignore
 from pymongo import MongoClient #database # type: ignore
 from flask_bcrypt import Bcrypt # type: ignore
-import secrets, hashlib, html
+import secrets, hashlib
 
 
 # Database set up
