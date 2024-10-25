@@ -108,7 +108,7 @@
         {% for comment in comments %}
         <div class="comment mb-3 border p-3">
             <p class="username"><strong>{{ comment['username'] }}</strong></p>
-            <p class="commentText">{{ comment['comment'] }}</p>
+            <p class="commentText" style="word-wrap: break-word; overflow-wrap: break-word; overflow: hidden;">{{ comment['comment'] }}</p>
 
             <form method="POST" action="{{ url_for('addcomment',restaurant='kung_fu_tea') }}">
                 <input type="hidden" name="comment_id" value="{{ comment['_id'] }}">
@@ -118,7 +118,7 @@
             {% for reply in comment['replies'] %}
             <div class="reply mb-2 border p-2">
                 <p class="replyUsername"><strong>{{ reply['username'] }}</strong></p>
-                <p class="replyText">{{ reply['comment'] }}</p>
+                <p class="replyText" style="word-wrap: break-word; overflow-wrap: break-word; overflow: hidden;">{{ reply['comment'] }}</p>
             </div>
             {% endfor %}
         </div>
