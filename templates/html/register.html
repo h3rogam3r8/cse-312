@@ -14,7 +14,7 @@
         
         <!--error if passwords/username is too long-->
         {% if too_long %}
-        <p style="color:red;">"Username or Password must be 30 characters or less"</p>
+        <p style="color:red;">Invalid username or password. Please ensure you meet the requirements.</p>
         {% endif %}
         <!--error if user exists already-->
         {%if already_an_user %}
@@ -23,12 +23,13 @@
         <div class="mb-3 w-50">
             <label for="username" class="form-label">Username</label>
             <input type="text" class="form-control" id="username" name="username" required pattern="[a-zA-Z0-9]+" maxlength="30">
-            <small class="form-text text-muted">Username can contain only letters and numbers.</small>
+            <small class="form-text text-muted">Username must be between 8-30 characters. It can contain only letters and numbers.</small>
         </div>
         </div>
         <div class="mb-3 w-50">
             <label for="password" class="form-label">Password</label>
             <input type="password" class="form-control" id="password" name="password" required maxlength="30">
+            <small class="form-text text-muted">Password must be between 8-30 characters.</small>
         </div>
         <div class="mb-3 w-50"> <!--confirmation password-->
             <label for="confirm_password" class="form-label">Confirm Password</label>
