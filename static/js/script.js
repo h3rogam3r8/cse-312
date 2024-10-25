@@ -143,85 +143,85 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
-// Display/Add comment
-document.addEventListener('DOMContentLoaded', async () => {
-    if (window.location.pathname !== '/') {
-        const commentForm = document.getElementById('commentForm');
-        const commentsSection = document.getElementById('commentsSection');
-        const restaurant = document.getElementById('commentsSection').getAttribute('restaurant');
+// // Display/Add comment
+// document.addEventListener('DOMContentLoaded', async () => {
+//     if (window.location.pathname !== '/') {
+//         const commentForm = document.getElementById('commentForm');
+//         const commentsSection = document.getElementById('commentsSection');
+//         const restaurant = document.getElementById('commentsSection').getAttribute('restaurant');
 
-        fetch(`/comments/${restaurant}`)
-        .then(response => response.json())
-        .then(data => {
-            data.forEach(comment => addCommentToDOM(comment));
-        })
-        .catch(error => console.error('Error fetching comments:', error));
+//         fetch(`/comments/${restaurant}`)
+//         .then(response => response.json())
+//         .then(data => {
+//             data.forEach(comment => addCommentToDOM(comment));
+//         })
+//         .catch(error => console.error('Error fetching comments:', error));
         
-        commentForm.addEventListener('submit', async (event) => {
-            event.preventDefault();
+//         commentForm.addEventListener('submit', async (event) => {
+//             event.preventDefault();
 
-            const formData = new FormData(commentForm);
-            const userComment = formData.get('userComment') || '';
+//             const formData = new FormData(commentForm);
+//             const userComment = formData.get('userComment') || '';
 
-            const response = await fetch(commentForm.action, {
-                method: 'POST',
-                body: formData,
-            });
+//             const response = await fetch(commentForm.action, {
+//                 method: 'POST',
+//                 body: formData,
+//             });
 
-            const data = await response.json();
-            addCommentToDOM({
-                username: data.username,
-                comment: userComment,
-                rating: data.rating,
-            });
+//             const data = await response.json();
+//             addCommentToDOM({
+//                 username: data.username,
+//                 comment: userComment,
+//                 rating: data.rating,
+//             });
 
-        });
+//         });
 
-        function htmlEscaper(str) {
-            const div = document.createElement('div');
-            div.innerText = str;
-            return div.innerHTML; 
-        }
+//         function htmlEscaper(str) {
+//             const div = document.createElement('div');
+//             div.innerText = str;
+//             return div.innerHTML; 
+//         }
 
-        function addCommentToDOM(commentData) {
-            const emptyStars = 5 - commentData.rating;
-            const commentHTML = `
-                <div class="comment mb-4">
-                    <div class="d-flex">
-                        <div class="flex-shrink-0">
-                            <img src="/static/images/kris.png" alt="User Avatar" class="rounded-circle" style="width: 50px;">
-                        </div>
-                        <div class="flex-grow-1 ms-3">
-                            <h6 class="mb-0">${commentData.username}</h6>
-                            <div class="star-rating" style="margin-top: 5px;">
-                                ${'<i class="bi bi-star-fill"></i>'.repeat(commentData.rating)}
-                                ${'<i class="bi bi-star"></i>'.repeat(emptyStars)}
-                            </div>
-                            <p class="mb-1">${htmlEscaper(commentData.comment)}</p>
+//         function addCommentToDOM(commentData) {
+//             const emptyStars = 5 - commentData.rating;
+//             const commentHTML = `
+//                 <div class="comment mb-4">
+//                     <div class="d-flex">
+//                         <div class="flex-shrink-0">
+//                             <img src="/static/images/kris.png" alt="User Avatar" class="rounded-circle" style="width: 50px;">
+//                         </div>
+//                         <div class="flex-grow-1 ms-3">
+//                             <h6 class="mb-0">${commentData.username}</h6>
+//                             <div class="star-rating" style="margin-top: 5px;">
+//                                 ${'<i class="bi bi-star-fill"></i>'.repeat(commentData.rating)}
+//                                 ${'<i class="bi bi-star"></i>'.repeat(emptyStars)}
+//                             </div>
+//                             <p class="mb-1">${htmlEscaper(commentData.comment)}</p>
         
-                            <!-- Reply link -->
-                            <span class="reply-link" style="cursor: pointer; color: #007bff;">Reply</span>
+//                             <!-- Reply link -->
+//                             <span class="reply-link" style="cursor: pointer; color: #007bff;">Reply</span>
         
-                            <!-- Reply form (initially hidden) -->
-                            <form class="replyForm" style="display: none; margin-top: 10px;">
-                                <div class="mb-2">
-                                    <textarea class="form-control" rows="2" placeholder="Reply to this comment..."></textarea>
-                                </div>
-                                <button type="submit" class="btn btn-secondary btn-sm">Submit Reply</button>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            `;
-            commentsSection.insertAdjacentHTML('beforeend', commentHTML);
+//                             <!-- Reply form (initially hidden) -->
+//                             <form class="replyForm" style="display: none; margin-top: 10px;">
+//                                 <div class="mb-2">
+//                                     <textarea class="form-control" rows="2" placeholder="Reply to this comment..."></textarea>
+//                                 </div>
+//                                 <button type="submit" class="btn btn-secondary btn-sm">Submit Reply</button>
+//                             </form>
+//                         </div>
+//                     </div>
+//                 </div>
+//             `;
+//             commentsSection.insertAdjacentHTML('beforeend', commentHTML);
         
-            const replyLink = commentsSection.lastElementChild.querySelector('.reply-link');
-            replyLink.addEventListener('click', (event) => {
-                event.preventDefault(); 
-                const replyForm = replyLink.nextElementSibling; // find reply form
-                replyForm.style.display = replyForm.style.display === 'block' ? 'none' : 'block';
-            });
-        }
-    }
-});
+//             const replyLink = commentsSection.lastElementChild.querySelector('.reply-link');
+//             replyLink.addEventListener('click', (event) => {
+//                 event.preventDefault(); 
+//                 const replyForm = replyLink.nextElementSibling; // find reply form
+//                 replyForm.style.display = replyForm.style.display === 'block' ? 'none' : 'block';
+//             });
+//         }
+//     }
+// });
     

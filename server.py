@@ -1,10 +1,13 @@
-from flask import Flask,request,redirect,url_for, jsonify # type: ignore
+from flask import Flask,redirect,url_for, jsonify ,request,flash# type: ignore
 from flask import render_template  # type: ignore
 from flask import make_response # type: ignore
 from flask_bootstrap5 import Bootstrap # type: ignore
 from pymongo import MongoClient #database # type: ignore
 from flask_bcrypt import Bcrypt # type: ignore
 import secrets, hashlib
+from bson.objectid import ObjectId
+import secrets
+import html
 
 
 # Database set up
@@ -14,50 +17,75 @@ users = db["users"]
 auth = db["auth"]
 comments = db["comments"]
 
-
 # Create a flask instance
 app = Flask(__name__)
 bootstrap = Bootstrap(app) # Route and view function
+
 
 # Hash
 bcrypt = Bcrypt(app)
 
 # Routes for each restaurant : 
-@app.route('/austin-kitchen')
+@app.route('/austin_kitchen')
 def austin_kitchen():
-    return render_template('html/menu/austin_kitchen.html')
+    return restaurant_page("austin_kitchen")
 
-@app.route('/chick-mex')
+@app.route('/chick_mex')
 def chick_mex():
-    return render_template('html/menu/chick_mex.html')
+    return restaurant_page("chick_mex")
 
-@app.route('/dancing-chopsticks')
+@app.route('/dancing_chopsticks')
 def dancing_chopsticks():
-    return render_template('html/menu/dancing_chopsticks.html')
+    return restaurant_page("dancing_chopsticks")
 
-@app.route('/la-rosa')
+@app.route('/la_rosa')
 def la_rosa():
-    return render_template('html/menu/la_rosa.html')
+    return restaurant_page("la_rosa")
 
-@app.route('/poke-factory')
+@app.route('/poke_factory')
 def poke_factory():
-    return render_template('html/menu/poke_factory.html')
+    return restaurant_page("poke_factory")
 
-@app.route('/young-chow')
+@app.route('/young_chow')
 def young_chow():
-    return render_template('html/menu/young_chow.html')
+    return restaurant_page("young_chow")
 
-@app.route('/bollywood-bistro')
+@app.route('/bollywood_bistro')
 def bollywood_bistro():
-    return render_template('html/menu/bollywood_bistro.html')
+    return restaurant_page("bollywood_bistro")
 
 @app.route('/subway')
 def subway():
-    return render_template('html/menu/subway.html')
+    return restaurant_page("subway")
 
-@app.route('/kung-fu-tea')
+@app.route('/kung_fu_tea')
 def kung_fu_tea():
-    return render_template('html/menu/kung_fu_tea.html')
+    
+    return restaurant_page("kung_fu_tea")
+
+
+def render_with_auth(template_name, **context):
+    username = is_authenticated()  # get username if authenticated
+    context['loggedIn'] = username is not None
+    context['username'] = username
+    return render_template(template_name, **context)
+
+def is_authenticated():
+     auth_token = request.cookies.get('auth_token')
+     if auth_token:
+        # hash the auth token in order to compare it to the stored hashed token 
+        hasher = hashlib.sha256()
+        hasher.update(auth_token.encode())
+        token_hash = hasher.hexdigest()
+
+        # check if the hashed token exists in the database 
+        token_entry = auth.find_one({token_hash: {'$exists': True}})
+        if token_entry:
+            username = token_entry[token_hash] # get the corresponding username
+      
+            return username
+        else:
+            return None
 
 @app.route('/')
 def index():
@@ -121,7 +149,6 @@ def login():
             #Check if the submitted password matches the one stored in the database
             if bcrypt.check_password_hash(hashed_password, password):
                 response = make_response(render_template("html/index.html", title = "Home", loggedIn=True, username=username)) # render the homepage with the loggedIn status and username
-
                 #Generate the Authentication Token
                 auth_token = secrets.token_hex(20) 
                 hasher = hashlib.sha256()
@@ -161,47 +188,73 @@ def add_header(response):
     response.headers['X-Content-Type-Options'] = 'nosniff'
     return response
 
-@app.route('/addComment/<restaurant>', methods=['POST'])
-def add_comment(restaurant):
-    user_comment = request.form.get('userComment')
-    rating = request.form.get('rating')
+
+
+@app.route('/<restaurant>', methods=['POST'])
+def restaurant_page(restaurant):
+    # fetch restaurant details and comments
     
-    auth_token = request.cookies.get('auth_token')
-    username = None
+    all_comments = list(comments.find({"restaurant": restaurant}))  
+    print(all_comments)
+    #escape_comments = html.escape(all_comments)
+    return render_with_auth(
+            f'html/menu/{restaurant}.html',
+            comments=all_comments,
+            restaurant_name=restaurant
+        )
 
-    if auth_token:
-        # hash the auth token in order to compare it to the stored hashed token 
-        hasher = hashlib.sha256()
-        hasher.update(auth_token.encode())
-        token_hash = hasher.hexdigest()
+@app.route('/comment/<restaurant>', methods=['GET','POST'])
+def addcomment(restaurant):
+        #restaurant = request.form.get('restaurant')
+        user_comment = request.form.get('userComment')
+        reply_comment = request.form.get('replyComment')
+        comment_id = request.form.get('comment_id')
+        auth_token = request.cookies.get('auth_token')
 
-        # check if the hashed token exists in the database 
-        token_entry = auth.find_one({token_hash: {'$exists': True}})
-        if token_entry:
-            username = token_entry[token_hash] # get the corresponding username
+        username = None
 
-    if not auth_token:
-        username = 'Anonymous'
-    # insert comment into database
-    comments.insert_one({"restaurant": restaurant, "comment": user_comment, "rating": rating, "username": username})
-    
-    # return the json response for comment data
-    return jsonify({"restaurant": restaurant, 'comment': user_comment, 'rating': rating, 'username': username})
+        # Check if user is authenticated
+        if auth_token:
+         hasher = hashlib.sha256()
+         hasher.update(auth_token.encode())
+         token_hash = hasher.hexdigest()
 
-@app.route('/comments/<restaurant>', methods=['GET'])
-def get_comments(restaurant):
-    comments = db.comments.find({"restaurant": restaurant})
+         token_entry = auth.find_one({token_hash: {'$exists': True}})
+         if token_entry:
+            username = token_entry[token_hash]
 
-    allComments = []
-    # convert Objectid_ thing from mongo to regular id
-    for comment in comments:
-        newID = str(comment['_id'])
-        comment.pop('_id')
-        comment['id'] = newID
-        allComments.append(comment)
+        if not username:
+            return redirect(url_for('login'))  # unauthenticated users to login
 
-    return allComments
+        if user_comment:  # check for a new comment
+        
+            #HTML escape
+            escape_comment = html.escape(user_comment)
+            comments.insert_one({
+            "restaurant": restaurant,
+            "comment": escape_comment,
+            "username": username,
+            "replies": []
+            })
+        elif reply_comment and comment_id:  # Check for a reply
+            if username:  # Ensure the user is authenticated
+            # Find the comment and update it with the new reply
+            #HTML escape
+                escape_replycomment = html.escape(reply_comment)
+                comments.update_one(
+                {"_id": ObjectId(comment_id)},
+                {"$push": {"replies": {"comment": escape_replycomment, "username": username}}}
+                )
+            else:
+                return redirect(url_for('login'))  # Redirect to login if not authenticated
+        else:
+            #redirect back to restaurant page 
+            return restaurant_page(restaurant)
+        # redirect back to the restaurant page after adding a comment or reply
+        return restaurant_page(restaurant)
 
+  
+   
 # Run the app once this file executes
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=8080, debug=True)
