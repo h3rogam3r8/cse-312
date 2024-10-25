@@ -5,10 +5,9 @@ from flask_bootstrap5 import Bootstrap # type: ignore
 from pymongo import MongoClient #database # type: ignore
 from flask_bcrypt import Bcrypt # type: ignore
 import secrets, hashlib
-from bson.objectid import ObjectId
+from bson.objectid import ObjectId # type: ignore
 import secrets
 import html
-
 
 # Database set up
 mongo_client = MongoClient('mongo')
@@ -20,7 +19,6 @@ comments = db["comments"]
 # Create a flask instance
 app = Flask(__name__)
 bootstrap = Bootstrap(app) # Route and view function
-
 
 # Hash
 bcrypt = Bcrypt(app)
@@ -60,9 +58,7 @@ def subway():
 
 @app.route('/kung_fu_tea')
 def kung_fu_tea():
-    
     return restaurant_page("kung_fu_tea")
-
 
 def render_with_auth(template_name, **context):
     username = is_authenticated()  # get username if authenticated
@@ -188,8 +184,6 @@ def add_header(response):
     response.headers['X-Content-Type-Options'] = 'nosniff'
     return response
 
-
-
 @app.route('/<restaurant>', methods=['GET','POST'])
 def restaurant_page(restaurant):
     # fetch restaurant details and comments
@@ -250,11 +244,7 @@ def addcomment(restaurant):
                 return redirect(url_for('login'))  # Redirect to login if not authenticated
       
         return redirect(url_for('restaurant_page', restaurant=restaurant))
-    
-       
-
-  
-   
+     
 # Run the app once this file executes
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=8080, debug=True)
