@@ -117,8 +117,8 @@
             </form>
             {% for reply in comment['replies' ] %}
             <div class="reply mb-2 border p-2">
-                <p class="replyUsername"><strong>{{ reply['username']|e}}</strong></p>
-                <p class="replyText">{{ reply['comment']|e}}</p>
+                <p class="replyUsername"><strong>{{ reply['username']}}</strong></p>
+                <p class="replyText">{{ reply['comment']}}</p>
             </div>
             {% endfor %}
         </div>

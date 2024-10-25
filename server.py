@@ -190,12 +190,12 @@ def add_header(response):
 
 
 
-@app.route('/<restaurant>', methods=['POST'])
+@app.route('/<restaurant>', methods=['GET','POST'])
 def restaurant_page(restaurant):
     # fetch restaurant details and comments
     
     all_comments = list(comments.find({"restaurant": restaurant}))  
-    print(all_comments)
+    #print(all_comments)
     #escape_comments = html.escape(all_comments)
     return render_with_auth(
             f'html/menu/{restaurant}.html',
@@ -203,9 +203,10 @@ def restaurant_page(restaurant):
             restaurant_name=restaurant
         )
 
-@app.route('/comment/<restaurant>', methods=['GET','POST'])
+@app.route('/comment/<restaurant>', methods=['POST'])
 def addcomment(restaurant):
         #restaurant = request.form.get('restaurant')
+  
         user_comment = request.form.get('userComment')
         reply_comment = request.form.get('replyComment')
         comment_id = request.form.get('comment_id')
@@ -229,10 +230,10 @@ def addcomment(restaurant):
         if user_comment:  # check for a new comment
         
             #HTML escape
-            escape_comment = html.escape(user_comment)
+            #escape_comment = html.escape(user_comment)
             comments.insert_one({
             "restaurant": restaurant,
-            "comment": escape_comment,
+            "comment": user_comment,
             "username": username,
             "replies": []
             })
@@ -240,18 +241,17 @@ def addcomment(restaurant):
             if username:  # Ensure the user is authenticated
             # Find the comment and update it with the new reply
             #HTML escape
-                escape_replycomment = html.escape(reply_comment)
+                #escape_replycomment = html.escape(reply_comment)
                 comments.update_one(
                 {"_id": ObjectId(comment_id)},
-                {"$push": {"replies": {"comment": escape_replycomment, "username": username}}}
+                {"$push": {"replies": {"comment": reply_comment, "username": username}}}
                 )
             else:
                 return redirect(url_for('login'))  # Redirect to login if not authenticated
-        else:
-            #redirect back to restaurant page 
-            return restaurant_page(restaurant)
-        # redirect back to the restaurant page after adding a comment or reply
-        return restaurant_page(restaurant)
+      
+        return redirect(url_for('restaurant_page', restaurant=restaurant))
+    
+       
 
   
    
