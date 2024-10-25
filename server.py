@@ -122,7 +122,7 @@ def register():
         if existing_user:
             return render_template("html/register.html",already_an_user=True)
         
-        if len(username) > 30 or len(password) > 30:
+        if len(username) > 30 or len(password) > 30 or len(password) < 9:
             return (render_template("html/register.html",too_long=True))
         
         #check if passwords match, if they do we proceed to store passwords in database
@@ -148,7 +148,7 @@ def login():
 
             #Check if the submitted password matches the one stored in the database
             if bcrypt.check_password_hash(hashed_password, password):
-                response = make_response(render_template("html/index.html", title = "Home", loggedIn=True, username=username)) # render the homepage with the loggedIn status and username
+                response = make_response(redirect(url_for('index'))) # render the homepage with the loggedIn status and username
                 #Generate the Authentication Token
                 auth_token = secrets.token_hex(20) 
                 hasher = hashlib.sha256()
@@ -161,7 +161,7 @@ def login():
                 auth.insert_one(token) #Store the Hashed Auth Token in a separate database along with its associated user
                 response.set_cookie("auth_token", auth_token, max_age=3600, httponly=True) #Set Auth Token Cookie
                 return response
-        return render_template("html/login.html", error=True) 
+        return redirect(url_for('index',error=True)) 
     return render_template("html/login.html", title = "Login") 
 
 @app.route('/logout')
