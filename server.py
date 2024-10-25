@@ -122,7 +122,7 @@ def register():
         if existing_user:
             return render_template("html/register.html",already_an_user=True)
         
-        if len(username) > 30 or len(password) > 30 or len(password) < 9:
+        if len(username) > 30 or len(password) > 30 or len(password) < 8:
             return (render_template("html/register.html",too_long=True))
         
         #check if passwords match, if they do we proceed to store passwords in database
