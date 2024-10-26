@@ -2,6 +2,8 @@
 ### Framework: Flask / Python
 This is @7's CSE 312 Final Project. This repository contains the necessary files to launch our web application. 
 
+![UBeats Overview](static/video/website.GIF)
+
 ## For Testing
 
 Clone the repository:
@@ -34,11 +36,11 @@ docker compose up --build --force-recreate
 - [x] **Orn** - ~~Login HTML~~
 
 ### October 16 - October 25: Application Objective 3
-- [ ] **Orn** - Restaurant Reviews HTML/CSS
-- [ ] **Ash** - Comment & Reply Backend
-- [ ] **Naomi** - Comment & Reply Backend
-- [ ] **Eric** - Like & Dislike Backend/Misc C&R
-- [ ] **Arnav** - Like & Dislike Backend/Misc HTML
+- [x] **Arnav** - ~~Like & Dislike Backend~~
+- [x] **Ash** - ~~Comment & Reply Backend~~
+- [x] **Naomi** - ~~Comment & Reply Backend~~
+- [x] **Eric** - ~~Comment & Reply / Like & Dislike Misc~~
+- [x] **Orn** - ~~Restaurant Reviews HTML~~
 
 ### October 26 - October 27: Final Testing
 - [ ] Address Potential Security Issues
@@ -51,4 +53,33 @@ docker compose up --build --force-recreate
 
 ## Project Part 2 :
 
-## Project Part 3 :
+### October 28 - November 3: Application Objective 1
+- [ ] **Arnav** - 
+- [ ] **Ash** - 
+- [ ] **Naomi** - 
+- [ ] **Eric** - 
+- [ ] **Orn** -
+
+### November 4 - November 22: Application Objective 2
+- [ ] **Arnav** - 
+- [ ] **Ash** - 
+- [ ] **Naomi** - 
+- [ ] **Eric** - 
+- [ ] **Orn** - 
+
+### November 23 - November 24: Application Objective 3
+- [ ] **Arnav** - 
+- [ ] **Ash** - 
+- [ ] **Naomi** - 
+- [ ] **Eric** - 
+- [ ] **Orn** -
+
+### November 25 - December 1: Final Testing
+- [ ] Address Potential Security Issues
+- [ ] Address Potential Docker Issues
+- [ ] Address Potential Bugs
+- [ ] Address Project Part 3 Objectives
+
+---
+### Final Deadline: **Monday, December 2, 9:00 AM** 
+> 🟥 **(This is the final deadline **AND** our Presentation Day!)** 🟥
