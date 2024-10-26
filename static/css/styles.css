@@ -407,25 +407,6 @@ textarea {
   color: #e0245e;
 }
 
-.char-circle {
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  border: 2px solid #1da1f2;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  margin-left: 5px;
-}
-
-.char-circle.warning {
-  border-color: #ffad1f;
-}
-
-.char-circle.error {
-  border-color: #e0245e;
-}
-
 /* .bi-star-fill{
     color: #ffcc00; 
 } */
