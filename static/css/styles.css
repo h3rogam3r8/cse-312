@@ -487,3 +487,13 @@ textarea {
 .dark-mode .reaction-btn.active.dislike-btn i {
   color: #dc3545 !important;
 }
+
+.hero h1 {
+  color: #FFFFFF; 
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6); 
+}
+
+.hero p {
+  color: #FFFFFF; /* Consistent with the heading */
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+}
