@@ -384,7 +384,46 @@ a:hover {
 .star-rating i {
   transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1); 
   color: #ffcc00; 
+}
 
+textarea {
+  resize: none; 
+  overflow: hidden; 
+}
+
+.char-counter {
+  font-size: 14px;
+  margin-top: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.char-counter.warning {
+  color: #ffad1f;
+}
+
+.char-counter.error {
+  color: #e0245e;
+}
+
+.char-circle {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 2px solid #1da1f2;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 5px;
+}
+
+.char-circle.warning {
+  border-color: #ffad1f;
+}
+
+.char-circle.error {
+  border-color: #e0245e;
 }
 
 /* .bi-star-fill{
@@ -397,7 +436,7 @@ a:hover {
 }
 
 .reply-link {
-  margin-left: 10px; /* space between username and reply link */
+  margin-left: 10px; 
   cursor: pointer; 
   color: #007bff; 
   text-decoration: none; 
@@ -407,3 +446,63 @@ a:hover {
   text-decoration: underline;
 }
 
+.username {
+  color: var(--primary-color); 
+}
+
+.replyUsername{
+  color: var(--primary-color);
+}
+
+.dark-mode .username {
+  color: #005BBB !important;
+}
+
+.dark-mode .replyUsername{
+  color: #005BBB !important;
+}
+
+.reaction-btn {
+  background: none;
+  border: none;
+  padding: 0.25rem 0.5rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-bottom: 0.85rem;
+}
+
+.reaction-btn i {
+  color: #6c757d;
+  font-size: 1.1rem;
+  transition: all 0.2s ease;
+}
+
+.reaction-btn.active.like-btn i {
+  color: #005BBB;
+}
+
+.reaction-btn.active.dislike-btn i {
+  color: #dc3545;
+}
+
+.reaction-btn:hover i {
+  transform: scale(1.1);
+}
+
+.like-count, .dislike-count {
+  font-size: 0.9rem;
+  margin-left: 0.25rem;
+  color: #6c757d;
+}
+
+.dark-mode .reaction-btn i {
+  color: #a3a2a2 !important;
+}
+
+.dark-mode .reaction-btn.active.like-btn i {
+  color: #005BBB !important;
+}
+
+.dark-mode .reaction-btn.active.dislike-btn i {
+  color: #dc3545 !important;
+}

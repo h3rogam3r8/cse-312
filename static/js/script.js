@@ -68,160 +68,153 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
+function autoResizeTextarea(textarea) {
+    textarea.style.height = 'auto';
+    textarea.style.height = `${textarea.scrollHeight}px`;
+}
 
-// function handleSearch() {
-//     const search = document.getElementById('searchInput').value.toLowerCase();
+document.querySelectorAll('.comment-textarea').forEach(textarea => {
+    textarea.addEventListener('input', () => autoResizeTextarea(textarea));
+});
 
-//     cards.forEach(card => {
-//         const title = card.querySelector('.card-title').textContent.toLowerCase();
-//         if (title.includes(search)) {
-//             card.parentElement.style.display = ''; // Show the card
-//         } else {
-//             card.parentElement.style.display = 'none'; // Hide the card
-//         }
-//     });
-// }
-
-// const searchInput = document.getElementById('searchInput');
-// if (searchInput) {
-//     searchInput.addEventListener('input', handleSearch);
-// }
-
-document.addEventListener('DOMContentLoaded', () => {
-    const stars = document.querySelectorAll('.star-rating i');
-    const selectedRatingInput = document.getElementById('selectedRating');
+function updateCharacterCount(textarea, counterElement) {
+    const CHAR_LIMIT = 280;
+    const text = textarea.value;
+    const remaining = CHAR_LIMIT - text.length;
     
-    // Handle click event to store the rating
-    stars.forEach(star => {
-        star.addEventListener('click', function () {
-            const rating = this.getAttribute('data-value');
-            selectedRatingInput.value = rating; // Set the hidden input value
+    // Updating
+    counterElement.innerHTML = `${remaining}`;
+    
+    // Update counter colors 
+    if (remaining < 0) {
+        counterElement.classList.remove('warning');
+        counterElement.classList.add('error');
+    } else if (remaining <= 40) {
+        counterElement.classList.remove('error');
+        counterElement.classList.add('warning');
+    } else {
+        counterElement.classList.remove('error', 'warning');
+    }
+}
 
-            // Highlight all stars up to the clicked one
-            stars.forEach(s => {
-                if (s.getAttribute('data-value') <= rating) {
-                    s.classList.add('text-warning'); // Highlight star (yellow color)
-                    s.classList.remove('bi-star'); // Empty star
-                    s.classList.add('bi-star-fill'); // Filled star
-                } else {
-                    s.classList.remove('text-warning'); // Remove highlight
-                    s.classList.add('bi-star'); // Empty star
-                    s.classList.remove('bi-star-fill'); // Remove filled star
-                }
-            });
-
-            console.log(`User selected rating: ${rating}`); // For debugging
+document.addEventListener('DOMContentLoaded', function() {
+    // For comment
+    const commentArea = document.getElementById('userComment');
+    const commentCounter = document.createElement('div');
+    commentCounter.className = 'char-counter';
+    commentCounter.innerHTML = '280';
+    commentArea.parentNode.appendChild(commentCounter);
+    
+    commentArea.addEventListener('input', () => {
+        updateCharacterCount(commentArea, commentCounter);
+    });
+    
+    // For reply 
+    document.querySelectorAll('textarea[name="replyComment"]').forEach(textarea => {
+        const replyCounter = document.createElement('div');
+        replyCounter.className = 'char-counter';
+        replyCounter.innerHTML = '280';
+        textarea.parentNode.insertBefore(replyCounter, textarea.nextSibling);
+        
+        textarea.addEventListener('input', () => {
+            updateCharacterCount(textarea, replyCounter);
         });
-
-        // Handle hover effect for a preview
-        star.addEventListener('mouseover', function () {
-            const rating = this.getAttribute('data-value');
-            
-            // Highlight stars up to the hovered one
-            stars.forEach(s => {
-                if (s.getAttribute('data-value') <= rating) {
-                    s.classList.add('text-warning'); // Highlight star
-                } else {
-                    s.classList.remove('text-warning'); // Unhighlight the others
-                }
-            });
-        });
-
-        // Reset stars to the selected rating when the mouse leaves
-        star.addEventListener('mouseout', function () {
-            const selectedRating = selectedRatingInput.value; // Get the current selected rating
-
-            // Reset the stars to the currently selected rating
-            stars.forEach(s => {
-                if (s.getAttribute('data-value') <= selectedRating) {
-                    s.classList.add('text-warning'); // Keep stars highlighted
-                } else {
-                    s.classList.remove('text-warning'); // Unhighlight unselected stars
-                }
-            });
+    });
+    
+    document.querySelectorAll('form').forEach(form => {
+        form.addEventListener('submit', function(e) {
+            const textarea = this.querySelector('textarea');
+            if (textarea && textarea.value.length > 280) {
+                e.preventDefault();
+                alert('Your content exceeds the character limit.');
+            }
         });
     });
 });
 
-// // Display/Add comment
-// document.addEventListener('DOMContentLoaded', async () => {
-//     if (window.location.pathname !== '/') {
-//         const commentForm = document.getElementById('commentForm');
-//         const commentsSection = document.getElementById('commentsSection');
-//         const restaurant = document.getElementById('commentsSection').getAttribute('restaurant');
+document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('.reaction-buttons').forEach(container => {
+        const commentId = container.querySelector('.reaction-btn').dataset.commentId;
+        updateReactionCounts(commentId);
+        getUserReaction(commentId);
+    });
 
-//         fetch(`/comments/${restaurant}`)
-//         .then(response => response.json())
-//         .then(data => {
-//             data.forEach(comment => addCommentToDOM(comment));
-//         })
-//         .catch(error => console.error('Error fetching comments:', error));
+    document.querySelectorAll('.reaction-btn').forEach(button => {
+        button.addEventListener('click', handleReaction);
+    });
+
+    // Async function for the purpose of live updates
+    async function handleReaction(event) {
+        const button = event.currentTarget;
+        const commentId = button.dataset.commentId;
+        const isLike = button.classList.contains('like-btn');
+        const reactionType = isLike ? 'like' : 'dislike';
+
+        try {
+            const response = await fetch(`/react/${commentId}/${reactionType}`, {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'}
+            });
+            if (response.status === 401) {
+                window.location.href = '/login';
+                return;
+            }
+            const data = await response.json();
+            updateButtonStates(commentId, reactionType);
+            updateCountDisplay(commentId, data.likes, data.dislikes);
+        } catch (error) {
+            console.error('Reaction incorrectly handled', error);
+        }
+    }
+
+    // Updating reaction count
+    async function updateReactionCounts(commentId) {
+        try {
+            const response = await fetch(`/react/${commentId}/count`);
+            const data = await response.json();
+            updateCountDisplay(commentId, data.likes, data.dislikes);
+        } catch (error) {
+            console.error('Error updating reaction counts:', error);
+        }
+    }
+
+    async function getUserReaction(commentId) {
+        try {
+            const response = await fetch(`/get-user-reaction/${commentId}`);
+            const data = await response.json();
+            if (data.reaction) {
+                const container = document.querySelector(`.reaction-buttons [data-comment-id="${commentId}"]`).parentElement;
+                const activeBtn = container.querySelector(`.${data.reaction}-btn`);
+                activeBtn.classList.add('active');
+            }
+        } catch (error) {
+            console.error('Error getting user reaction:', error);
+        }
+    }
+
+    function updateCountDisplay(commentId, likes, dislikes) {
+        const container = document.querySelector(`.reaction-buttons [data-comment-id="${commentId}"]`).parentElement;
+        const likeCount = container.querySelector('.like-count');
+        const dislikeCount = container.querySelector('.dislike-count');
+        likeCount.textContent = likes > 0 ? likes : '';
+        dislikeCount.textContent = dislikes > 0 ? dislikes : '';
+    }
+
+    // Function to ensure mutually exclusive likes and dislikes
+    function updateButtonStates(commentId, newReaction) {
+        const container = document.querySelector(`.reaction-buttons [data-comment-id="${commentId}"]`).parentElement;
+        const likeBtn = container.querySelector('.like-btn');
+        const dislikeBtn = container.querySelector('.dislike-btn');
         
-//         commentForm.addEventListener('submit', async (event) => {
-//             event.preventDefault();
-
-//             const formData = new FormData(commentForm);
-//             const userComment = formData.get('userComment') || '';
-
-//             const response = await fetch(commentForm.action, {
-//                 method: 'POST',
-//                 body: formData,
-//             });
-
-//             const data = await response.json();
-//             addCommentToDOM({
-//                 username: data.username,
-//                 comment: userComment,
-//                 rating: data.rating,
-//             });
-
-//         });
-
-//         function htmlEscaper(str) {
-//             const div = document.createElement('div');
-//             div.innerText = str;
-//             return div.innerHTML; 
-//         }
-
-//         function addCommentToDOM(commentData) {
-//             const emptyStars = 5 - commentData.rating;
-//             const commentHTML = `
-//                 <div class="comment mb-4">
-//                     <div class="d-flex">
-//                         <div class="flex-shrink-0">
-//                             <img src="/static/images/kris.png" alt="User Avatar" class="rounded-circle" style="width: 50px;">
-//                         </div>
-//                         <div class="flex-grow-1 ms-3">
-//                             <h6 class="mb-0">${commentData.username}</h6>
-//                             <div class="star-rating" style="margin-top: 5px;">
-//                                 ${'<i class="bi bi-star-fill"></i>'.repeat(commentData.rating)}
-//                                 ${'<i class="bi bi-star"></i>'.repeat(emptyStars)}
-//                             </div>
-//                             <p class="mb-1">${htmlEscaper(commentData.comment)}</p>
-        
-//                             <!-- Reply link -->
-//                             <span class="reply-link" style="cursor: pointer; color: #007bff;">Reply</span>
-        
-//                             <!-- Reply form (initially hidden) -->
-//                             <form class="replyForm" style="display: none; margin-top: 10px;">
-//                                 <div class="mb-2">
-//                                     <textarea class="form-control" rows="2" placeholder="Reply to this comment..."></textarea>
-//                                 </div>
-//                                 <button type="submit" class="btn btn-secondary btn-sm">Submit Reply</button>
-//                             </form>
-//                         </div>
-//                     </div>
-//                 </div>
-//             `;
-//             commentsSection.insertAdjacentHTML('beforeend', commentHTML);
-        
-//             const replyLink = commentsSection.lastElementChild.querySelector('.reply-link');
-//             replyLink.addEventListener('click', (event) => {
-//                 event.preventDefault(); 
-//                 const replyForm = replyLink.nextElementSibling; // find reply form
-//                 replyForm.style.display = replyForm.style.display === 'block' ? 'none' : 'block';
-//             });
-//         }
-//     }
-// });
-    
+        if (likeBtn.classList.contains('active') && newReaction === 'dislike') {
+            likeBtn.classList.remove('active');
+            dislikeBtn.classList.add('active');
+        } else if (dislikeBtn.classList.contains('active') && newReaction === 'like') {
+            dislikeBtn.classList.remove('active');
+            likeBtn.classList.add('active');
+        } else {
+            const clickedBtn = container.querySelector(`.${newReaction}-btn`);
+            clickedBtn.classList.toggle('active');
+        }
+    }
+});

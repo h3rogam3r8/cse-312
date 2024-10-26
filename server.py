@@ -7,7 +7,7 @@ from flask_bcrypt import Bcrypt # type: ignore
 import secrets, hashlib
 from bson.objectid import ObjectId # type: ignore
 import secrets
-import html
+import html 
 
 # Database set up
 mongo_client = MongoClient('mongo')
@@ -15,6 +15,9 @@ db = mongo_client["users_info"]
 users = db["users"]
 auth = db["auth"]
 comments = db["comments"]
+reactions = db["reactions"]
+
+CHAR_LIMIT = 280
 
 # Create a flask instance
 app = Flask(__name__)
@@ -157,7 +160,7 @@ def login():
                 auth.insert_one(token) #Store the Hashed Auth Token in a separate database along with its associated user
                 response.set_cookie("auth_token", auth_token, max_age=3600, httponly=True) #Set Auth Token Cookie
                 return response
-        return redirect(url_for('index',error=True)) 
+        return render_template("html/login.html",error=True)
     return render_template("html/login.html", title = "Login") 
 
 @app.route('/logout')
@@ -206,6 +209,12 @@ def addcomment(restaurant):
         comment_id = request.form.get('comment_id')
         auth_token = request.cookies.get('auth_token')
 
+        if user_comment and len(user_comment) > CHAR_LIMIT:
+            return redirect(url_for('restaurant_page', restaurant=restaurant))
+    
+        if reply_comment and len(reply_comment) > CHAR_LIMIT:
+            return redirect(url_for('restaurant_page', restaurant=restaurant))
+
         username = None
 
         # Check if user is authenticated
@@ -220,9 +229,7 @@ def addcomment(restaurant):
 
         if not username:
             return redirect(url_for('login'))  # unauthenticated users to login
-
         if user_comment:  # check for a new comment
-        
             #HTML escape
             #escape_comment = html.escape(user_comment)
             comments.insert_one({
@@ -244,6 +251,86 @@ def addcomment(restaurant):
                 return redirect(url_for('login'))  # Redirect to login if not authenticated
       
         return redirect(url_for('restaurant_page', restaurant=restaurant))
+
+@app.route('/validate-length', methods=['POST'])
+def validate_length():
+    text = request.json.get('text', '')
+    remaining = CHAR_LIMIT - len(text)
+    return jsonify({'remaining': remaining, 'valid': remaining >= 0})
+
+@app.route('/react/<string:comment_id>/<string:reaction_type>', methods=['POST'])
+def handle_reaction(comment_id, reaction_type):
+    auth_token = request.cookies.get('auth_token')
+    hasher = hashlib.sha256()  # Get username from auth token
+    hasher.update(auth_token.encode())
+    token_hash = hasher.hexdigest()
+    token_entry = auth.find_one({token_hash: {'$exists': True}})
+    
+    username = token_entry[token_hash]
+    
+    # Check if user has already reacted
+    existing_reaction = reactions.find_one({
+        'comment_id': comment_id,
+        'username': username
+    })
+    
+    if existing_reaction:
+        if existing_reaction['type'] == reaction_type:
+            # Remove reaction if clicking same button
+            reactions.delete_one({'_id': existing_reaction['_id']})
+            return update_reaction_counts(comment_id)
+        else:
+            # Update reaction if changing from like to dislike or vice versa
+            reactions.update_one(
+                {'_id': existing_reaction['_id']},
+                {'$set': {'type': reaction_type}}
+            )
+    else:
+        # Create new reaction
+        reactions.insert_one({
+            'comment_id': comment_id,
+            'username': username,
+            'type': reaction_type
+        })
+    
+    return update_reaction_counts(comment_id)
+
+# Works with the async function in JS
+def update_reaction_counts(comment_id):
+    likes = reactions.count_documents({
+        'comment_id': comment_id,
+        'type': 'like'
+    })
+    dislikes = reactions.count_documents({
+        'comment_id': comment_id,
+        'type': 'dislike'
+    })
+    
+    return jsonify({
+        'likes': likes,
+        'dislikes': dislikes
+    })
+
+@app.route('/get-user-reaction/<string:comment_id>')
+def get_user_reaction(comment_id):
+    auth_token = request.cookies.get('auth_token')
+    if not auth_token:
+        return jsonify({'reaction': None})
+    
+    hasher = hashlib.sha256()
+    hasher.update(auth_token.encode())
+    token_hash = hasher.hexdigest()
+    token_entry = auth.find_one({token_hash: {'$exists': True}})
+    if not token_entry:
+        return jsonify({'reaction': None})
+    
+    username = token_entry[token_hash]
+    reaction = reactions.find_one({
+        'comment_id': comment_id,
+        'username': username
+    })
+    
+    return jsonify({'reaction': reaction['type'] if reaction else None})
      
 # Run the app once this file executes
 if __name__ == "__main__":

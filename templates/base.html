@@ -18,6 +18,9 @@
 
     <!-- Custom CSS -->
     <link href="{{ url_for('static', filename='css/styles.css') }}" rel="stylesheet">
+
+    <!--Avoids favicon request-->
+    <link rel="icon" href="data:,">
 </head>
 <body>
     
@@ -84,4 +87,3 @@
     <script src="{{ url_for('static', filename='js/script.js') }}"></script>
 </body>
 </html>
-    
