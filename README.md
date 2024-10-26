@@ -2,7 +2,7 @@
 ### Framework: Flask / Python
 This is @7's CSE 312 Final Project. This repository contains the necessary files to launch our web application. 
 
-![UBeats Overview](static/video/website.GIF)
+![UBeats Overview](static/video/docker.gif)
 
 ## For Testing
 
