@@ -89,7 +89,7 @@ function updateCharacterCount(textarea, counterElement) {
     if (remaining < 0) {
         counterElement.classList.remove('warning');
         counterElement.classList.add('error');
-    } else if (remaining <= 40) {
+    } else if (remaining <= 60) {
         counterElement.classList.remove('error');
         counterElement.classList.add('warning');
     } else {
@@ -218,3 +218,59 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 });
+
+// AJAX functions because I don't want to deal with this backspace bug
+async function submitComment() {
+    const commentText = document.getElementById('userComment').value;
+    const restaurant = window.location.pathname.split('/').pop(); // Gets restaurant name from URL
+
+    try {
+        const response = await fetch(`/comment/${restaurant}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: new URLSearchParams({
+                'userComment': commentText
+            })
+        });
+
+        const data = await response.json();
+        if (data.success) {
+            location.reload();
+        } else if (data.error === 'Not authenticated') {
+            window.location.href = '/login';
+        }
+    } catch (error) {
+        console.error('Error:', error);
+    }
+}
+
+// AJAX functions because I don't want to deal with this backspace bug / copy paste
+async function submitReply(form) {
+    const replyText = form.querySelector('textarea[name="replyComment"]').value;
+    const commentId = form.querySelector('input[name="comment_id"]').value;
+    const restaurant = window.location.pathname.split('/').pop();   // Gets restaurant name from URL
+
+    try {
+        const response = await fetch(`/comment/${restaurant}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: new URLSearchParams({
+                'replyComment': replyText,
+                'comment_id': commentId
+            })
+        });
+
+        const data = await response.json();
+        if (data.success) {
+            location.reload();
+        } else if (data.error === 'Not authenticated') {
+            window.location.href = '/login';
+        }
+    } catch (error) {
+        console.error('Error:', error);
+    }
+}

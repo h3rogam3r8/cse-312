@@ -93,12 +93,12 @@
     <h4 class="text-primary mb-4">Leave a Review</h4>
 
     <!-- Form for posting a comment -->
-    <form id="commentForm" class="mb-4" method="POST" action="{{ url_for('addcomment',restaurant='kung_fu_tea')}}">
+    <form id="commentForm" class="mb-4" onsubmit="return false;">
         <div class="mb-3">
             <label for="userComment" class="form-label">Your Comment</label>
             <textarea class="form-control" id="userComment" name="userComment" rows="3" placeholder="Share your experience..." required maxlength="1000"></textarea>
         </div>
-        <button type="submit" class="btn btn-primary">Submit Comment</button>
+        <button type="button" onclick="submitComment()" class="btn btn-primary">Submit Comment</button>
     </form>
 
     <!-- Comments Section -->
@@ -120,12 +120,13 @@
                     <span class="dislike-count"></span>
                 </button>
             </div>
-            
-            <form method="POST" action="{{ url_for('addcomment',restaurant='kung_fu_tea') }}">
+
+            <form class="reply-form" onsubmit="return false;">
                 <input type="hidden" name="comment_id" value="{{ comment['_id'] }}">
-                <textarea name="replyComment" placeholder="Reply..." required maxlength="1000"></textarea>
-                <button type="submit">Submit Reply</button>
+                <textarea name="replyComment" class="form-control" placeholder="Reply..." required maxlength="1000"></textarea>
+                <button type="button" onclick="submitReply(this.form)" class="btn btn-primary mt-2">Submit Reply</button>
             </form>
+            
             {% for reply in comment['replies'] %}
             <div class="reply mb-2 border p-2">
                 <p class="replyUsername"><strong>{{ reply['username'] }}</strong></p>
@@ -134,8 +135,8 @@
             {% endfor %}
         </div>
         {% endfor %}
+    </div>
 </div>
-
 
 <!-- Location Section -->
 <div class="container text-center py-2 mt-5">

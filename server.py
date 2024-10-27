@@ -200,20 +200,19 @@ def restaurant_page(restaurant):
             restaurant_name=restaurant
         )
 
+# Changed this function to work with AJAX and always redirect to the same page
 @app.route('/comment/<restaurant>', methods=['POST'])
 def addcomment(restaurant):
-        #restaurant = request.form.get('restaurant')
-  
         user_comment = request.form.get('userComment')
         reply_comment = request.form.get('replyComment')
         comment_id = request.form.get('comment_id')
         auth_token = request.cookies.get('auth_token')
 
         if user_comment and len(user_comment) > CHAR_LIMIT:
-            return redirect(url_for('restaurant_page', restaurant=restaurant))
+            return jsonify({'success': False,'error':'Comment too long'})
     
         if reply_comment and len(reply_comment) > CHAR_LIMIT:
-            return redirect(url_for('restaurant_page', restaurant=restaurant))
+            return jsonify({'success': False,'error':'Reply too long'})
 
         username = None
 
@@ -228,10 +227,9 @@ def addcomment(restaurant):
             username = token_entry[token_hash]
 
         if not username:
-            return redirect(url_for('login'))  # unauthenticated users to login
+            return jsonify({'success': False, 'error': 'Not authenticated'})
+
         if user_comment:  # check for a new comment
-            #HTML escape
-            #escape_comment = html.escape(user_comment)
             comments.insert_one({
             "restaurant": restaurant,
             "comment": user_comment,
@@ -240,17 +238,14 @@ def addcomment(restaurant):
             })
         elif reply_comment and comment_id:  # Check for a reply
             if username:  # Ensure the user is authenticated
-            # Find the comment and update it with the new reply
-            #HTML escape
-                #escape_replycomment = html.escape(reply_comment)
                 comments.update_one(
                 {"_id": ObjectId(comment_id)},
                 {"$push": {"replies": {"comment": reply_comment, "username": username}}}
                 )
             else:
-                return redirect(url_for('login'))  # Redirect to login if not authenticated
+                return jsonify({'success': False, 'error': 'Not authenticated'})
       
-        return redirect(url_for('restaurant_page', restaurant=restaurant))
+        return jsonify({'success': True})
 
 @app.route('/validate-length', methods=['POST'])
 def validate_length():
@@ -262,6 +257,11 @@ def validate_length():
 def handle_reaction(comment_id, reaction_type):
     auth_token = request.cookies.get('auth_token')
     hasher = hashlib.sha256()  # Get username from auth token
+
+    # Guest functionality
+    if hasher is None:
+        return
+    
     hasher.update(auth_token.encode())
     token_hash = hasher.hexdigest()
     token_entry = auth.find_one({token_hash: {'$exists': True}})
@@ -295,7 +295,7 @@ def handle_reaction(comment_id, reaction_type):
     
     return update_reaction_counts(comment_id)
 
-# Works with the async function in JS
+@app.route('/react/<string:comment_id>/count')
 def update_reaction_counts(comment_id):
     likes = reactions.count_documents({
         'comment_id': comment_id,
