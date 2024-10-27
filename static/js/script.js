@@ -274,3 +274,38 @@ async function submitReply(form) {
         console.error('Error:', error);
     }
 }
+
+function toggleReply(commentId) {
+    const form = document.getElementById(`reply-form-${commentId}`);
+    if (form.style.display === 'none' || form.style.display === '') {
+        form.style.display = 'block';
+    } else {
+        form.style.display = 'none';
+    }
+}
+
+function showReplies(commentId, button) {
+    const replies = document.querySelectorAll(`#reply-${commentId}`);
+    let isVisible = false;
+    replies.forEach(reply => {
+        if (reply.style.display === 'none' || reply.style.display === '') {
+            reply.style.display = 'block';
+            isVisible = true;
+        } else {
+            reply.style.display = 'none';
+        }
+    });
+    if (isVisible) {
+        if (replies.length === 1) {
+            button.textContent = "Hide Reply " + '(' + replies.length + ')';
+        } else {
+            button.textContent = "Hide Replies " + '(' + replies.length + ')';
+        }
+    } else {
+        if (replies.length === 1) {
+            button.textContent = "Show Reply " + '(' + replies.length + ')';
+        } else {
+            button.textContent = "Show Replies " + '(' + replies.length + ')';
+        }
+    }
+}

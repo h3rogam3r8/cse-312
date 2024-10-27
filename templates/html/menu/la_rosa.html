@@ -122,16 +122,36 @@
                 </button>
             </div>
 
-            <form class="reply-form" onsubmit="return false;">
-                <input type="hidden" name="comment_id" value="{{ comment['_id'] }}">
-                <textarea name="replyComment" class="form-control" placeholder="Reply..." required maxlength="1000"></textarea>
-                <button type="button" onclick="submitReply(this.form)" class="btn btn-primary mt-2">Submit Reply</button>
-            </form>
+            <button class="btn btn-sm btn-secondary mt-2" onclick="toggleReply(`{{ comment['_id'] }}`)">
+                Reply
+            </button>
+
+            <div id="reply-form-{{ comment['_id'] }}" class="reply-form" style="display: none;">
+                <br />
+                <form class="reply-form" onsubmit="return false;">
+                    <input type="hidden" name="comment_id" value="{{ comment['_id'] }}">
+                    <textarea name="replyComment" class="form-control" placeholder="Reply..." required maxlength="1000"></textarea>
+                    <button type="button" onclick="submitReply(this.form)" class="btn btn-primary mt-2">Submit</button>
+                </form>
+            </div>
+
+            {% if comment['replies'] %}
+            <button class="btn btn-sm btn-secondary mt-2" onclick="showReplies(`{{ comment['_id'] }}`, this)">
+                {% if (comment['replies'] | length) > 1 %}
+                    Show Replies ({{ comment['replies'] | length }})
+                {% else %}
+                    Show Reply ({{ comment['replies'] | length }})
+                {% endif %}
+            </button>
+            {% endif %}
             
             {% for reply in comment['replies'] %}
-            <div class="reply mb-2 border p-2">
-                <p class="replyUsername"><strong>{{ reply['username'] }}</strong></p>
-                <p class="replyText" style="word-wrap: break-word; overflow-wrap: break-word; overflow: hidden;">{{ reply['comment'] }}</p>
+            <div id="reply-{{ comment['_id'] }}" class="reply" style="display: none;">
+                <br />
+                <div class="reply mb-2 border p-2">
+                    <p class="replyUsername"><strong>{{ reply['username'] }}</strong></p>
+                    <p class="replyText" style="word-wrap: break-word; overflow-wrap: break-word; overflow: hidden;">{{ reply['comment'] }}</p>
+                </div>
             </div>
             {% endfor %}
         </div>
