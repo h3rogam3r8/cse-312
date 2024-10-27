@@ -221,7 +221,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // AJAX functions because I don't want to deal with this backspace bug
 async function submitComment() {
-    const commentText = document.getElementById('userComment').value;
+    const commentForm = document.getElementById('userComment')
+    const commentText = commentForm.value;
     const restaurant = window.location.pathname.split('/').pop(); // Gets restaurant name from URL
 
     try {
@@ -237,6 +238,7 @@ async function submitComment() {
 
         const data = await response.json();
         if (data.success) {
+            commentForm.value = ''; // Force clear the form cause FireFox is a bitch
             location.reload();
         } else if (data.error === 'Not authenticated') {
             window.location.href = '/login';
@@ -248,7 +250,8 @@ async function submitComment() {
 
 // AJAX functions because I don't want to deal with this backspace bug / copy paste
 async function submitReply(form) {
-    const replyText = form.querySelector('textarea[name="replyComment"]').value;
+    const replyForm = form.querySelector('textarea[name="replyComment"]')
+    const replyText = replyForm.value;
     const commentId = form.querySelector('input[name="comment_id"]').value;
     const restaurant = window.location.pathname.split('/').pop();   // Gets restaurant name from URL
 
@@ -266,6 +269,7 @@ async function submitReply(form) {
 
         const data = await response.json();
         if (data.success) {
+            replyForm.value = '';   // Same thing
             location.reload();
         } else if (data.error === 'Not authenticated') {
             window.location.href = '/login';
