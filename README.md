@@ -43,22 +43,22 @@ docker compose up --build --force-recreate
 - [x] **Orn** - ~~Restaurant Reviews HTML~~
 
 ### October 26 - October 27: Final Testing
-- [ ] Address Potential Security Issues
-- [ ] Address Potential Docker Issues
-- [ ] Address Potential Bugs
+- [x] ~~Address Potential Security Issues~~
+- [x] ~~Address Potential Docker Issues~~
+- [x] ~~Address Potential Bugs~~
 
 ---
-### Final Deadline: **Monday, October 28, 9:00 AM** 
-> 🟥 **(This is the final deadline)** 🟥
+~~### Final Deadline: **Monday, October 28, 9:00 AM**~~
+> ~~🟥 **(This is the final deadline)** 🟥~~
 
 ## Project Part 2 :
 
 ### October 28 - November 3: Application Objective 1
-- [ ] **Arnav** - 
-- [ ] **Ash** - 
-- [ ] **Naomi** - 
-- [ ] **Eric** - 
-- [ ] **Orn** -
+- [ ] **Arnav** - Profile Pictures
+- [ ] **Ash** - Comment Images
+- [x] **Naomi** - ~~Break Week~~
+- [x] **Eric** - ~~Break Week~~
+- [x] **Orn** - ~~Break Week~~
 
 ### November 4 - November 22: Application Objective 2
 - [ ] **Arnav** - 
@@ -78,7 +78,7 @@ docker compose up --build --force-recreate
 - [ ] Address Potential Security Issues
 - [ ] Address Potential Docker Issues
 - [ ] Address Potential Bugs
-- [ ] Address Project Part 3 Objectives
+- [ ] Address Potential Project 3 Objectives
 
 ---
 ### Final Deadline: **Monday, December 2, 9:00 AM** 
