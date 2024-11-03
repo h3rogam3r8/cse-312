@@ -86,6 +86,11 @@
             <label for="userComment" class="form-label">Your Comment</label>
             <textarea class="form-control" id="userComment" name="userComment" rows="3" placeholder="Share your experience..." required maxlength="1000"></textarea>
         </div>
+        <div class="mb-3">
+            <label for="fileUpload" class="form-label">Upload Image</label> 
+            <input type="file" id="image" name="image" class="form-control" accept="image/*">
+            <img id="imagePreview" alt="Image Preview" class="mt-3" style="display: none; max-width: 200px; height: auto;">
+        </div>
         <button type="button" onclick="submitComment()" class="btn btn-primary">Submit Comment</button>
     </form>
 
@@ -97,7 +102,9 @@
         <div class="comment mb-3 border p-3">
             <p class="username"><strong>{{ comment['username'] }}</strong></p>
             <p class="commentText" style="word-wrap: break-word; overflow-wrap: break-word; overflow: hidden;">{{ comment['comment'] }}</p>
-
+            {% if comment.image %}
+            <img src="{{ url_for('uploaded_file', filename=comment.image) }}" alt="Image" style="max-width: 300px; height: auto;">
+            {% endif %}
             <div class="reaction-buttons mt-2">
                 <button class="btn btn-sm reaction-btn like-btn" data-comment-id="{{ comment['_id'] }}">
                     <i class="bi bi-hand-thumbs-up"></i>

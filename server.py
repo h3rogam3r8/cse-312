@@ -8,6 +8,11 @@ import secrets, hashlib
 from bson.objectid import ObjectId # type: ignore
 import secrets
 import html 
+from werkzeug.utils import secure_filename
+import os
+from flask import send_from_directory
+from os.path import join, dirname, realpath
+import mimetypes
 
 # Database set up
 mongo_client = MongoClient('mongo')
@@ -17,6 +22,7 @@ auth = db["auth"]
 comments = db["comments"]
 reactions = db["reactions"]
 
+
 CHAR_LIMIT = 280
 
 # Create a flask instance
@@ -25,6 +31,16 @@ bootstrap = Bootstrap(app) # Route and view function
 
 # Hash
 bcrypt = Bcrypt(app)
+
+#for images upload
+UPLOAD_FOLDER = 'uploads'
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
+app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # Limit to 16MB
+#checking for correct filetype
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 # Routes for each restaurant : 
 @app.route('/austin_kitchen')
@@ -207,6 +223,7 @@ def addcomment(restaurant):
         reply_comment = request.form.get('replyComment')
         comment_id = request.form.get('comment_id')
         auth_token = request.cookies.get('auth_token')
+        
 
         if user_comment and len(user_comment) > CHAR_LIMIT:
             return jsonify({'success': False,'error':'Comment too long'})
@@ -228,14 +245,26 @@ def addcomment(restaurant):
 
         if not username:
             return jsonify({'success': False, 'error': 'Not authenticated'})
+        
+        image_url = None
+        if 'image' in request.files:
+         file = request.files['image']
+         if file and allowed_file(file.filename):
+            filename = secure_filename(file.filename)
+            file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename) 
+            file.save(file_path)
+            image_url = f'/uploads/{filename}'
+           
 
         if user_comment:  # check for a new comment
             comments.insert_one({
             "restaurant": restaurant,
             "comment": user_comment,
             "username": username,
+            "image":filename, #storing image 
             "replies": []
             })
+        
         elif reply_comment and comment_id:  # Check for a reply
             if username:  # Ensure the user is authenticated
                 comments.update_one(
@@ -245,7 +274,11 @@ def addcomment(restaurant):
             else:
                 return jsonify({'success': False, 'error': 'Not authenticated'})
       
-        return jsonify({'success': True})
+        return jsonify({'success': True, 'imagePath': image_url})
+
+@app.route('/uploads/<filename>')
+def uploaded_file(filename):
+    return send_from_directory('uploads', filename)
 
 @app.route('/validate-length', methods=['POST'])
 def validate_length():

@@ -220,38 +220,54 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 // AJAX functions because I don't want to deal with this backspace bug
+document.getElementById('image').addEventListener('change', function() {
+    const file = this.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const imgPreview = document.getElementById('imagePreview');
+            imgPreview.src = e.target.result;
+            imgPreview.style.display = 'block'; // Show the preview
+        }
+        reader.readAsDataURL(file); // Convert file to base64 string for preview
+    }
+});
+
 async function submitComment() {
-    const commentForm = document.getElementById('userComment')
-    const commentText = commentForm.value;
-    const restaurant = window.location.pathname.split('/').pop(); // Gets restaurant name from URL
+    const commentForm = document.getElementById('commentForm');
+    const formData = new FormData(commentForm); // Use FormData to include the image and comment
+    const restaurant = window.location.pathname.split('/').pop(); // Get restaurant name from URL
+    console.log(formData)
+    for (const [key, value] of formData.entries()) {
+        console.log(key, value);
+    }
 
     try {
         const response = await fetch(`/comment/${restaurant}`, {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-            },
-            body: new URLSearchParams({
-                'userComment': commentText
-            })
+            body: formData // Send the FormData
+            
         });
 
         const data = await response.json();
         if (data.success) {
-            commentForm.value = ''; // Force clear the form cause FireFox is a bitch
-            location.reload();
+            commentForm.reset(); // Reset the form fields
+            document.getElementById('imagePreview').style.display = 'none'; // Hide image preview
+            location.reload(); // Reload to display new comments
         } else if (data.error === 'Not authenticated') {
             window.location.href = '/login';
+        } else {
+            alert(data.error); // Show any other error messages
         }
     } catch (error) {
         console.error('Error:', error);
+        alert('An error occurred while submitting your comment.');
     }
 }
 
 // AJAX functions because I don't want to deal with this backspace bug / copy paste
 async function submitReply(form) {
-    const replyForm = form.querySelector('textarea[name="replyComment"]')
-    const replyText = replyForm.value;
+    const replyText = form.querySelector('textarea[name="replyComment"]').value;
     const commentId = form.querySelector('input[name="comment_id"]').value;
     const restaurant = window.location.pathname.split('/').pop();   // Gets restaurant name from URL
 
@@ -269,7 +285,6 @@ async function submitReply(form) {
 
         const data = await response.json();
         if (data.success) {
-            replyForm.value = '';   // Same thing
             location.reload();
         } else if (data.error === 'Not authenticated') {
             window.location.href = '/login';
