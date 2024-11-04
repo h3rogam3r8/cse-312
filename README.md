@@ -54,18 +54,18 @@ docker compose up --build --force-recreate
 ## Project Part 2 :
 
 ### October 28 - November 3: Application Objective 1
-- [ ] **Arnav** - Profile Pictures
-- [ ] **Ash** - Comment Images
+- [x] **Arnav** - ~~Profile Pictures~~
+- [x] **Ash** - ~~Comment Images~~
 - [x] **Naomi** - ~~Break Week~~
 - [x] **Eric** - ~~Break Week~~
 - [x] **Orn** - ~~Break Week~~
 
 ### November 4 - November 22: Application Objective 2
-- [ ] **Arnav** - 
-- [ ] **Ash** - 
-- [ ] **Naomi** - 
-- [ ] **Eric** - 
-- [ ] **Orn** - 
+- [x] **Arnav** - ~~Break Week~~
+- [x] **Ash** - ~~Break Week~~
+- [ ] **Naomi** - Voting System for Top Item
+- [ ] **Eric** - Voting System for Top Item
+- [ ] **Orn** - Voting System for Top Item
 
 ### November 23 - November 24: Application Objective 3
 - [ ] **Arnav** - 
