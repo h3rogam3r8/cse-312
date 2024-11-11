@@ -60,19 +60,19 @@ docker compose up --build --force-recreate
 - [x] **Eric** - ~~Break Week~~
 - [x] **Orn** - ~~Break Week~~
 
-### November 4 - November 22: Application Objective 2
+### November 4 - November 16: Application Objective 2
 - [x] **Arnav** - ~~Break Week~~
 - [x] **Ash** - ~~Break Week~~
 - [ ] **Naomi** - Voting System for Top Item
-- [ ] **Eric** - Voting System for Top Item
-- [ ] **Orn** - Voting System for Top Item
+- [ ] **Eric** - ~~Break Week~~
+- [ ] **Orn** - ~~Break Week~~
 
-### November 23 - November 24: Application Objective 3
-- [ ] **Arnav** - 
-- [ ] **Ash** - 
-- [ ] **Naomi** - 
-- [ ] **Eric** - 
-- [ ] **Orn** -
+### November 17 - November 17: Application Objective 3
+- [ ] **Arnav** - Deployment
+- [ ] **Ash** - Deployment
+- [ ] **Naomi** - Deployment
+- [ ] **Eric** - Deployment
+- [ ] **Orn** - Deployment
 
 ### November 25 - December 1: Final Testing
 - [ ] Address Potential Security Issues
