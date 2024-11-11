@@ -60,25 +60,52 @@ docker compose up --build --force-recreate
 - [x] **Eric** - ~~Break Week~~
 - [x] **Orn** - ~~Break Week~~
 
-### November 4 - November 16: Application Objective 2
+### November 4 - November 15: Application Objective 2
 - [x] **Arnav** - ~~Break Week~~
 - [x] **Ash** - ~~Break Week~~
-- [ ] **Naomi** - ~~Websocket Interactions~~
-- [ ] **Eric** - ~~Break Week~~
-- [ ] **Orn** - ~~Break Week~~
+- [x] **Naomi** - ~~Websocket Interactions~~
+- [x] **Eric** - ~~Break Week~~
+- [x] **Orn** - ~~Break Week~~
 
-### November 17 - November 17: Application Objective 3
+### November 16 - November 16: Application Objective 3
 - [ ] **Arnav** - Deployment
 - [ ] **Ash** - Deployment
 - [ ] **Naomi** - Deployment
 - [ ] **Eric** - Deployment
 - [ ] **Orn** - Deployment
 
-### November 25 - December 1: Final Testing
+### November 17 - November 17: Final Testing
 - [ ] Address Potential Security Issues
 - [ ] Address Potential Docker Issues
 - [ ] Address Potential Bugs
-- [ ] Address Potential Project 3 Objectives
+
+## Project Part 3 :
+
+### November 18 - November 21: Application Objective 1
+- [ ] **Arnav** - 
+- [ ] **Ash** - 
+- [ ] **Naomi** - 
+- [ ] **Eric** - 
+- [ ] **Orn** - 
+
+### November 22 - November 27: Application Objective 2
+- [ ] **Arnav** - 
+- [ ] **Ash** - 
+- [ ] **Naomi** - 
+- [ ] **Eric** - 
+- [ ] **Orn** - 
+
+### November 28 - November 30: Application Objective 3
+- [ ] **Arnav** - 
+- [ ] **Ash** - 
+- [ ] **Naomi** - 
+- [ ] **Eric** - 
+- [ ] **Orn** - 
+
+### November 30 - December 1: Final Testing
+- [ ] Address Potential Security Issues
+- [ ] Address Potential Docker Issues
+- [ ] Address Potential Bugs
 
 ---
 ### Final Deadline: **Monday, December 2, 9:00 AM** 
