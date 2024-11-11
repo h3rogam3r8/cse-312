@@ -1,4 +1,4 @@
-# UBeats
+# UB Eats
 ### Framework: Flask / Python
 This is @7's CSE 312 Final Project. This repository contains the necessary files to launch our web application. 
 
@@ -54,25 +54,25 @@ docker compose up --build --force-recreate
 ## Project Part 2 :
 
 ### October 28 - November 3: Application Objective 1
-- [ ] **Arnav** - Profile Pictures
-- [ ] **Ash** - Comment Images
+- [x] **Arnav** - ~~Profile Pictures~~
+- [x] **Ash** - ~~Comment Images~~
 - [x] **Naomi** - ~~Break Week~~
 - [x] **Eric** - ~~Break Week~~
 - [x] **Orn** - ~~Break Week~~
 
-### November 4 - November 22: Application Objective 2
-- [ ] **Arnav** - 
-- [ ] **Ash** - 
-- [ ] **Naomi** - 
-- [ ] **Eric** - 
-- [ ] **Orn** - 
+### November 4 - November 16: Application Objective 2
+- [x] **Arnav** - ~~Break Week~~
+- [x] **Ash** - ~~Break Week~~
+- [ ] **Naomi** - ~~Websocket Interactions~~
+- [ ] **Eric** - ~~Break Week~~
+- [ ] **Orn** - ~~Break Week~~
 
-### November 23 - November 24: Application Objective 3
-- [ ] **Arnav** - 
-- [ ] **Ash** - 
-- [ ] **Naomi** - 
-- [ ] **Eric** - 
-- [ ] **Orn** -
+### November 17 - November 17: Application Objective 3
+- [ ] **Arnav** - Deployment
+- [ ] **Ash** - Deployment
+- [ ] **Naomi** - Deployment
+- [ ] **Eric** - Deployment
+- [ ] **Orn** - Deployment
 
 ### November 25 - December 1: Final Testing
 - [ ] Address Potential Security Issues
