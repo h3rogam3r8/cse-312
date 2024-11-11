@@ -256,12 +256,20 @@ def addcomment(restaurant):
             file.save(file_path)
             image_url = f'/uploads/{filename}'
            
-        if user_comment:  # check for a new comment
+         if user_comment and filename:  # check for a new comment
             comments.insert_one({
             "restaurant": restaurant,
             "comment": user_comment,
             "username": username,
             "image":filename, #storing image 
+            "replies": []
+            })
+
+        elif user_comment:
+            comments.insert_one({
+            "restaurant": restaurant,
+            "comment": user_comment,
+            "username": username,
             "replies": []
             })
         
