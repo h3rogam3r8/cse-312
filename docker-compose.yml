@@ -8,5 +8,3 @@ services:
    WAIT_HOSTS: mongo:27017
   ports:
   - '8080:8080'
-  volumes:
-     - ./uploads:/app/uploads

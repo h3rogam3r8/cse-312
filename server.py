@@ -1,4 +1,4 @@
-from flask import Flask,redirect,url_for, jsonify ,request,flash# type: ignore
+from flask import Flask,redirect,url_for, jsonify ,request, flash # type: ignore
 from flask import render_template  # type: ignore
 from flask import make_response # type: ignore
 from flask_bootstrap5 import Bootstrap # type: ignore
@@ -8,13 +8,12 @@ import secrets, hashlib
 from bson.objectid import ObjectId # type: ignore
 import secrets
 import html 
-from werkzeug.utils import secure_filename
+from werkzeug.utils import secure_filename  # type: ignore
 import os
-from flask import send_from_directory
+from flask import send_from_directory       # type: ignore
 from os.path import join, dirname, realpath
 import mimetypes
-from flask_socketio import SocketIO, emit
-
+from flask_socketio import SocketIO, emit   # type: ignore
 
 # Database set up
 mongo_client = MongoClient('mongo')
@@ -24,14 +23,12 @@ auth = db["auth"]
 comments = db["comments"]
 reactions = db["reactions"]
 
-
 CHAR_LIMIT = 280
 
 # Create a flask instance
 app = Flask(__name__)
 bootstrap = Bootstrap(app) # Route and view function
 socketio = SocketIO(app)  # Set up SocketIO
-
 
 # Hash
 bcrypt = Bcrypt(app)
