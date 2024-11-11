@@ -132,6 +132,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
+// Handles all reactions
 document.addEventListener('DOMContentLoaded', function() {
     document.querySelectorAll('.reaction-buttons').forEach(container => {
         const commentId = container.querySelector('.reaction-btn').dataset.commentId;
@@ -161,8 +162,8 @@ document.addEventListener('DOMContentLoaded', function() {
             }
             const data = await response.json();
             updateButtonStates(commentId, reactionType);
-            updateCountDisplay(commentId, data.likes, data.dislikes);
-        } catch (error) {
+            updateCountDisplay(commentId, data.likes, data.dislikes, data.like_usernames, data.dislike_usernames);
+            } catch (error) {
             console.error('Reaction incorrectly handled', error);
         }
     }
@@ -172,7 +173,7 @@ document.addEventListener('DOMContentLoaded', function() {
         try {
             const response = await fetch(`/react/${commentId}/count`);
             const data = await response.json();
-            updateCountDisplay(commentId, data.likes, data.dislikes);
+            updateCountDisplay(commentId, data.likes, data.dislikes, data.like_usernames, data.dislike_usernames);        
         } catch (error) {
             console.error('Error updating reaction counts:', error);
         }
@@ -192,12 +193,32 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    function updateCountDisplay(commentId, likes, dislikes) {
-        const container = document.querySelector(`.reaction-buttons [data-comment-id="${commentId}"]`).parentElement;
+    // websockets
+    const socket = io('http://localhost:8080'); // hardcoded port, might need to change for deployment
+
+    socket.on('update_reaction_counts', function(data) {
+        console.log(data);
+        const { comment_id, likes, dislikes, like_usernames, dislike_usernames } = data;
+        updateCountDisplay(comment_id, likes, dislikes, like_usernames, dislike_usernames);
+    });
+
+    function updateCountDisplay(commentId, likes, dislikes, likeUsernames, dislikeUsernames) {
+        const container = document.querySelector(`[data-comment-id="${commentId}"]`).parentElement;
         const likeCount = container.querySelector('.like-count');
         const dislikeCount = container.querySelector('.dislike-count');
+        const likeButton = container.querySelector('.like-btn');
+        const dislikeButton = container.querySelector('.dislike-btn');
+
+        // Update like/dislike counts
         likeCount.textContent = likes > 0 ? likes : '';
         dislikeCount.textContent = dislikes > 0 ? dislikes : '';
+
+        likeUsernames = Array.isArray(likeUsernames) ? likeUsernames : [];
+        dislikeUsernames = Array.isArray(dislikeUsernames) ? dislikeUsernames : [];
+
+        // Add usernames to tooltips on hover
+        likeButton.title = likeUsernames.length > 0 ? likeUsernames.join(', ') : 'No likes yet';
+        dislikeButton.title = dislikeUsernames.length > 0 ? dislikeUsernames.join(', ') : 'No dislikes yet';
     }
 
     // Function to ensure mutually exclusive likes and dislikes
@@ -206,15 +227,19 @@ document.addEventListener('DOMContentLoaded', function() {
         const likeBtn = container.querySelector('.like-btn');
         const dislikeBtn = container.querySelector('.dislike-btn');
         
-        if (likeBtn.classList.contains('active') && newReaction === 'dislike') {
-            likeBtn.classList.remove('active');
-            dislikeBtn.classList.add('active');
-        } else if (dislikeBtn.classList.contains('active') && newReaction === 'like') {
-            dislikeBtn.classList.remove('active');
-            likeBtn.classList.add('active');
+        if (newReaction === 'like' && likeBtn.classList.contains('active')) {
+            likeBtn.classList.remove('active'); // unliking
+        } else if (newReaction === 'dislike' && dislikeBtn.classList.contains('active')) {
+            dislikeBtn.classList.remove('active'); // undisliking
         } else {
-            const clickedBtn = container.querySelector(`.${newReaction}-btn`);
-            clickedBtn.classList.toggle('active');
+            // from like to dislike or vice versa
+            if (newReaction === 'like') {
+                likeBtn.classList.add('active');
+                dislikeBtn.classList.remove('active');
+            } else if (newReaction === 'dislike') {
+                dislikeBtn.classList.add('active');
+                likeBtn.classList.remove('active');
+            }
         }
     }
 });

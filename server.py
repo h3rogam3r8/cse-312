@@ -13,6 +13,8 @@ import os
 from flask import send_from_directory
 from os.path import join, dirname, realpath
 import mimetypes
+from flask_socketio import SocketIO, emit
+
 
 # Database set up
 mongo_client = MongoClient('mongo')
@@ -28,6 +30,8 @@ CHAR_LIMIT = 280
 # Create a flask instance
 app = Flask(__name__)
 bootstrap = Bootstrap(app) # Route and view function
+socketio = SocketIO(app)  # Set up SocketIO
+
 
 # Hash
 bcrypt = Bcrypt(app)
@@ -247,7 +251,6 @@ def addcomment(restaurant):
             return jsonify({'success': False, 'error': 'Not authenticated'})
         
         image_url = None
-        filename = None
         if 'image' in request.files:
          file = request.files['image']
          if file and allowed_file(file.filename):
@@ -255,20 +258,13 @@ def addcomment(restaurant):
             file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename) 
             file.save(file_path)
             image_url = f'/uploads/{filename}'
-
-        if user_comment and filename:  # check for a new comment
+           
+        if user_comment:  # check for a new comment
             comments.insert_one({
             "restaurant": restaurant,
             "comment": user_comment,
             "username": username,
             "image":filename, #storing image 
-            "replies": []
-            })
-        elif user_comment:
-            comments.insert_one({
-            "restaurant": restaurant,
-            "comment": user_comment,
-            "username": username,
             "replies": []
             })
         
@@ -292,6 +288,15 @@ def validate_length():
     text = request.json.get('text', '')
     remaining = CHAR_LIMIT - len(text)
     return jsonify({'remaining': remaining, 'valid': remaining >= 0})
+
+def broadcast_reaction_update(comment_id, likes, dislikes, like_usernames, dislike_usernames):
+    socketio.emit('update_reaction_counts', {
+        'comment_id': comment_id,
+        'likes': likes,
+        'dislikes': dislikes,
+        'like_usernames': like_usernames,
+        'dislike_usernames': dislike_usernames
+    })
 
 @app.route('/react/<string:comment_id>/<string:reaction_type>', methods=['POST'])
 def handle_reaction(comment_id, reaction_type):
@@ -318,7 +323,9 @@ def handle_reaction(comment_id, reaction_type):
         if existing_reaction['type'] == reaction_type:
             # Remove reaction if clicking same button
             reactions.delete_one({'_id': existing_reaction['_id']})
-            return update_reaction_counts(comment_id)
+            reaction_counts = update_reaction_counts(comment_id).json
+            broadcast_reaction_update(comment_id, reaction_counts['likes'], reaction_counts['dislikes'], reaction_counts['like_usernames'], reaction_counts['dislike_usernames'])
+            return jsonify(reaction_counts)
         else:
             # Update reaction if changing from like to dislike or vice versa
             reactions.update_one(
@@ -333,22 +340,31 @@ def handle_reaction(comment_id, reaction_type):
             'type': reaction_type
         })
     
-    return update_reaction_counts(comment_id)
+    # Get updated counts and broadcast to all clients
+    reaction_counts = update_reaction_counts(comment_id).json
+    broadcast_reaction_update(comment_id, reaction_counts['likes'], reaction_counts['dislikes'], reaction_counts['like_usernames'], reaction_counts['dislike_usernames'])
+
+    return jsonify(reaction_counts)
 
 @app.route('/react/<string:comment_id>/count')
 def update_reaction_counts(comment_id):
-    likes = reactions.count_documents({
-        'comment_id': comment_id,
-        'type': 'like'
-    })
-    dislikes = reactions.count_documents({
-        'comment_id': comment_id,
-        'type': 'dislike'
-    })
+    likes = reactions.find({'comment_id': comment_id, 'type': 'like'})
+    dislikes = reactions.find({'comment_id': comment_id, 'type': 'dislike'})
     
+    like_usernames = []
+    dislike_usernames = []
+
+    for reaction in likes:
+        like_usernames.append(reaction['username'])
+
+    for reaction in dislikes:
+        dislike_usernames.append(reaction['username'])
+
     return jsonify({
-        'likes': likes,
-        'dislikes': dislikes
+        'likes': len(like_usernames),
+        'dislikes': len(dislike_usernames),
+        'like_usernames': like_usernames,
+        'dislike_usernames': dislike_usernames
     })
 
 @app.route('/get-user-reaction/<string:comment_id>')
