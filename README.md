@@ -63,7 +63,7 @@ docker compose up --build --force-recreate
 ### November 4 - November 16: Application Objective 2
 - [x] **Arnav** - ~~Break Week~~
 - [x] **Ash** - ~~Break Week~~
-- [ ] **Naomi** - Voting System for Top Item
+- [ ] **Naomi** - ~~Websocket Interactions~~
 - [ ] **Eric** - ~~Break Week~~
 - [ ] **Orn** - ~~Break Week~~
 
