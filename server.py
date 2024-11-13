@@ -248,6 +248,7 @@ def addcomment(restaurant):
             return jsonify({'success': False, 'error': 'Not authenticated'})
         
         image_url = None
+        filename = None
         if 'image' in request.files:
          file = request.files['image']
          if file and allowed_file(file.filename):
@@ -255,16 +256,15 @@ def addcomment(restaurant):
             file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename) 
             file.save(file_path)
             image_url = f'/uploads/{filename}'
-           
-         if user_comment and filename:  # check for a new comment
+
+        if user_comment and filename:  # check for a new comment
             comments.insert_one({
             "restaurant": restaurant,
             "comment": user_comment,
             "username": username,
-            "image":filename, #storing image 
+            "image": filename, #storing image 
             "replies": []
             })
-
         elif user_comment:
             comments.insert_one({
             "restaurant": restaurant,
