@@ -1,3 +1,5 @@
+import eventlet
+eventlet.monkey_patch() # handle WS & async tasks
 from flask import Flask,redirect,url_for, jsonify ,request, flash # type: ignore
 from flask import render_template  # type: ignore
 from flask import make_response # type: ignore
@@ -28,7 +30,7 @@ CHAR_LIMIT = 280
 # Create a flask instance
 app = Flask(__name__)
 bootstrap = Bootstrap(app) # Route and view function
-socketio = SocketIO(app)  # Set up SocketIO
+socketio = SocketIO(app, transports=['websocket'])  # Set up SocketIO to use only WS
 
 # Hash
 bcrypt = Bcrypt(app)
@@ -395,4 +397,5 @@ def get_user_reaction(comment_id):
      
 # Run the app once this file executes
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=8080, debug=True)
+    # app.run(host='0.0.0.0', port=8080, debug=True)
+    socketio.run(app, host='0.0.0.0', port=8080, debug=True, use_reloader=False) # use reloader bc WS can error when server restarts

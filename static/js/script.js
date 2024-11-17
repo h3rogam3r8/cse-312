@@ -194,10 +194,10 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // websockets
-    const socket = io('http://localhost:8080'); // hardcoded port, might need to change for deployment
+    const socket = io('http://localhost:8080/', {transports: ['websocket']}); // use only WS, might need to change for deployment
 
     socket.on('update_reaction_counts', function(data) {
-        console.log(data);
+        // console.log(data);
         const { comment_id, likes, dislikes, like_usernames, dislike_usernames } = data;
         updateCountDisplay(comment_id, likes, dislikes, like_usernames, dislike_usernames);
     });
