@@ -82,18 +82,18 @@ docker compose up --build --force-recreate
 ## Project Part 3 :
 
 ### November 18 - November 21: Application Objective 1
-- [ ] **Arnav** - 
-- [ ] **Ash** - 
-- [ ] **Naomi** - 
-- [ ] **Eric** - 
-- [ ] **Orn** - 
+- [ ] **Arnav** - Break Week
+- [ ] **Ash** - Break Week
+- [ ] **Naomi** - Break Week
+- [ ] **Eric** - Break Week
+- [ ] **Orn** - A Sense of Time
 
 ### November 22 - November 27: Application Objective 2
-- [ ] **Arnav** - 
-- [ ] **Ash** - 
-- [ ] **Naomi** - 
-- [ ] **Eric** - 
-- [ ] **Orn** - 
+- [ ] **Arnav** - Break Week
+- [ ] **Ash** - Break Week
+- [ ] **Naomi** - Break Week
+- [ ] **Eric** - DoS Protection
+- [ ] **Orn** - Break Week
 
 ### November 28 - November 30: Application Objective 3
 - [ ] **Arnav** - 
