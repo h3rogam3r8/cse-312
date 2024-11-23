@@ -1,6 +1,4 @@
-import eventlet
-eventlet.monkey_patch() # handle WS & async tasks
-from flask import Flask,redirect,url_for, jsonify ,request, flash # type: ignore
+from flask import Flask,redirect,url_for, jsonify ,request, flash, make_response, after_this_request # type: ignore
 from flask import render_template  # type: ignore
 from flask import make_response # type: ignore
 from flask_bootstrap5 import Bootstrap # type: ignore
@@ -15,7 +13,9 @@ import os
 from flask import send_from_directory       # type: ignore
 from os.path import join, dirname, realpath
 import mimetypes
-from flask_socketio import SocketIO, emit   # type: ignore
+from flask_socketio import SocketIO, emit, join_room   # type: ignore
+import uuid
+import time
 
 # Database set up
 mongo_client = MongoClient('mongo')
@@ -30,7 +30,7 @@ CHAR_LIMIT = 280
 # Create a flask instance
 app = Flask(__name__)
 bootstrap = Bootstrap(app) # Route and view function
-socketio = SocketIO(app, transports=['websocket'])  # Set up SocketIO to use only WS
+socketio = SocketIO(app)  # Set up SocketIO
 
 # Hash
 bcrypt = Bcrypt(app)
@@ -395,7 +395,188 @@ def get_user_reaction(comment_id):
     
     return jsonify({'reaction': reaction['type'] if reaction else None})
      
+
+
+@app.before_request
+def assign_user_id():
+    user_id = request.cookies.get('user_id')
+    if not user_id:
+        user_id = str(uuid.uuid4())
+        @after_this_request
+        def set_cookie(response):
+            response.set_cookie('user_id', user_id)
+            return response
+    request.user_id = user_id
+
+
+active_polls = {}  # active polls
+
+@app.route('/start_poll/<restaurant>', methods=['POST'])
+def start_poll(restaurant):
+    # removed authentication check to allow any user to start a poll (going to let any user interact with poll)
+
+    if restaurant in active_polls:
+        return jsonify({'success': False, 'error': 'A poll is already active for this restaurant.'}), 400
+
+    dishes = request.json.get('dishes')
+    if not dishes:
+        return jsonify({'success': False, 'error': 'No dishes provided.'}), 400
+
+    # set poll duration (60 seconds)
+    poll_duration = 60
+    end_time = time.time() + poll_duration
+
+    # poll data
+    poll = {
+        'question': 'Which dish do you prefer?',
+        'options': {dish: 0 for dish in dishes},
+        'end_time': end_time,
+        'votes': {}  
+    }
+    active_polls[restaurant] = poll
+
+    # notification that the restaurant room that a new poll has started
+    socketio.emit('poll_started', {
+        'question': poll['question'],
+        'options': poll['options'],
+        'end_time': poll['end_time']
+    }, room=restaurant)
+
+    return jsonify({'success': True})
+
+
+@app.route('/vote_poll/<restaurant>', methods=['POST'])
+def vote_poll(restaurant):
+    user_id = request.user_id
+
+    if restaurant not in active_polls:
+        return jsonify({'success': False, 'error': 'No active poll for this restaurant.'}), 400
+
+    option = request.json.get('option')
+    poll = active_polls[restaurant]
+
+    # check if poll ended
+    if time.time() >= poll['end_time']:
+        del active_polls[restaurant]
+        # notification that poll ended
+        socketio.emit('poll_ended', {}, room=restaurant)
+        return jsonify({'success': False, 'error': 'Poll has ended.'}), 400
+
+    previous_vote = poll['votes'].get(user_id)
+    if previous_vote:
+        poll['options'][previous_vote] -= 1
+
+    poll['votes'][user_id] = option
+    poll['options'][option] += 1
+
+    socketio.emit('poll_vote_update', {'options': poll['options']}, room=restaurant)
+
+    return jsonify({'success': True})
+
+
+@socketio.on('join_restaurant')
+def on_join(data):
+    restaurant = data['restaurant']
+    join_room(restaurant)
+    if restaurant in active_polls:
+        poll = active_polls[restaurant]
+        emit('poll_started', {
+            'question': poll['question'],
+            'options': poll['options'],
+            'end_time': poll['end_time']
+        }, room=request.sid)
+
+
+def restaurant_page(restaurant):
+    all_comments = list(comments.find({"restaurant": restaurant}))  
+
+    # dishes for each restaurant
+    dishes_dict = {
+        'austin_kitchen': [
+            'Bulgogi Over Rice',
+            'Donkatsu',
+            'Kimchi Bokkeumbap',
+            'Spicy Pork Over Rice',
+            'Soondooboo',
+            'Pork Dumplings',
+            'Kimchi Side'
+        ],
+        'bollywood_bistro': [
+            'Chicken Biryani',
+            'Chicken Kebab',
+            'Chicken Samosa',
+            'Garlic Naan',
+            'Tandoori Chicken'
+        ],
+        'chick_mex': [
+            'Burrito Bowl',
+            'Chicken Over Rice',
+            'Double Chicken Burger',
+            'Fried Chicken',
+            'Gyro',
+            'Tacos'
+        ],
+        'dancing_chopsticks': [
+            'Beef Teriyaki',
+            'Chicken Katsu',
+            'Chicken Yaki Udon',
+            'Pork Katsu',
+            'Tokyo Chicken',
+            'Yakitori'
+        ],
+        'kung_fu_tea': [
+            'Classic',
+            'Milk Cap',
+            'Milk Strike',
+            'Milk Tea',
+            'Punch',
+            'Slush'
+        ],
+        'la_rosa': [
+            'Buffalo Chicken Wings',
+            'Cheese Pizza',
+            'Pepperoni Pizza',
+            'Garlic Knots',
+            'Onion Rings',
+            'French Fries'
+        ],
+        'poke_factory': [
+            'Ahi Poke Bowl',
+            'Salmon Poke Bowl',
+            'Shrimp Poke Bowl',
+            'Spicy Crab Poke Bowl',
+            'Spicy Tuna Poke Bowl',
+            'Teriyaki Chicken Poke Bowl'
+        ],
+        'subway': [
+            'Steak and Bacon',
+            'Chicken Rancher',
+            'Cold Cut Combo',
+            'Steak & Cheese',
+            'Black Forest Ham',
+            'Sweet Onion Chicken Teriyaki'
+        ],
+        'young_chow': [
+            'Beef Lo Mein',
+            'Hunan Chicken',
+            'Hunan Shrimp',
+            'Kung Pao Chicken',
+            'Szechuan Beef',
+            'Young Chow Fried Rice'
+        ],
+    }
+
+    # Get the dishes for the current restaurant
+    dishes = dishes_dict.get(restaurant, [])
+
+    return render_with_auth(
+        f'html/menu/{restaurant}.html',
+        comments=all_comments,
+        restaurant_name=restaurant,
+        dishes=dishes
+    )
+
+
 # Run the app once this file executes
 if __name__ == "__main__":
-    # app.run(host='0.0.0.0', port=8080, debug=True)
-    socketio.run(app, host='0.0.0.0', port=8080, debug=True, use_reloader=False) # use reloader bc WS can error when server restarts
+    socketio.run(app, host='0.0.0.0', port=8080, debug=True)
