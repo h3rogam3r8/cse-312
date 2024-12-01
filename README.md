@@ -1,10 +1,10 @@
 # UB Eats
 ### Framework: Flask / Python
-This is @7's CSE 312 Final Project. This repository contains the necessary files to launch our web application. Click on the drop-down arrows to get more information on each Project Part or Testing procedure. The publicly available deployment is at ubcommons.com.
+This is @7's CSE 312 Final Project. This repository contains the necessary files to launch our web application. Click on the drop-down arrows to get more information on each Project Part or Testing procedure. The publicly available deployment is at [ubcommons.com](https://ubcommons.com "Visit our website"). 
 
 ![UBeats Overview](static/video/docker.gif)
 
-</details> <details> <summary> <h2> General Testing Procedure : </h2></summary>
+</details> <details> <summary> <h2> How to Locally Run: </h2></summary>
 
 Clone the repository:
 
