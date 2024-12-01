@@ -199,7 +199,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // websockets
-    const socket = io('https://ubcommons.com/', {transports: ['websocket']});
+    const socket = io('https://ubcommons.com', {transports: ['websocket']});
 
     socket.on('update_reaction_counts', function(data) {
         console.log(data);
