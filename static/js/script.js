@@ -199,7 +199,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // websockets
-    const socket = io('http://localhost:8080'); // hardcoded port, might need to change for deployment
+    const socket = io('https://ubcommons.com'); // hardcoded port, might need to change for deployment
 
     socket.on('update_reaction_counts', function(data) {
         console.log(data);
