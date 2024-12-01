@@ -2,6 +2,11 @@ function initialize() {
     console.log("Page initialized");
 }
 
+const storedToggle = localStorage.getItem('darkMode');
+if (storedToggle === 'enabled') {
+    document.documentElement.classList.add('dark-mode');
+}
+
 //button for nav-bar
 const button = document.querySelector('button');
 button.addEventListener('mouseover', () => {

@@ -243,11 +243,14 @@ def restaurant_page(restaurant):
     all_comments = list(comments.find({"restaurant": restaurant}))  
     #print(all_comments)
     #escape_comments = html.escape(all_comments)
-    return render_with_auth(
-            f'html/menu/{restaurant}.html',
-            comments=all_comments,
-            restaurant_name=restaurant
-        )
+    if restaurant != 'favicon':
+        return render_with_auth(
+                f'html/menu/{restaurant}.html',
+                comments=all_comments,
+                restaurant_name=restaurant
+            )
+    elif restaurant == 'favicon':
+        return
 
 # Changed this function to work with AJAX and always redirect to the same page
 @app.route('/comment/<restaurant>', methods=['POST'])
@@ -599,13 +602,15 @@ def restaurant_page(restaurant):
     # Get the dishes for the current restaurant
     dishes = dishes_dict.get(restaurant, [])
 
-    return render_with_auth(
-        f'html/menu/{restaurant}.html',
-        comments=all_comments,
-        restaurant_name=restaurant,
-        dishes=dishes
-    )
-
+    if restaurant != 'favicon':
+        return render_with_auth(
+            f'html/menu/{restaurant}.html',
+            comments=all_comments,
+            restaurant_name=restaurant,
+            dishes=dishes
+        )
+    elif restaurant == 'favicon':
+        return
 
 # Run the app once this file executes
 if __name__ == "__main__":

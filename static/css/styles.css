@@ -527,3 +527,19 @@ textarea {
 .badge.bg-warning {
   background-color: #FFD700 !important;
 }
+
+.text-decoration-none {
+  color: var(--secondary-color);
+}
+
+.dark-mode .text-decoration-none {
+  color: var(--secondary-color) !important;
+}
+
+.text-decoration-none:hover {
+  color: #043b76;
+}
+
+.dark-mode .text-decoration-none:hover {
+  color: #480685 !important;
+}
