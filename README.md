@@ -1,6 +1,6 @@
 # UB Eats
 ### Framework: Flask / Python
-This is @7's CSE 312 Final Project. This repository contains the necessary files to launch our web application. Click on the drop-down arrows to get more information on each Project Part or Testing procedure.
+This is @7's CSE 312 Final Project. This repository contains the necessary files to launch our web application. Click on the drop-down arrows to get more information on each Project Part or Testing procedure. The publicly available deployment is at ubcommons.com.
 
 ![UBeats Overview](static/video/docker.gif)
 
@@ -30,7 +30,7 @@ on their eyes, especially during low-light conditions.
 <h3> Testing Procedure: </h3>
 
 ```bash
-1. Navigate to insert web domain we have not decided yet.
+1. Navigate to ubcommons.com.
 2. Click on the Dark Mode button and verify your screen is now displaying a dark mode.
 3. Click on the Light Mode button and verify your screen has gone back to light mode.
 4. Click on another restaurant page and repeat steps 2 and 3.
