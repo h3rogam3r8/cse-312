@@ -6,3 +6,4 @@ flask_pymongo
 flask_bcrypt
 flask_socketio
 eventlet
+flask-limiter
