@@ -497,3 +497,33 @@ textarea {
   color: #FFFFFF; /* Consistent with the heading */
   text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
 }
+
+/* Poll Section Styling */
+#pollSection {
+  margin-top: 20px;
+}
+
+#pollQuestion {
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+#pollOptions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+}
+
+#pollOptions .btn {
+  margin: 5px;
+}
+
+#pollTimer {
+  margin-top: 10px;
+  font-style: italic;
+}
+
+.badge.bg-warning {
+  background-color: #FFD700 !important;
+}

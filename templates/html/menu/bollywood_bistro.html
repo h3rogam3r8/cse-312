@@ -97,6 +97,7 @@
     <!-- Comments Section -->
     <div id="commentsSection">
         <h5 class="mb-4">Customer Reviews</h5>
+        <p class="text-center text-muted small">Hover over the buttons to see who likes (or dislikes) their cheese drippy bruh! (updated in real time...)</p>
         <!-- Comments will load here -->
         {% for comment in comments %}
         <div class="comment mb-3 border p-3">
@@ -152,6 +153,27 @@
         {% endfor %}
     </div>
 </div>
+
+<br><br>
+<!-- Start Poll Button -->
+<div class="text-center">
+    <button id="startPollBtn" class="btn btn-primary mb-3">Start Poll</button>
+</div>
+
+<!-- Dishes Data -->
+<script id="dishesData" type="application/json">
+    {{ dishes | tojson }}
+</script>
+
+<!-- Poll Section -->
+<div id="pollSection" style="display: none;">
+    <div class="container d-flex flex-column align-items-center">
+        <h4 id="pollQuestion" class="text-center"></h4>
+        <div id="pollOptions" class="text-center"></div>
+        <p id="pollTimer" class="text-center"></p>
+    </div>
+</div>
+<br><br>
 
 <!-- Location Section -->
 <div class="container text-center py-2 mt-5">
