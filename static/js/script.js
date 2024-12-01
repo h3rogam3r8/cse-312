@@ -199,7 +199,12 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // websockets
-    const socket = io('https://ubcommons.com'); // hardcoded port, might need to change for deployment
+    const socket = io('https://ubcommons.com', {
+        reconnection: true,          
+        reconnectionAttempts: 5,    
+        reconnectionDelay: 1000,     
+        reconnectionDelayMax: 5000   
+    });
 
     socket.on('update_reaction_counts', function(data) {
         console.log(data);
