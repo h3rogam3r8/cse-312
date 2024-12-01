@@ -23,8 +23,8 @@ docker compose up --build --force-recreate
 <h3> Description: </h3>
 
 ```bash
-Dark mode is an additional theme that allows users to enjoy our website without added strain on their eyes, especially 
-during low-light conditions.
+Dark mode is an additional theme that allows users to enjoy our website without added strain 
+on their eyes, especially during low-light conditions.
 ```
 
 <h3> Testing Procedure: </h3>
