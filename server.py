@@ -35,7 +35,7 @@ COOLDOWN = 30
 # Create a flask instance
 app = Flask(__name__)
 bootstrap = Bootstrap(app) # Route and view function
-socketio = SocketIO(app)  # Set up SocketIO
+socketio = SocketIO(app, threaded=True)  # Set up SocketIO
 
 # Create a limiter instance to limit the rate per user
 limiter = Limiter(
