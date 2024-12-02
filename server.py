@@ -13,7 +13,7 @@ import os
 from flask import send_from_directory       # type: ignore
 from os.path import join, dirname, realpath
 import mimetypes
-from flask_socketio import SocketIO, emit, join_room   # type: ignore
+#from flask_socketio import SocketIO, emit, join_room   # type: ignore
 from flask_limiter import Limiter # type: ignore
 from flask_limiter.util import get_remote_address # type: ignore
 import uuid
@@ -235,22 +235,22 @@ def logout():
 def add_header(response):
     response.headers['X-Content-Type-Options'] = 'nosniff'
     return response
+ 
+@app.route('/<restaurant>', methods=['GET','POST'])
+def restaurant_page(restaurant):
+    # fetch restaurant details and comments
 
-# @app.route('/<restaurant>', methods=['GET','POST'])
-# def restaurant_page(restaurant):
-#     # fetch restaurant details and comments
-    
-#     all_comments = list(comments.find({"restaurant": restaurant}))  
-#     #print(all_comments)
-#     #escape_comments = html.escape(all_comments)
-#     if restaurant != 'favicon':
-#         return render_with_auth(
-#                 f'html/menu/{restaurant}.html',
-#                 comments=all_comments,
-#                 restaurant_name=restaurant
-#             )
-#     elif restaurant == 'favicon':
-#         return
+    all_comments = list(comments.find({"restaurant": restaurant}))  
+    #print(all_comments)
+    #escape_comments = html.escape(all_comments)
+    if restaurant != 'favicon':
+        return render_with_auth(
+                f'html/menu/{restaurant}.html',
+                comments=all_comments,
+                restaurant_name=restaurant
+            )
+    elif restaurant == 'favicon':
+        return
 
 # Changed this function to work with AJAX and always redirect to the same page
 @app.route('/comment/<restaurant>', methods=['POST'])
@@ -418,16 +418,16 @@ def get_user_reaction(comment_id):
     return jsonify({'reaction': reaction['type'] if reaction else None})
 
 
-# @app.before_request
-# def assign_user_id():
-#     user_id = request.cookies.get('user_id')
-#     if not user_id:
-#         user_id = str(uuid.uuid4())
-#         @after_this_request
-#         def set_cookie(response):
-#             response.set_cookie('user_id', user_id)
-#             return response
-#     request.user_id = user_id
+@app.before_request
+def assign_user_id():
+    user_id = request.cookies.get('user_id')
+    if not user_id:
+        user_id = str(uuid.uuid4())
+        @after_this_request
+        def set_cookie(response):
+            response.set_cookie('user_id', user_id)
+            return response
+    request.user_id = user_id
 
 
 # active_polls = {}  # active polls
