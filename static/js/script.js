@@ -211,19 +211,19 @@ document.addEventListener('DOMContentLoaded', function() {
         const container = document.querySelector(`[data-comment-id="${commentId}"]`).parentElement;
         const likeCount = container.querySelector('.like-count');
         const dislikeCount = container.querySelector('.dislike-count');
-        // const likeButton = container.querySelector('.like-btn');
-        // const dislikeButton = container.querySelector('.dislike-btn');
+        const likeButton = container.querySelector('.like-btn');
+        const dislikeButton = container.querySelector('.dislike-btn');
 
         // Update like/dislike counts
         likeCount.textContent = likes > 0 ? likes : '';
         dislikeCount.textContent = dislikes > 0 ? dislikes : '';
 
-        // likeUsernames = Array.isArray(likeUsernames) ? likeUsernames : [];
-        // dislikeUsernames = Array.isArray(dislikeUsernames) ? dislikeUsernames : [];
+        likeUsernames = Array.isArray(likeUsernames) ? likeUsernames : [];
+        dislikeUsernames = Array.isArray(dislikeUsernames) ? dislikeUsernames : [];
 
         // Add usernames to tooltips on hover
-        // likeButton.title = likeUsernames.length > 0 ? likeUsernames.join(', ') : 'No likes yet';
-        // dislikeButton.title = dislikeUsernames.length > 0 ? dislikeUsernames.join(', ') : 'No dislikes yet';
+        likeButton.title = likeUsernames.length > 0 ? likeUsernames.join(', ') : 'No likes yet';
+        dislikeButton.title = dislikeUsernames.length > 0 ? dislikeUsernames.join(', ') : 'No dislikes yet';
     }
 
     // Function to ensure mutually exclusive likes and dislikes
