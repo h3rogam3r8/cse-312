@@ -1,3 +1,5 @@
+import eventlet
+eventlet.monkey_patch()
 from flask import Flask,redirect,url_for, jsonify ,request, flash, make_response, after_this_request # type: ignore
 from flask import render_template  # type: ignore
 from flask import make_response # type: ignore
@@ -603,4 +605,4 @@ def restaurant_page(restaurant):
 
 # Run the app once this file executes
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=8080, debug=True)
+    socketio.run(app, host='0.0.0.0', port=8080, debug=True, use_reloader=False, allow_unsafe_werkzeug=True)

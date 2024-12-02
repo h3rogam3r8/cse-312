@@ -5,4 +5,5 @@ flask-bootstrap5
 flask_pymongo
 flask_bcrypt
 flask-socketio
+eventlet
 flask-limiter
