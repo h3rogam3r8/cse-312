@@ -1,5 +1,3 @@
-import eventlet         # type: ignore
-eventlet.monkey_patch() # handle WS & async tasks
 from flask import Flask,redirect,url_for, jsonify ,request, flash, make_response, after_this_request # type: ignore
 from flask import render_template  # type: ignore
 from flask import make_response # type: ignore
