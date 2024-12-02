@@ -199,13 +199,13 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // websockets
-    // const socket = io.connect(location.protocol + '//' + window.location.hostname + ':' + location.port);
+    const socket = io.connect(location.protocol + '//' + window.location.hostname + ':' + location.port);
 
-    // socket.on('update_reaction_counts', function(data) {
-    //     console.log(data);
-    //     const { comment_id, likes, dislikes, like_usernames, dislike_usernames } = data;
-    //     updateCountDisplay(comment_id, likes, dislikes, like_usernames, dislike_usernames);
-    // });
+    socket.on('update_reaction_counts', function(data) {
+        console.log(data);
+        const { comment_id, likes, dislikes, like_usernames, dislike_usernames } = data;
+        updateCountDisplay(comment_id, likes, dislikes, like_usernames, dislike_usernames);
+    });
 
     function updateCountDisplay(commentId, likes, dislikes, likeUsernames, dislikeUsernames) {
         const container = document.querySelector(`[data-comment-id="${commentId}"]`).parentElement;
