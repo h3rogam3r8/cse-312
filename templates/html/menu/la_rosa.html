@@ -92,7 +92,9 @@
 <!-- Comment, reply, and star rating section -->
 <div class="container mt-5">
     <h4 class="text-primary mb-4">Leave a Review</h4>
-
+    <br>
+    <p class="text-center text-muted small">You must be logged in to interact with or create posts!</p>
+    <br>
     <!-- Form for posting a comment -->
     <form id="commentForm" class="mb-4" onsubmit="return false;">
         <div class="mb-3">
@@ -112,8 +114,6 @@
     <!-- Comments Section -->
     <div id="commentsSection">
         <h5 class="mb-4">Customer Reviews</h5>
-        <br>
-        <p class="text-center text-muted small">You must be logged in to interact with or create posts!</p>
         <!-- Comments will load here -->
         {% for comment in comments %}
         <div class="comment mb-3 border p-3">
