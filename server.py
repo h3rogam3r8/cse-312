@@ -15,7 +15,7 @@ import os
 from flask import send_from_directory       # type: ignore
 from os.path import join, dirname, realpath
 import mimetypes
-#from flask_socketio import SocketIO, emit, join_room   # type: ignore
+from flask_socketio import SocketIO, emit, join_room   # type: ignore
 from flask_limiter import Limiter # type: ignore
 from flask_limiter.util import get_remote_address # type: ignore
 import uuid
