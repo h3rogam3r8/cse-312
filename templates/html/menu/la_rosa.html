@@ -99,6 +99,8 @@
             <label for="userComment" class="form-label">Your Comment</label>
             <textarea class="form-control" id="userComment" name="userComment" rows="3" placeholder="Share your experience..." required maxlength="1000"></textarea>
         </div>
+        <br>
+        <p class="text-center text-muted small">Comments must contain either text, or text and an image!</p>
         <div class="mb-3">
             <label for="fileUpload" class="form-label">Upload Image</label> 
             <input type="file" id="image" name="image" class="form-control" accept="image/*">
@@ -110,6 +112,7 @@
     <!-- Comments Section -->
     <div id="commentsSection">
         <h5 class="mb-4">Customer Reviews</h5>
+        <br>
         <p class="text-center text-muted small">You must be logged in to interact with or create posts!</p>
         <!-- Comments will load here -->
         {% for comment in comments %}
