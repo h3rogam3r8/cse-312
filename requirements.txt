@@ -5,5 +5,4 @@ flask-bootstrap5
 flask_pymongo
 flask_bcrypt
 flask-socketio
-python-socketio
 flask-limiter
