@@ -199,7 +199,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // websockets
-    const socket = io('https://ubcommons.com:8080');
+    const socket = io.connect(location.protocol + '//' + window.location.hostname + ':' + location.port, {transports: ['websocket']});
 
     socket.on('update_reaction_counts', function(data) {
         console.log(data);
@@ -359,12 +359,11 @@ function showReplies(commentId, button) {
     }
 }
 
-
 // Poll Functionality
 const restaurant = window.location.pathname.split('/').pop();
-const socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port);
+const socket2 = io.connect(location.protocol + '//' + window.location.hostname + ':' + location.port, {transports: ['websocket']});
 
-socket.emit('join_restaurant', { 'restaurant': restaurant });
+socket2.emit('join_restaurant', { 'restaurant': restaurant });
 
 const startPollBtn = document.getElementById('startPollBtn');
 const pollSection = document.getElementById('pollSection');
@@ -391,7 +390,7 @@ if (startPollBtn) {
     });
 }
 
-socket.on('poll_started', data => {
+socket2.on('poll_started', data => {
     pollSection.style.display = 'block';
     pollQuestion.textContent = data.question;
     pollOptionsDiv.innerHTML = '';
@@ -417,7 +416,7 @@ socket.on('poll_started', data => {
     updateTimer(data.end_time);
 });
 
-socket.on('poll_vote_update', data => {
+socket2.on('poll_vote_update', data => {
     const buttons = pollOptionsDiv.getElementsByTagName('button');
     Array.from(buttons).forEach(button => {
         const option = button.textContent.split(' (')[0];
@@ -425,7 +424,7 @@ socket.on('poll_vote_update', data => {
     });
 });
 
-socket.on('poll_ended', () => {
+socket2.on('poll_ended', () => {
     pollTimer.textContent = 'Poll has ended.';
     const buttons = pollOptionsDiv.getElementsByTagName('button');
     Array.from(buttons).forEach(button => {

@@ -1,3 +1,5 @@
+import eventlet         # type: ignore
+eventlet.monkey_patch() # handle WS & async tasks
 from flask import Flask,redirect,url_for, jsonify ,request, flash, make_response, after_this_request # type: ignore
 from flask import render_template  # type: ignore
 from flask import make_response # type: ignore
@@ -35,7 +37,7 @@ COOLDOWN = 30
 # Create a flask instance
 app = Flask(__name__)
 bootstrap = Bootstrap(app) # Route and view function
-socketio = SocketIO(app)  # Set up SocketIO
+socketio = SocketIO(app, transports=['websocket'])  # Set up SocketIO
 
 # Create a limiter instance to limit the rate per user
 limiter = Limiter(
@@ -614,4 +616,4 @@ def restaurant_page(restaurant):
 
 # Run the app once this file executes
 if __name__ == "__main__":
-    socketio.run(app, host='0.0.0.0', port=8080, debug=True)
+    socketio.run(app, host='0.0.0.0', port=8080, debug=True, use_reloader=False)
