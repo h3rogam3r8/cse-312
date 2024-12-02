@@ -31,42 +31,42 @@ reactions = db["reactions"]
 
 CHAR_LIMIT = 280
 
-user_cooldown = {}
-COOLDOWN = 30
+# user_cooldown = {}
+# COOLDOWN = 30
 
 # Create a flask instance
 app = Flask(__name__)
 bootstrap = Bootstrap(app) # Route and view function
-socketio = SocketIO(app, transports=['websocket'])  # Set up SocketIO
+# socketio = SocketIO(app)  # Set up SocketIO
 
-# Create a limiter instance to limit the rate per user
-limiter = Limiter(
-    get_remote_address,
-    app=app,
-    default_limits=["50 per 10 seconds"],
-)
+# # Create a limiter instance to limit the rate per user
+# limiter = Limiter(
+#     get_remote_address,
+#     app=app,
+#     default_limits=["50 per 10 seconds"],
+# )
 
 # Hash
 bcrypt = Bcrypt(app)
 
-@app.errorhandler(429)
-def ratelimit_handler(e):
-    user_ip = get_remote_address()
-    current_time = time.time()
-    elapsed = 0
-    new_cooldown = COOLDOWN
-    if user_ip not in user_cooldown:
-        user_cooldown[user_ip] = current_time
-    else:
-        prev_time = user_cooldown[user_ip]
-        elapsed = current_time - prev_time
-        new_cooldown = COOLDOWN - elapsed
-        if new_cooldown > 0:
-            user_cooldown[user_ip] = current_time
-            return make_response(jsonify({"error": f"Whoaaa there, too many requests! Slow down! Please wait {str(new_cooldown)} seconds."}), 429)
-        else:
-            del user_cooldown[user_ip]
-    return make_response(jsonify({"error": "Whoaaa there, too many requests! Slow down!"}), 429)
+# @app.errorhandler(429)
+# def ratelimit_handler(e):
+#     user_ip = get_remote_address()
+#     current_time = time.time()
+#     elapsed = 0
+#     new_cooldown = COOLDOWN
+#     if user_ip not in user_cooldown:
+#         user_cooldown[user_ip] = current_time
+#     else:
+#         prev_time = user_cooldown[user_ip]
+#         elapsed = current_time - prev_time
+#         new_cooldown = COOLDOWN - elapsed
+#         if new_cooldown > 0:
+#             user_cooldown[user_ip] = current_time
+#             return make_response(jsonify({"error": f"Whoaaa there, too many requests! Slow down! Please wait {str(new_cooldown)} seconds."}), 429)
+#         else:
+#             del user_cooldown[user_ip]
+#     return make_response(jsonify({"error": "Whoaaa there, too many requests! Slow down!"}), 429)
 
 #for images upload
 UPLOAD_FOLDER = 'uploads'
@@ -238,21 +238,21 @@ def add_header(response):
     response.headers['X-Content-Type-Options'] = 'nosniff'
     return response
 
-@app.route('/<restaurant>', methods=['GET','POST'])
-def restaurant_page(restaurant):
-    # fetch restaurant details and comments
+# @app.route('/<restaurant>', methods=['GET','POST'])
+# def restaurant_page(restaurant):
+#     # fetch restaurant details and comments
     
-    all_comments = list(comments.find({"restaurant": restaurant}))  
-    #print(all_comments)
-    #escape_comments = html.escape(all_comments)
-    if restaurant != 'favicon':
-        return render_with_auth(
-                f'html/menu/{restaurant}.html',
-                comments=all_comments,
-                restaurant_name=restaurant
-            )
-    elif restaurant == 'favicon':
-        return
+#     all_comments = list(comments.find({"restaurant": restaurant}))  
+#     #print(all_comments)
+#     #escape_comments = html.escape(all_comments)
+#     if restaurant != 'favicon':
+#         return render_with_auth(
+#                 f'html/menu/{restaurant}.html',
+#                 comments=all_comments,
+#                 restaurant_name=restaurant
+#             )
+#     elif restaurant == 'favicon':
+#         return
 
 # Changed this function to work with AJAX and always redirect to the same page
 @app.route('/comment/<restaurant>', methods=['POST'])
@@ -331,14 +331,14 @@ def validate_length():
     remaining = CHAR_LIMIT - len(text)
     return jsonify({'remaining': remaining, 'valid': remaining >= 0})
 
-def broadcast_reaction_update(comment_id, likes, dislikes, like_usernames, dislike_usernames):
-    socketio.emit('update_reaction_counts', {
-        'comment_id': comment_id,
-        'likes': likes,
-        'dislikes': dislikes,
-        'like_usernames': like_usernames,
-        'dislike_usernames': dislike_usernames
-    })
+# def broadcast_reaction_update(comment_id, likes, dislikes, like_usernames, dislike_usernames):
+#     socketio.emit('update_reaction_counts', {
+#         'comment_id': comment_id,
+#         'likes': likes,
+#         'dislikes': dislikes,
+#         'like_usernames': like_usernames,
+#         'dislike_usernames': dislike_usernames
+#     })
 
 @app.route('/react/<string:comment_id>/<string:reaction_type>', methods=['POST'])
 def handle_reaction(comment_id, reaction_type):
@@ -365,9 +365,7 @@ def handle_reaction(comment_id, reaction_type):
         if existing_reaction['type'] == reaction_type:
             # Remove reaction if clicking same button
             reactions.delete_one({'_id': existing_reaction['_id']})
-            reaction_counts = update_reaction_counts(comment_id).json
-            broadcast_reaction_update(comment_id, reaction_counts['likes'], reaction_counts['dislikes'], reaction_counts['like_usernames'], reaction_counts['dislike_usernames'])
-            return jsonify(reaction_counts)
+            return update_reaction_counts(comment_id)
         else:
             # Update reaction if changing from like to dislike or vice versa
             reactions.update_one(
@@ -382,31 +380,22 @@ def handle_reaction(comment_id, reaction_type):
             'type': reaction_type
         })
     
-    # Get updated counts and broadcast to all clients
-    reaction_counts = update_reaction_counts(comment_id).json
-    broadcast_reaction_update(comment_id, reaction_counts['likes'], reaction_counts['dislikes'], reaction_counts['like_usernames'], reaction_counts['dislike_usernames'])
-
-    return jsonify(reaction_counts)
+    return update_reaction_counts(comment_id)
 
 @app.route('/react/<string:comment_id>/count')
 def update_reaction_counts(comment_id):
-    likes = reactions.find({'comment_id': comment_id, 'type': 'like'})
-    dislikes = reactions.find({'comment_id': comment_id, 'type': 'dislike'})
+    likes = reactions.count_documents({
+        'comment_id': comment_id,
+        'type': 'like'
+    })
+    dislikes = reactions.count_documents({
+        'comment_id': comment_id,
+        'type': 'dislike'
+    })
     
-    like_usernames = []
-    dislike_usernames = []
-
-    for reaction in likes:
-        like_usernames.append(reaction['username'])
-
-    for reaction in dislikes:
-        dislike_usernames.append(reaction['username'])
-
     return jsonify({
-        'likes': len(like_usernames),
-        'dislikes': len(dislike_usernames),
-        'like_usernames': like_usernames,
-        'dislike_usernames': dislike_usernames
+        'likes': likes,
+        'dislikes': dislikes
     })
 
 @app.route('/get-user-reaction/<string:comment_id>')
@@ -429,97 +418,96 @@ def get_user_reaction(comment_id):
     })
     
     return jsonify({'reaction': reaction['type'] if reaction else None})
-     
 
 
-@app.before_request
-def assign_user_id():
-    user_id = request.cookies.get('user_id')
-    if not user_id:
-        user_id = str(uuid.uuid4())
-        @after_this_request
-        def set_cookie(response):
-            response.set_cookie('user_id', user_id)
-            return response
-    request.user_id = user_id
+# @app.before_request
+# def assign_user_id():
+#     user_id = request.cookies.get('user_id')
+#     if not user_id:
+#         user_id = str(uuid.uuid4())
+#         @after_this_request
+#         def set_cookie(response):
+#             response.set_cookie('user_id', user_id)
+#             return response
+#     request.user_id = user_id
 
 
-active_polls = {}  # active polls
+# active_polls = {}  # active polls
 
-@app.route('/start_poll/<restaurant>', methods=['POST'])
-def start_poll(restaurant):
-    # removed authentication check to allow any user to start a poll (going to let any user interact with poll)
+# @app.route('/start_poll/<restaurant>', methods=['POST'])
+# def start_poll(restaurant):
+#     # removed authentication check to allow any user to start a poll (going to let any user interact with poll)
 
-    if restaurant in active_polls:
-        return jsonify({'success': False, 'error': 'A poll is already active for this restaurant.'}), 400
+#     if restaurant in active_polls:
+#         return jsonify({'success': False, 'error': 'A poll is already active for this restaurant.'}), 400
 
-    dishes = request.json.get('dishes')
-    if not dishes:
-        return jsonify({'success': False, 'error': 'No dishes provided.'}), 400
+#     dishes = request.json.get('dishes')
+#     if not dishes:
+#         return jsonify({'success': False, 'error': 'No dishes provided.'}), 400
 
-    # set poll duration (60 seconds)
-    poll_duration = 60
-    end_time = time.time() + poll_duration
+#     # set poll duration (60 seconds)
+#     poll_duration = 60
+#     end_time = time.time() + poll_duration
 
-    # poll data
-    poll = {
-        'question': 'Which dish do you prefer?',
-        'options': {dish: 0 for dish in dishes},
-        'end_time': end_time,
-        'votes': {}  
-    }
-    active_polls[restaurant] = poll
+#     # poll data
+#     poll = {
+#         'question': 'Which dish do you prefer?',
+#         'options': {dish: 0 for dish in dishes},
+#         'end_time': end_time,
+#         'votes': {}  
+#     }
+#     active_polls[restaurant] = poll
 
-    # notification that the restaurant room that a new poll has started
-    socketio.emit('poll_started', {
-        'question': poll['question'],
-        'options': poll['options'],
-        'end_time': poll['end_time']
-    }, room=restaurant)
+#     # notification that the restaurant room that a new poll has started
+#     socketio.emit('poll_started', {
+#         'question': poll['question'],
+#         'options': poll['options'],
+#         'end_time': poll['end_time']
+#     }, room=restaurant)
 
-    return jsonify({'success': True})
-
-
-@app.route('/vote_poll/<restaurant>', methods=['POST'])
-def vote_poll(restaurant):
-    user_id = request.user_id
-
-    if restaurant not in active_polls:
-        return jsonify({'success': False, 'error': 'No active poll for this restaurant.'}), 400
-
-    option = request.json.get('option')
-    poll = active_polls[restaurant]
-
-    # check if poll ended
-    if time.time() >= poll['end_time']:
-        del active_polls[restaurant]
-        # notification that poll ended
-        socketio.emit('poll_ended', {}, room=restaurant)
-        return jsonify({'success': False, 'error': 'Poll has ended.'}), 400
-
-    previous_vote = poll['votes'].get(user_id)
-    if previous_vote:
-        poll['options'][previous_vote] -= 1
-
-    poll['votes'][user_id] = option
-    poll['options'][option] += 1
-
-    socketio.emit('poll_vote_update', {'options': poll['options']}, room=restaurant)
-
-    return jsonify({'success': True})
+#     return jsonify({'success': True})
 
 
-@socketio.on('join_restaurant')
-def on_join(data):
-    restaurant = data['restaurant']
-    join_room(restaurant)
-    if restaurant in active_polls:
-        poll = active_polls[restaurant]
-        emit('poll_started', {
-            'question': poll['question'],
-            'options': poll['options'],
-            'end_time': poll['end_time']
-        }, room=request.sid)
+# @app.route('/vote_poll/<restaurant>', methods=['POST'])
+# def vote_poll(restaurant):
+#     user_id = request.user_id
+
+#     if restaurant not in active_polls:
+#         return jsonify({'success': False, 'error': 'No active poll for this restaurant.'}), 400
+
+#     option = request.json.get('option')
+#     poll = active_polls[restaurant]
+
+#     # check if poll ended
+#     if time.time() >= poll['end_time']:
+#         del active_polls[restaurant]
+#         # notification that poll ended
+#         socketio.emit('poll_ended', {}, room=restaurant)
+#         return jsonify({'success': False, 'error': 'Poll has ended.'}), 400
+
+#     previous_vote = poll['votes'].get(user_id)
+#     if previous_vote:
+#         poll['options'][previous_vote] -= 1
+
+#     poll['votes'][user_id] = option
+#     poll['options'][option] += 1
+
+#     socketio.emit('poll_vote_update', {'options': poll['options']}, room=restaurant)
+
+#     return jsonify({'success': True})
+
+
+# @socketio.on('join_restaurant')
+# def on_join(data):
+#     restaurant = data['restaurant']
+#     join_room(restaurant)
+#     if restaurant in active_polls:
+#         poll = active_polls[restaurant]
+#         emit('poll_started', {
+#             'question': poll['question'],
+#             'options': poll['options'],
+#             'end_time': poll['end_time']
+#         }, room=request.sid)
 
 
 def restaurant_page(restaurant):
@@ -616,4 +604,4 @@ def restaurant_page(restaurant):
 
 # Run the app once this file executes
 if __name__ == "__main__":
-    socketio.run(app, host='0.0.0.0', port=8080, debug=True, use_reloader=False)
+    app.run(host='0.0.0.0', port=8080, debug=True)

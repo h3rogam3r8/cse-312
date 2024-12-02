@@ -79,13 +79,17 @@
 <!-- Comment, reply, and star rating section -->
 <div class="container mt-5">
     <h4 class="text-primary mb-4">Leave a Review</h4>
-
+    <br>
+    <p class="text-center text-muted small">You must be logged in to interact with or create posts!</p>
+    <br>
     <!-- Form for posting a comment -->
     <form id="commentForm" class="mb-4" onsubmit="return false;">
         <div class="mb-3">
             <label for="userComment" class="form-label">Your Comment</label>
             <textarea class="form-control" id="userComment" name="userComment" rows="3" placeholder="Share your experience..." required maxlength="1000"></textarea>
         </div>
+        <br>
+        <p class="text-center text-muted small">Comments must contain either text, or text and an image!</p>
         <div class="mb-3">
             <label for="fileUpload" class="form-label">Upload Image</label> 
             <input type="file" id="image" name="image" class="form-control" accept="image/*">
@@ -97,7 +101,6 @@
     <!-- Comments Section -->
     <div id="commentsSection">
         <h5 class="mb-4">Customer Reviews</h5>
-        <p class="text-center text-muted small">Hover over the interactions to see who might've liked or disliked! (updated in real time...)</p>
         <!-- Comments will load here -->
         {% for comment in comments %}
         <div class="comment mb-3 border p-3">
@@ -156,26 +159,26 @@
 
 <br><br>
 <!-- Start Poll Button -->
-<div class="text-center">
+<!-- <div class="text-center">
     <button id="startPollBtn" class="btn btn-primary mb-3">Start Poll</button>
-</div>
+</div> -->
 
 <!-- Dishes Data -->
-<script id="dishesData" type="application/json">
+<!-- <script id="dishesData" type="application/json">
     {{ dishes | tojson }}
-</script>
+</script> -->
 
 <!-- Poll Section -->
-<div id="pollSection" style="display: none;">
+<!-- <div id="pollSection" style="display: none;">
     <div class="container d-flex flex-column align-items-center">
         <h4 id="pollQuestion" class="text-center"></h4>
         <div id="pollOptions" class="text-center"></div>
         <p id="pollTimer" class="text-center"></p>
     </div>
 </div>
-<br><br>
+<br><br>-->
 
-<hr class="my-4">
+<hr class="my-4"> 
 
 <!-- Location Section -->
 <div class="container text-center py-2 mt-5">
