@@ -362,86 +362,86 @@ function showReplies(commentId, button) {
 
 
 // Poll Functionality
-const restaurant = window.location.pathname.split('/').pop();
-const socket2 = io.connect(location.protocol + '//' + window.location.hostname + ':' + location.port, {transports: ['websocket']});
+// const restaurant = window.location.pathname.split('/').pop();
+// const socket2 = io.connect(location.protocol + '//' + window.location.hostname + ':' + location.port);
 
-socket2.emit('join_restaurant', { 'restaurant': restaurant });
+// socket2.emit('join_restaurant', { 'restaurant': restaurant });
 
-const startPollBtn = document.getElementById('startPollBtn');
-const pollSection = document.getElementById('pollSection');
-const pollQuestion = document.getElementById('pollQuestion');
-const pollOptionsDiv = document.getElementById('pollOptions');
-const pollTimer = document.getElementById('pollTimer');
+// const startPollBtn = document.getElementById('startPollBtn');
+// const pollSection = document.getElementById('pollSection');
+// const pollQuestion = document.getElementById('pollQuestion');
+// const pollOptionsDiv = document.getElementById('pollOptions');
+// const pollTimer = document.getElementById('pollTimer');
 
-const dishesDataElement = document.getElementById('dishesData');
-const dishes = JSON.parse(dishesDataElement.textContent);
+// const dishesDataElement = document.getElementById('dishesData');
+// const dishes = JSON.parse(dishesDataElement.textContent);
 
-if (startPollBtn) {
-    startPollBtn.addEventListener('click', () => {
-        fetch(`/start_poll/${restaurant}`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ dishes })
-        })
-            .then(response => response.json())
-            .then(data => {
-                if (!data.success) {
-                    alert(data.error);
-                }
-            });
-    });
-}
+// if (startPollBtn) {
+//     startPollBtn.addEventListener('click', () => {
+//         fetch(`/start_poll/${restaurant}`, {
+//             method: 'POST',
+//             headers: { 'Content-Type': 'application/json' },
+//             body: JSON.stringify({ dishes })
+//         })
+//             .then(response => response.json())
+//             .then(data => {
+//                 if (!data.success) {
+//                     alert(data.error);
+//                 }
+//             });
+//     });
+// }
 
-socket2.on('poll_started', data => {
-    pollSection.style.display = 'block';
-    pollQuestion.textContent = data.question;
-    pollOptionsDiv.innerHTML = '';
-    for (const [option, votes] of Object.entries(data.options)) {
-        const button = document.createElement('button');
-        button.textContent = `${option} (${votes})`;
-        button.className = 'btn btn-secondary m-1';
-        button.addEventListener('click', () => {
-            fetch(`/vote_poll/${restaurant}`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ option })
-            })
-                .then(response => response.json())
-                .then(data => {
-                    if (!data.success) {
-                        alert(data.error);
-                    }
-                });
-        });
-        pollOptionsDiv.appendChild(button);
-    }
-    updateTimer(data.end_time);
-});
+// socket2.on('poll_started', data => {
+//     pollSection.style.display = 'block';
+//     pollQuestion.textContent = data.question;
+//     pollOptionsDiv.innerHTML = '';
+//     for (const [option, votes] of Object.entries(data.options)) {
+//         const button = document.createElement('button');
+//         button.textContent = `${option} (${votes})`;
+//         button.className = 'btn btn-secondary m-1';
+//         button.addEventListener('click', () => {
+//             fetch(`/vote_poll/${restaurant}`, {
+//                 method: 'POST',
+//                 headers: { 'Content-Type': 'application/json' },
+//                 body: JSON.stringify({ option })
+//             })
+//                 .then(response => response.json())
+//                 .then(data => {
+//                     if (!data.success) {
+//                         alert(data.error);
+//                     }
+//                 });
+//         });
+//         pollOptionsDiv.appendChild(button);
+//     }
+//     updateTimer(data.end_time);
+// });
 
-socket2.on('poll_vote_update', data => {
-    const buttons = pollOptionsDiv.getElementsByTagName('button');
-    Array.from(buttons).forEach(button => {
-        const option = button.textContent.split(' (')[0];
-        button.textContent = `${option} (${data.options[option]})`;
-    });
-});
+// socket2.on('poll_vote_update', data => {
+//     const buttons = pollOptionsDiv.getElementsByTagName('button');
+//     Array.from(buttons).forEach(button => {
+//         const option = button.textContent.split(' (')[0];
+//         button.textContent = `${option} (${data.options[option]})`;
+//     });
+// });
 
-socket2.on('poll_ended', () => {
-    pollTimer.textContent = 'Poll has ended.';
-    const buttons = pollOptionsDiv.getElementsByTagName('button');
-    Array.from(buttons).forEach(button => {
-        button.disabled = true;
-    });
-});
+// socket2.on('poll_ended', () => {
+//     pollTimer.textContent = 'Poll has ended.';
+//     const buttons = pollOptionsDiv.getElementsByTagName('button');
+//     Array.from(buttons).forEach(button => {
+//         button.disabled = true;
+//     });
+// });
 
-function updateTimer(endTime) {
-    const interval = setInterval(() => {
-        const remaining = Math.floor(endTime - Date.now() / 1000);
-        if (remaining <= 0) {
-            pollTimer.textContent = 'Poll has ended.';
-            clearInterval(interval);
-            return;
-        }
-        pollTimer.textContent = `Time remaining: ${remaining} seconds`;
-    }, 1000);
-}
+// function updateTimer(endTime) {
+//     const interval = setInterval(() => {
+//         const remaining = Math.floor(endTime - Date.now() / 1000);
+//         if (remaining <= 0) {
+//             pollTimer.textContent = 'Poll has ended.';
+//             clearInterval(interval);
+//             return;
+//         }
+//         pollTimer.textContent = `Time remaining: ${remaining} seconds`;
+//     }, 1000);
+// }
