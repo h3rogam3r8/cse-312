@@ -236,21 +236,21 @@ def add_header(response):
     response.headers['X-Content-Type-Options'] = 'nosniff'
     return response
 
-@app.route('/<restaurant>', methods=['GET','POST'])
-def restaurant_page(restaurant):
-    # fetch restaurant details and comments
+# @app.route('/<restaurant>', methods=['GET','POST'])
+# def restaurant_page(restaurant):
+#     # fetch restaurant details and comments
     
-    all_comments = list(comments.find({"restaurant": restaurant}))  
-    #print(all_comments)
-    #escape_comments = html.escape(all_comments)
-    if restaurant != 'favicon':
-        return render_with_auth(
-                f'html/menu/{restaurant}.html',
-                comments=all_comments,
-                restaurant_name=restaurant
-            )
-    elif restaurant == 'favicon':
-        return
+#     all_comments = list(comments.find({"restaurant": restaurant}))  
+#     #print(all_comments)
+#     #escape_comments = html.escape(all_comments)
+#     if restaurant != 'favicon':
+#         return render_with_auth(
+#                 f'html/menu/{restaurant}.html',
+#                 comments=all_comments,
+#                 restaurant_name=restaurant
+#             )
+#     elif restaurant == 'favicon':
+#         return
 
 # Changed this function to work with AJAX and always redirect to the same page
 @app.route('/comment/<restaurant>', methods=['POST'])
@@ -508,97 +508,97 @@ def get_user_reaction(comment_id):
 #         }, room=request.sid)
 
 
-# def restaurant_page(restaurant):
-#     all_comments = list(comments.find({"restaurant": restaurant}))  
+def restaurant_page(restaurant):
+    all_comments = list(comments.find({"restaurant": restaurant}))  
 
-#     # dishes for each restaurant
-#     dishes_dict = {
-#         'austin_kitchen': [
-#             'Bulgogi Over Rice',
-#             'Donkatsu',
-#             'Kimchi Bokkeumbap',
-#             'Spicy Pork Over Rice',
-#             'Soondooboo',
-#             'Pork Dumplings',
-#             'Kimchi Side'
-#         ],
-#         'bollywood_bistro': [
-#             'Chicken Biryani',
-#             'Chicken Kebab',
-#             'Chicken Samosa',
-#             'Garlic Naan',
-#             'Tandoori Chicken'
-#         ],
-#         'chick_mex': [
-#             'Burrito Bowl',
-#             'Chicken Over Rice',
-#             'Double Chicken Burger',
-#             'Fried Chicken',
-#             'Gyro',
-#             'Tacos'
-#         ],
-#         'dancing_chopsticks': [
-#             'Beef Teriyaki',
-#             'Chicken Katsu',
-#             'Chicken Yaki Udon',
-#             'Pork Katsu',
-#             'Tokyo Chicken',
-#             'Yakitori'
-#         ],
-#         'kung_fu_tea': [
-#             'Classic',
-#             'Milk Cap',
-#             'Milk Strike',
-#             'Milk Tea',
-#             'Punch',
-#             'Slush'
-#         ],
-#         'la_rosa': [
-#             'Buffalo Chicken Wings',
-#             'Cheese Pizza',
-#             'Pepperoni Pizza',
-#             'Garlic Knots',
-#             'Onion Rings',
-#             'French Fries'
-#         ],
-#         'poke_factory': [
-#             'Ahi Poke Bowl',
-#             'Salmon Poke Bowl',
-#             'Shrimp Poke Bowl',
-#             'Spicy Crab Poke Bowl',
-#             'Spicy Tuna Poke Bowl',
-#             'Teriyaki Chicken Poke Bowl'
-#         ],
-#         'subway': [
-#             'Steak and Bacon',
-#             'Chicken Rancher',
-#             'Cold Cut Combo',
-#             'Steak & Cheese',
-#             'Black Forest Ham',
-#             'Sweet Onion Chicken Teriyaki'
-#         ],
-#         'young_chow': [
-#             'Beef Lo Mein',
-#             'Hunan Chicken',
-#             'Hunan Shrimp',
-#             'Kung Pao Chicken',
-#             'Szechuan Beef',
-#             'Young Chow Fried Rice'
-#         ],
-#     }
+    # dishes for each restaurant
+    dishes_dict = {
+        'austin_kitchen': [
+            'Bulgogi Over Rice',
+            'Donkatsu',
+            'Kimchi Bokkeumbap',
+            'Spicy Pork Over Rice',
+            'Soondooboo',
+            'Pork Dumplings',
+            'Kimchi Side'
+        ],
+        'bollywood_bistro': [
+            'Chicken Biryani',
+            'Chicken Kebab',
+            'Chicken Samosa',
+            'Garlic Naan',
+            'Tandoori Chicken'
+        ],
+        'chick_mex': [
+            'Burrito Bowl',
+            'Chicken Over Rice',
+            'Double Chicken Burger',
+            'Fried Chicken',
+            'Gyro',
+            'Tacos'
+        ],
+        'dancing_chopsticks': [
+            'Beef Teriyaki',
+            'Chicken Katsu',
+            'Chicken Yaki Udon',
+            'Pork Katsu',
+            'Tokyo Chicken',
+            'Yakitori'
+        ],
+        'kung_fu_tea': [
+            'Classic',
+            'Milk Cap',
+            'Milk Strike',
+            'Milk Tea',
+            'Punch',
+            'Slush'
+        ],
+        'la_rosa': [
+            'Buffalo Chicken Wings',
+            'Cheese Pizza',
+            'Pepperoni Pizza',
+            'Garlic Knots',
+            'Onion Rings',
+            'French Fries'
+        ],
+        'poke_factory': [
+            'Ahi Poke Bowl',
+            'Salmon Poke Bowl',
+            'Shrimp Poke Bowl',
+            'Spicy Crab Poke Bowl',
+            'Spicy Tuna Poke Bowl',
+            'Teriyaki Chicken Poke Bowl'
+        ],
+        'subway': [
+            'Steak and Bacon',
+            'Chicken Rancher',
+            'Cold Cut Combo',
+            'Steak & Cheese',
+            'Black Forest Ham',
+            'Sweet Onion Chicken Teriyaki'
+        ],
+        'young_chow': [
+            'Beef Lo Mein',
+            'Hunan Chicken',
+            'Hunan Shrimp',
+            'Kung Pao Chicken',
+            'Szechuan Beef',
+            'Young Chow Fried Rice'
+        ],
+    }
 
-#     # Get the dishes for the current restaurant
-#     dishes = dishes_dict.get(restaurant, [])
+    # Get the dishes for the current restaurant
+    dishes = dishes_dict.get(restaurant, [])
 
-#     if restaurant != 'favicon':
-#         return render_with_auth(
-#             f'html/menu/{restaurant}.html',
-#             comments=all_comments,
-#             restaurant_name=restaurant,
-#             dishes=dishes
-#         )
-#     elif restaurant == 'favicon':
-#         return
+    if restaurant != 'favicon':
+        return render_with_auth(
+            f'html/menu/{restaurant}.html',
+            comments=all_comments,
+            restaurant_name=restaurant,
+            dishes=dishes
+        )
+    elif restaurant == 'favicon':
+        return
 
 # Run the app once this file executes
 if __name__ == "__main__":
