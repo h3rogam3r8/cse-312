@@ -222,8 +222,8 @@ document.addEventListener('DOMContentLoaded', function() {
         dislikeUsernames = Array.isArray(dislikeUsernames) ? dislikeUsernames : [];
 
         // Add usernames to tooltips on hover
-        likeButton.title = likeUsernames.length > 0 ? likeUsernames.join(', ') : 'No likes yet';
-        dislikeButton.title = dislikeUsernames.length > 0 ? dislikeUsernames.join(', ') : 'No dislikes yet';
+        //likeButton.title = likeUsernames.length > 0 ? likeUsernames.join(', ') : 'No likes yet';
+        //dislikeButton.title = dislikeUsernames.length > 0 ? dislikeUsernames.join(', ') : 'No dislikes yet';
     }
 
     // Function to ensure mutually exclusive likes and dislikes
@@ -358,6 +358,8 @@ function showReplies(commentId, button) {
         }
     }
 }
+
+
 
 // Poll Functionality
 // const restaurant = window.location.pathname.split('/').pop();
