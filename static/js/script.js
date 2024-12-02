@@ -199,7 +199,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // websockets
-    const socket = io.connect(location.protocol + '//' + window.location.hostname + ':' + location.port);
+    const socket = io.connect(location.protocol + '//' + window.location.hostname + ':' + location.port, {transports: ['websocket']});
 
     socket.on('update_reaction_counts', function(data) {
         console.log(data);
@@ -361,7 +361,7 @@ function showReplies(commentId, button) {
 
 // Poll Functionality
 const restaurant = window.location.pathname.split('/').pop();
-const socket2 = io.connect(location.protocol + '//' + window.location.hostname + ':' + location.port);
+const socket2 = io.connect(location.protocol + '//' + window.location.hostname + ':' + location.port, {transports: ['websocket']});
 
 socket2.emit('join_restaurant', { 'restaurant': restaurant });
 
