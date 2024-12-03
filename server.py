@@ -418,6 +418,9 @@ def get_user_reaction(comment_id):
     return jsonify({'reaction': reaction['type'] if reaction else None})
 
 
+# ==================================================================================================================== #
+# ==================================================================================================================== #
+
 @app.before_request
 def assign_user_id():
     user_id = request.cookies.get('user_id')
@@ -430,83 +433,85 @@ def assign_user_id():
     request.user_id = user_id
 
 
-# active_polls = {}  # active polls
+active_polls = {}  # active polls
 
-# @app.route('/start_poll/<restaurant>', methods=['POST'])
-# def start_poll(restaurant):
-#     # removed authentication check to allow any user to start a poll (going to let any user interact with poll)
+@app.route('/start_poll/<restaurant>', methods=['POST'])
+def start_poll(restaurant):
+    # authentication check for poll
+    username = is_authenticated()
+    if not username:
+        return jsonify({'success': False, 'error': 'Not authenticated'}), 401
 
-#     if restaurant in active_polls:
-#         return jsonify({'success': False, 'error': 'A poll is already active for this restaurant.'}), 400
+    if restaurant in active_polls:
+        return jsonify({'success': False, 'error': 'A poll is already active for this restaurant.'}), 400
 
-#     dishes = request.json.get('dishes')
-#     if not dishes:
-#         return jsonify({'success': False, 'error': 'No dishes provided.'}), 400
+    dishes = request.json.get('dishes')
+    if not dishes:
+        return jsonify({'success': False, 'error': 'No dishes provided.'}), 400
 
-#     # set poll duration (60 seconds)
-#     poll_duration = 60
-#     end_time = time.time() + poll_duration
+    # poll duration (60 seconds)
+    poll_duration = 60
+    end_time = time.time() + poll_duration
 
-#     # poll data
-#     poll = {
-#         'question': 'Which dish do you prefer?',
-#         'options': {dish: 0 for dish in dishes},
-#         'end_time': end_time,
-#         'votes': {}  
-#     }
-#     active_polls[restaurant] = poll
+    poll = {
+        'question': 'Which dish do you prefer?',
+        'options': {dish: 0 for dish in dishes},
+        'end_time': end_time,
+        'votes': {}  # user_id: option
+    }
+    active_polls[restaurant] = poll
 
-#     # notification that the restaurant room that a new poll has started
-#     socketio.emit('poll_started', {
-#         'question': poll['question'],
-#         'options': poll['options'],
-#         'end_time': poll['end_time']
-#     }, room=restaurant)
+    return jsonify({'success': True})
 
-#     return jsonify({'success': True})
+@app.route('/vote_poll/<restaurant>', methods=['POST'])
+def vote_poll(restaurant):
+    username = is_authenticated()
+    if not username:
+        return jsonify({'success': False, 'error': 'Not authenticated'}), 401
 
+    user_id = request.user_id
 
-# @app.route('/vote_poll/<restaurant>', methods=['POST'])
-# def vote_poll(restaurant):
-#     user_id = request.user_id
+    if restaurant not in active_polls:
+        return jsonify({'success': False, 'error': 'No active poll for this restaurant.'}), 400
 
-#     if restaurant not in active_polls:
-#         return jsonify({'success': False, 'error': 'No active poll for this restaurant.'}), 400
+    option = request.json.get('option')
+    poll = active_polls[restaurant]
 
-#     option = request.json.get('option')
-#     poll = active_polls[restaurant]
+    if time.time() >= poll['end_time']:
+        del active_polls[restaurant]
+        return jsonify({'success': False, 'error': 'Poll has ended.'}), 400
+    if option not in poll['options']:
+        return jsonify({'success': False, 'error': 'Invalid option.'}), 400
+    previous_vote = poll['votes'].get(user_id)
+    if previous_vote:
+        if previous_vote == option:
+            return jsonify({'success': False, 'error': 'You have already voted for this option.'}), 400
+        poll['options'][previous_vote] -= 1
+    poll['votes'][user_id] = option
+    poll['options'][option] += 1
+    return jsonify({'success': True})
 
-#     # check if poll ended
-#     if time.time() >= poll['end_time']:
-#         del active_polls[restaurant]
-#         # notification that poll ended
-#         socketio.emit('poll_ended', {}, room=restaurant)
-#         return jsonify({'success': False, 'error': 'Poll has ended.'}), 400
+@app.route('/poll_status/<restaurant>', methods=['GET'])
+def poll_status(restaurant):
+    if restaurant not in active_polls:
+        return jsonify({'active': False})
 
-#     previous_vote = poll['votes'].get(user_id)
-#     if previous_vote:
-#         poll['options'][previous_vote] -= 1
+    poll = active_polls[restaurant]
 
-#     poll['votes'][user_id] = option
-#     poll['options'][option] += 1
+    if time.time() >= poll['end_time']:
+        del active_polls[restaurant]
+        return jsonify({'active': False})
+    remaining_time = int(poll['end_time'] - time.time())
 
-#     socketio.emit('poll_vote_update', {'options': poll['options']}, room=restaurant)
+    return jsonify({
+        'active': True,
+        'question': poll['question'],
+        'options': poll['options'],
+        'remaining_time': remaining_time
+    })
 
-#     return jsonify({'success': True})
-
-
-# @socketio.on('join_restaurant')
-# def on_join(data):
-#     restaurant = data['restaurant']
-#     join_room(restaurant)
-#     if restaurant in active_polls:
-#         poll = active_polls[restaurant]
-#         emit('poll_started', {
-#             'question': poll['question'],
-#             'options': poll['options'],
-#             'end_time': poll['end_time']
-#         }, room=request.sid)
-
+# ==================================================================================================================== #
+# ==================================================================================================================== #
 
 def restaurant_page(restaurant):
     all_comments = list(comments.find({"restaurant": restaurant}))  
@@ -599,6 +604,7 @@ def restaurant_page(restaurant):
         )
     elif restaurant == 'favicon':
         return
+
 
 # Run the app once this file executes
 if __name__ == "__main__":

@@ -14,18 +14,6 @@
             <h4 class="text-secondary mb-4">Main Dishes</h4>
         </div>
 
-        <!-- <h2>Menu</h2>
-        <ul class="list-group">
-            {% for dish in dishes %}
-            <li class="list-group-item d-flex justify-content-between align-items-center">
-                {{ dish }}
-                {% if dish == daily_winner %}
-                <span class="badge bg-warning text-dark">🏆 Favorite Dish of the Day</span>
-                {% endif %}
-            </li>
-            {% endfor %}
-        </ul> -->
-
         <!-- Bulgogi Over Rice -->
         <div class="col-lg-4 col-md-6 mb-4">
             <div class="card h-100 shadow-sm">
@@ -195,16 +183,20 @@
 
 <br><br>
 <!-- Start Poll Button -->
-<!-- <div class="text-center">
-    <button id="startPollBtn" class="btn btn-primary mb-3">Start Poll</button>
-</div> -->
+<div class="text-center">
+    {% if loggedIn %}
+        <button id="startPollBtn" class="btn btn-primary mb-3">Start Poll</button>
+    {% else %}
+        <p>You must be logged in to start a poll.</p>
+    {% endif %}
+</div>
 
 <!-- Dishes Data -->
-<!-- <script id="dishesData" type="application/json">
+<script id="dishesData" type="application/json">
     {{ dishes | tojson }}
-</script> -->
+</script>
 
-<!-- Poll Section
+<!-- Poll Section -->
 <div id="pollSection" style="display: none;">
     <div class="container d-flex flex-column align-items-center">
         <h4 id="pollQuestion" class="text-center"></h4>
@@ -212,7 +204,7 @@
         <p id="pollTimer" class="text-center"></p>
     </div>
 </div>
-<br><br>-->
+<br><br>
 
 <hr class="my-4"> 
 
