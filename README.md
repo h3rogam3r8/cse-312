@@ -30,7 +30,7 @@ on their eyes, especially during low-light conditions.
 <h3> Testing Procedure: </h3>
 
 ```bash
-1. Navigate to ubcommons.com.
+1. Run the general testing procedure in "How to Locally Run:" and navigate to localhost:8080.
 2. Click on the Dark Mode button and verify your screen is now displaying a dark mode.
 3. Click on the Light Mode button and verify your screen has gone back to light mode.
 4. Click on another restaurant page and repeat steps 2 and 3.
