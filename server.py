@@ -29,42 +29,42 @@ reactions = db["reactions"]
 
 CHAR_LIMIT = 280
 
-# user_cooldown = {}
-# COOLDOWN = 30
+user_cooldown = {}
+COOLDOWN = 30
 
 # Create a flask instance
 app = Flask(__name__)
 bootstrap = Bootstrap(app) # Route and view function
 # socketio = SocketIO(app)  # Set up SocketIO
 
-# # Create a limiter instance to limit the rate per user
-# limiter = Limiter(
-#     get_remote_address,
-#     app=app,
-#     default_limits=["50 per 10 seconds"],
-# )
+# Create a limiter instance to limit the rate per user
+limiter = Limiter(
+    get_remote_address,
+    app=app,
+    default_limits=["50 per 10 seconds"],
+)
 
 # Hash
 bcrypt = Bcrypt(app)
 
-# @app.errorhandler(429)
-# def ratelimit_handler(e):
-#     user_ip = get_remote_address()
-#     current_time = time.time()
-#     elapsed = 0
-#     new_cooldown = COOLDOWN
-#     if user_ip not in user_cooldown:
-#         user_cooldown[user_ip] = current_time
-#     else:
-#         prev_time = user_cooldown[user_ip]
-#         elapsed = current_time - prev_time
-#         new_cooldown = COOLDOWN - elapsed
-#         if new_cooldown > 0:
-#             user_cooldown[user_ip] = current_time
-#             return make_response(jsonify({"error": f"Whoaaa there, too many requests! Slow down! Please wait {str(new_cooldown)} seconds."}), 429)
-#         else:
-#             del user_cooldown[user_ip]
-#     return make_response(jsonify({"error": "Whoaaa there, too many requests! Slow down!"}), 429)
+@app.errorhandler(429)
+def ratelimit_handler(e):
+    user_ip = get_remote_address()
+    current_time = time.time()
+    elapsed = 0
+    new_cooldown = COOLDOWN
+    if user_ip not in user_cooldown:
+        user_cooldown[user_ip] = current_time
+    else:
+        prev_time = user_cooldown[user_ip]
+        elapsed = current_time - prev_time
+        new_cooldown = COOLDOWN - elapsed
+        if new_cooldown > 0:
+            user_cooldown[user_ip] = current_time
+            return make_response(jsonify({"error": f"Whoaaa there, too many requests! Slow down! Please wait {str(new_cooldown)} seconds."}), 429)
+        else:
+            del user_cooldown[user_ip]
+    return make_response(jsonify({"error": "Whoaaa there, too many requests! Slow down!"}), 429)
 
 #for images upload
 UPLOAD_FOLDER = 'uploads'
