@@ -41,7 +41,7 @@ bootstrap = Bootstrap(app) # Route and view function
 limiter = Limiter(
     get_remote_address,
     app=app,
-    default_limits=["50 per 10 seconds"],
+    default_limits=["10 per 10 seconds"],
 )
 
 # Hash
@@ -51,20 +51,13 @@ bcrypt = Bcrypt(app)
 def ratelimit_handler(e):
     user_ip = get_remote_address()
     current_time = time.time()
-    elapsed = 0
-    new_cooldown = COOLDOWN
-    if user_ip not in user_cooldown:
-        user_cooldown[user_ip] = current_time
-    else:
-        prev_time = user_cooldown[user_ip]
-        elapsed = current_time - prev_time
-        new_cooldown = COOLDOWN - elapsed
-        if new_cooldown > 0:
-            user_cooldown[user_ip] = current_time
-            return make_response(jsonify({"error": f"Whoaaa there, too many requests! Slow down! Please wait {str(new_cooldown)} seconds."}), 429)
-        else:
-            del user_cooldown[user_ip]
-    return make_response(jsonify({"error": "Whoaaa there, too many requests! Slow down!"}), 429)
+    if user_ip in user_cooldown:
+        elapsed = current_time - user_cooldown[user_ip]
+        if elapsed < COOLDOWN:
+            time_left = COOLDOWN - elapsed
+            return make_response(jsonify({"error": f"Whoaaa there, too many requests! Slow down! Please wait {str(time_left)} seconds."}), 429)
+    user_cooldown[user_ip] = current_time
+    return make_response(jsonify({"error": "Slow down! Too many requests made."}), 429)
 
 #for images upload
 UPLOAD_FOLDER = 'uploads'
