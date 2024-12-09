@@ -35,53 +35,53 @@ bootstrap = Bootstrap(app) # Route and view function
 # socketio = SocketIO(app)  # Set up SocketIO
 
 # Create a limiter instance to limit the rate per user
-limiter = Limiter(
-    get_remote_address,
-    app=app,
-    default_limits=["10 per 10 seconds"],
-)
+# limiter = Limiter(
+#     get_remote_address,
+#     app=app,
+#     default_limits=["10 per 10 seconds"],
+# )
 
 # Hash
 bcrypt = Bcrypt(app)
 
-request_tracker = {}
-user_cooldown = {}
+# request_tracker = {}
+# user_cooldown = {}
 
-RATE_LIMIT = 50  
-TIME_WINDOW = 10 
-COOLDOWN = 30 
+# RATE_LIMIT = 50  
+# TIME_WINDOW = 10 
+# COOLDOWN = 30 
 
-def get_remote_address():
-    if "X-Forwarded-For" in request.headers:
-        return request.headers["X-Forwarded-For"].split(",")[0].strip()
-    elif "X-Real-IP" in request.headers:
-        return request.headers["X-Real-IP"]
-    return request.remote_addr
+# def get_remote_address():
+#     if "X-Forwarded-For" in request.headers:
+#         return request.headers["X-Forwarded-For"].split(",")[0].strip()
+#     elif "X-Real-IP" in request.headers:
+#         return request.headers["X-Real-IP"]
+#     return request.remote_addr
 
-@app.before_request
-def block_ip():
-    user_ip = get_remote_address()
-    current_time = time.time()
-    if user_ip in user_cooldown:
-        if current_time < user_cooldown[user_ip]:
-            time_left = int(user_cooldown[user_ip] - current_time)
-            return make_response(jsonify({"error": f"Too many requests! Try again in {time_left} seconds."}), 429)
-        else:
-            del user_cooldown[user_ip]
+# @app.before_request
+# def block_ip():
+#     user_ip = get_remote_address()
+#     current_time = time.time()
+#     if user_ip in user_cooldown:
+#         if current_time < user_cooldown[user_ip]:
+#             time_left = int(user_cooldown[user_ip] - current_time)
+#             return make_response(jsonify({"error": f"Too many requests! Try again in {time_left} seconds."}), 429)
+#         else:
+#             del user_cooldown[user_ip]
 
-    if user_ip not in request_tracker:
-        request_tracker[user_ip] = []
+#     if user_ip not in request_tracker:
+#         request_tracker[user_ip] = []
 
-    request_tracker[user_ip] = [timestamp for timestamp in request_tracker[user_ip] if current_time - timestamp <= TIME_WINDOW]
-    request_tracker[user_ip].append(current_time)
+#     request_tracker[user_ip] = [timestamp for timestamp in request_tracker[user_ip] if current_time - timestamp <= TIME_WINDOW]
+#     request_tracker[user_ip].append(current_time)
 
-    if len(request_tracker[user_ip]) > RATE_LIMIT:
-        user_cooldown[user_ip] = current_time + COOLDOWN
-        return make_response(jsonify({"error": "Too many requests! You are temporarily blocked for 30 seconds."}), 429)
+#     if len(request_tracker[user_ip]) > RATE_LIMIT:
+#         user_cooldown[user_ip] = current_time + COOLDOWN
+#         return make_response(jsonify({"error": "Too many requests! You are temporarily blocked for 30 seconds."}), 429)
 
-@app.errorhandler(429)
-def ratelimit_handler(e):
-    return make_response(jsonify({"error": "Too many requests! You are temporarily blocked."}), 429)
+# @app.errorhandler(429)
+# def ratelimit_handler(e):
+#     return make_response(jsonify({"error": "Too many requests! You are temporarily blocked."}), 429)
 
 #for images upload
 UPLOAD_FOLDER = 'uploads'
@@ -466,8 +466,8 @@ def start_poll(restaurant):
     if not dishes:
         return jsonify({'success': False, 'error': 'No dishes provided.'}), 400
 
-    # poll duration (60 seconds)
-    poll_duration = 60
+    # poll duration (10 seconds)
+    poll_duration = 10
     end_time = time.time() + poll_duration
 
     poll = {
