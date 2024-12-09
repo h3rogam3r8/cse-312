@@ -35,11 +35,11 @@ bootstrap = Bootstrap(app) # Route and view function
 # socketio = SocketIO(app)  # Set up SocketIO
 
 # Create a limiter instance to limit the rate per user
-# limiter = Limiter(
-#     get_remote_address,
-#     app=app,
-#     default_limits=["10 per 10 seconds"],
-# )
+limiter = Limiter(
+    get_remote_address,
+    app=app,
+    default_limits=["10 per 10 seconds"],
+)
 
 # Hash
 bcrypt = Bcrypt(app)
@@ -47,40 +47,37 @@ bcrypt = Bcrypt(app)
 request_tracker = {}
 user_cooldown = {}
 
-
-REQUEST_LIMIT = 50
-TIME_WINDOW = 10
+RATE_LIMIT = 50  
+TIME_WINDOW = 10 
 COOLDOWN = 30 
 
-
 def get_remote_address():
-    """Helper function to get the user's IP address."""
     return request.remote_addr
-
 
 @app.before_request
 def block_ip():
-    """Check if the user's IP is currently blocked or rate-limited."""
     user_ip = get_remote_address()
     current_time = time.time()
-
     if user_ip in user_cooldown:
         if current_time < user_cooldown[user_ip]:
-            time_left = user_cooldown[user_ip] - current_time
-            return make_response(jsonify({"error": f"Too many requests! Try again in {int(time_left)} seconds."}), 429)
+            time_left = int(user_cooldown[user_ip] - current_time)
+            return make_response(jsonify({"error": f"Too many requests! Try again in {time_left} seconds."}), 429)
         else:
             del user_cooldown[user_ip]
+
     if user_ip not in request_tracker:
         request_tracker[user_ip] = []
 
-    request_tracker[user_ip] = [
-        timestamp for timestamp in request_tracker[user_ip]
-        if timestamp > current_time - TIME_WINDOW
-    ]
-    if len(request_tracker[user_ip]) >= REQUEST_LIMIT:
+    request_tracker[user_ip] = [timestamp for timestamp in request_tracker[user_ip] if current_time - timestamp <= TIME_WINDOW]
+    request_tracker[user_ip].append(current_time)
+
+    if len(request_tracker[user_ip]) > RATE_LIMIT:
         user_cooldown[user_ip] = current_time + COOLDOWN
         return make_response(jsonify({"error": "Too many requests! You are temporarily blocked for 30 seconds."}), 429)
-    request_tracker[user_ip].append(current_time)
+
+@app.errorhandler(429)
+def ratelimit_handler(e):
+    return make_response(jsonify({"error": "Too many requests! You are temporarily blocked."}), 429)
 
 #for images upload
 UPLOAD_FOLDER = 'uploads'
