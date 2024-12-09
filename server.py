@@ -29,8 +29,8 @@ reactions = db["reactions"]
 
 CHAR_LIMIT = 280
 
-# user_cooldown = {}
-# COOLDOWN = 30
+user_cooldown = {}
+COOLDOWN = 30
 
 # Create a flask instance
 app = Flask(__name__)
@@ -38,27 +38,35 @@ bootstrap = Bootstrap(app) # Route and view function
 # socketio = SocketIO(app)  # Set up SocketIO
 
 # Create a limiter instance to limit the rate per user
-# limiter = Limiter(
-#     key_func = get_remote_address,
-#     app=app,
-#     default_limits=["50 per 10 seconds"],
-# )
+limiter = Limiter(
+    get_remote_address,
+    app=app,
+    default_limits=["10 per 10 seconds"],
+)
 
 # Hash
 bcrypt = Bcrypt(app)
 
-# @limiter.limit("50 per 10 seconds")
-# @app.errorhandler(429)
-# def ratelimit_handler(e):
-#     user_ip = get_remote_address()
-#     current_time = time.time()
-#     if user_ip in user_cooldown:
-#         elapsed = current_time - user_cooldown[user_ip]
-#         if elapsed < COOLDOWN:
-#             time_left = COOLDOWN - elapsed
-#             return make_response(jsonify({"error": f"Whoaaa there, too many requests! Slow down! Please wait {str(time_left)} seconds."}), 429)
-#     user_cooldown[user_ip] = current_time
-#     return make_response(jsonify({"message": "Slow down! Too many requests made."}), 429)
+@app.before_request
+def block_ip():
+    """Check if the user's IP is currently blocked."""
+    user_ip = get_remote_address()
+    current_time = time.time()
+    if user_ip in user_cooldown:
+        if current_time < user_cooldown[user_ip]:
+            return make_response(jsonify({"error": "Too many requests! You are temporarily blocked for 30 seconds."}), 429)
+        else:
+            # Remove the IP from the blocked list after the lockout period
+            del user_cooldown[user_ip]
+
+@app.errorhandler(429)
+def ratelimit_handler(e):
+    """Handle rate-limiting errors and enforce a lockout."""
+    user_ip = get_remote_address()
+    current_time = time.time()
+    # Block the user for 30 seconds
+    user_cooldown[user_ip] = current_time + COOLDOWN
+    return make_response(jsonify({"error": "Too many requests! You are temporarily blocked for 30 seconds."}), 429)
 
 #for images upload
 UPLOAD_FOLDER = 'uploads'
